@@ -53,18 +53,22 @@ This filter applies to every decision—before accepting AI suggestions, before 
 
 | # | Document | Description | Key Topics |
 |---|----------|-------------|------------|
-| **01** | [Guida Completa Platformatic Watt](./01-guida-completa-platformatic-watt.md) | Complete Watt reference | Architecture, NestJS integration, Platformatic DB, configurations |
-| **02** | [Principi Architetturali](./02-principi-architetturali-esagonale-solid.md) | Architectural foundations | Hexagonal architecture, SOLID/DRY/KISS/YAGNI, Clean Architecture, XP |
-| **03** | [Cloud Deployment](./03-cloud-deployment-docker-k8s.md) | Production deployment | Docker multi-stage, Kubernetes, health checks, CI/CD pipelines |
-| **04** | [AI-Assisted Development](./04-sviluppo-ai-assisted-copilot-claude.md) | Working with AI tools | Copilot best practices, anti-patterns, critical thinking |
-| **05** | [BDD/TDD Workflow](./05-bdd-tdd-acceptance-criteria-workflow.md) | Test-driven development | Gherkin scenarios, TDD cycle, acceptance criteria |
-| **06** | [Podcast Scalette](./06-podcast-scalette-4-episodi.md) | Educational content | Junior developer training materials |
-| **07** | [Riflessione Etica AI](./07-riflessione-etica-ai-droga-digitale.md) | Critical AI analysis | AI as "digital drug", empirical evidence, balanced usage |
-| **08** | [Modular Monolith Reference](./08-platformatic-modular-monolith-quick-reference.md) | Quick reference guide | DB applications, gateway composition, migrations, seeding |
+| **01** | [Guida Completa Platformatic Watt](./docs/guides/01-guida-completa-platformatic-watt.md) | Complete Watt reference | Architecture, NestJS integration, Platformatic DB, configurations |
+| **02** | [Principi Architetturali](./docs/guides/02-principi-architetturali-esagonale-solid.md) | Architectural foundations | Hexagonal architecture, SOLID/DRY/KISS/YAGNI, Clean Architecture, XP |
+| **03** | [Cloud Deployment](./docs/guides/03-cloud-deployment-docker-k8s.md) | Production deployment | Docker multi-stage, Kubernetes, health checks, CI/CD pipelines |
+| **04** | [AI-Assisted Development](./docs/guides/04-sviluppo-ai-assisted-copilot-claude.md) | Working with AI tools | Copilot best practices, anti-patterns, critical thinking |
+| **05** | [BDD/TDD Workflow](./docs/guides/05-bdd-tdd-acceptance-criteria-workflow.md) | Test-driven development | Gherkin scenarios, TDD cycle, acceptance criteria |
+| **06** | [Podcast Scalette](./docs/guides/06-podcast-scalette-4-episodi.md) | Educational content | Junior developer training materials |
+| **07** | [Riflessione Etica AI](./docs/guides/07-riflessione-etica-ai-droga-digitale.md) | Critical AI analysis | AI as "digital drug", empirical evidence, balanced usage |
+| **08** | [Modular Monolith Reference](./docs/guides/08-platformatic-modular-monolith-quick-reference.md) | Quick reference guide | DB applications, gateway composition, migrations, seeding |
 
 ### Practical Guides
 
-- **[Development Practical Guide](./DEVELOPMENT_PRATICAL_GUIDE.md)**: Git workflow (trunk-based), quality gates (ESLint, Prettier, Husky), testing strategy (test pyramid), conventional commits, semantic versioning, setup checklists
+- **[Development Practical Guide](./docs/guides/DEVELOPMENT_PRATICAL_GUIDE.md)**: Git workflow (trunk-based), quality gates (ESLint, Prettier, Husky), testing strategy (test pyramid), conventional commits, semantic versioning, setup checklists
+
+### Examples
+
+- **[EPIC-012: Admin Dashboard Telemetria](./docs/examples/EPIC-012-ADMIN-DASHBOARD-TELEMETRIA.md)**: Example feature epic with acceptance criteria
 
 ---
 
@@ -72,18 +76,18 @@ This filter applies to every decision—before accepting AI suggestions, before 
 
 ### For Learning
 
-1. Start with **[01 - Guida Completa](./01-guida-completa-platformatic-watt.md)** for technical overview
-2. Read **[02 - Principi Architetturali](./02-principi-architetturali-esagonale-solid.md)** for the mindset
-3. Follow **[05 - BDD/TDD Workflow](./05-bdd-tdd-acceptance-criteria-workflow.md)** for development process
-4. Review **[DEVELOPMENT_PRATICAL_GUIDE.md](./DEVELOPMENT_PRATICAL_GUIDE.md)** for hands-on practices
+1. Start with **[01 - Guida Completa](./docs/guides/01-guida-completa-platformatic-watt.md)** for technical overview
+2. Read **[02 - Principi Architetturali](./docs/guides/02-principi-architetturali-esagonale-solid.md)** for the mindset
+3. Follow **[05 - BDD/TDD Workflow](./docs/guides/05-bdd-tdd-acceptance-criteria-workflow.md)** for development process
+4. Review **[Practical Guide](./docs/guides/DEVELOPMENT_PRATICAL_GUIDE.md)** for hands-on practices
 
 ### For Project Setup
 
-1. **Architecture**: [02 - Principi Architetturali](./02-principi-architetturali-esagonale-solid.md) + [08 - Modular Monolith](./08-platformatic-modular-monolith-quick-reference.md)
-2. **Configuration**: [01 - Guida Completa Watt](./01-guida-completa-platformatic-watt.md)
-3. **Testing**: [05 - BDD/TDD Workflow](./05-bdd-tdd-acceptance-criteria-workflow.md) + [DEVELOPMENT_PRATICAL_GUIDE](./DEVELOPMENT_PRATICAL_GUIDE.md) (Test Pyramid)
-4. **Deployment**: [03 - Cloud Deployment](./03-cloud-deployment-docker-k8s.md)
-5. **Quality Gates**: [DEVELOPMENT_PRATICAL_GUIDE](./DEVELOPMENT_PRATICAL_GUIDE.md) (Section 6)
+1. **Architecture**: [02 - Principi Architetturali](./docs/guides/02-principi-architetturali-esagonale-solid.md) + [08 - Modular Monolith](./docs/guides/08-platformatic-modular-monolith-quick-reference.md)
+2. **Configuration**: [01 - Guida Completa Watt](./docs/guides/01-guida-completa-platformatic-watt.md)
+3. **Testing**: [05 - BDD/TDD Workflow](./docs/guides/05-bdd-tdd-acceptance-criteria-workflow.md) + [Practical Guide](./docs/guides/DEVELOPMENT_PRATICAL_GUIDE.md) (Test Pyramid)
+4. **Deployment**: [03 - Cloud Deployment](./docs/guides/03-cloud-deployment-docker-k8s.md)
+5. **Quality Gates**: [Practical Guide](./docs/guides/DEVELOPMENT_PRATICAL_GUIDE.md) (Section 6)
 
 ### For AI-Assisted Development
 
