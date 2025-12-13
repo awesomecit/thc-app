@@ -9,7 +9,8 @@
 
 **Comprehensive documentation for building enterprise applications with Platformatic Watt**
 
-[Documentation](#documentation) • [Philosophy](#core-philosophy) • [Getting Started](#getting-started) • [Contributing](#contributing)
+[Documentation](#documentation) • [Philosophy](#core-philosophy) •
+[Getting Started](#getting-started) • [Contributing](#contributing)
 
 </div>
 
@@ -17,9 +18,13 @@
 
 ## 📚 About This Repository
 
-This repository contains **comprehensive, production-ready documentation** for building modern enterprise applications using Platformatic Watt, hexagonal architecture, and industry best practices. The patterns and principles apply broadly to any domain including healthcare, fintech, e-commerce, and more.
+This repository contains **comprehensive, production-ready documentation** for building modern
+enterprise applications using Platformatic Watt, hexagonal architecture, and industry best
+practices. The patterns and principles apply broadly to any domain including healthcare, fintech,
+e-commerce, and more.
 
-**This is a documentation repository, not a runnable codebase.** It serves as a complete knowledge base and reference guide for developers building scalable, maintainable applications.
+**This is a documentation repository, not a runnable codebase.** It serves as a complete knowledge
+base and reference guide for developers building scalable, maintainable applications.
 
 ### 🎯 What You'll Find Here
 
@@ -27,7 +32,8 @@ This repository contains **comprehensive, production-ready documentation** for b
 - 🚀 **Platformatic Watt**: Complete guides for multi-app orchestration and modular monoliths
 - 🧪 **Testing Strategies**: BDD with Cucumber/Gherkin, TDD workflows, test pyramid implementation
 - 🔧 **DevOps & CI/CD**: Docker, Kubernetes, GitHub Actions, quality gates
-- 🤖 **AI-Assisted Development**: Effective use of GitHub Copilot and AI tools with critical thinking
+- 🤖 **AI-Assisted Development**: Effective use of GitHub Copilot and AI tools with critical
+  thinking
 - 📊 **Practical Workflows**: Git trunk-based development, conventional commits, semantic versioning
 
 ---
@@ -41,9 +47,11 @@ This repository contains **comprehensive, production-ready documentation** for b
 3. **What are the trade-offs?** (Pros AND cons)
 4. **What alternatives exist?** (Maybe it already exists, maybe simpler is better)
 
-This filter applies to every decision—before accepting AI suggestions, before creating abstractions, before adding dependencies.
+This filter applies to every decision—before accepting AI suggestions, before creating abstractions,
+before adding dependencies.
 
-> *"The best code is often the code you don't write. Question every abstraction, every layer, every line."*
+> _"The best code is often the code you don't write. Question every abstraction, every layer, every
+> line."_
 
 ---
 
@@ -51,24 +59,27 @@ This filter applies to every decision—before accepting AI suggestions, before 
 
 ### Core Guides
 
-| # | Document | Description | Key Topics |
-|---|----------|-------------|------------|
-| **01** | [Guida Completa Platformatic Watt](./docs/guides/01-guida-completa-platformatic-watt.md) | Complete Watt reference | Architecture, NestJS integration, Platformatic DB, configurations |
-| **02** | [Principi Architetturali](./docs/guides/02-principi-architetturali-esagonale-solid.md) | Architectural foundations | Hexagonal architecture, SOLID/DRY/KISS/YAGNI, Clean Architecture, XP |
-| **03** | [Cloud Deployment](./docs/guides/03-cloud-deployment-docker-k8s.md) | Production deployment | Docker multi-stage, Kubernetes, health checks, CI/CD pipelines |
-| **04** | [AI-Assisted Development](./docs/guides/04-sviluppo-ai-assisted-copilot-claude.md) | Working with AI tools | Copilot best practices, anti-patterns, critical thinking |
-| **05** | [BDD/TDD Workflow](./docs/guides/05-bdd-tdd-acceptance-criteria-workflow.md) | Test-driven development | Gherkin scenarios, TDD cycle, acceptance criteria |
-| **06** | [Podcast Scalette](./docs/guides/06-podcast-scalette-4-episodi.md) | Educational content | Junior developer training materials |
-| **07** | [Riflessione Etica AI](./docs/guides/07-riflessione-etica-ai-droga-digitale.md) | Critical AI analysis | AI as "digital drug", empirical evidence, balanced usage |
-| **08** | [Modular Monolith Reference](./docs/guides/08-platformatic-modular-monolith-quick-reference.md) | Quick reference guide | DB applications, gateway composition, migrations, seeding |
+| #      | Document                                                                                        | Description               | Key Topics                                                           |
+| ------ | ----------------------------------------------------------------------------------------------- | ------------------------- | -------------------------------------------------------------------- |
+| **01** | [Guida Completa Platformatic Watt](./docs/guides/01-guida-completa-platformatic-watt.md)        | Complete Watt reference   | Architecture, NestJS integration, Platformatic DB, configurations    |
+| **02** | [Principi Architetturali](./docs/guides/02-principi-architetturali-esagonale-solid.md)          | Architectural foundations | Hexagonal architecture, SOLID/DRY/KISS/YAGNI, Clean Architecture, XP |
+| **03** | [Cloud Deployment](./docs/guides/03-cloud-deployment-docker-k8s.md)                             | Production deployment     | Docker multi-stage, Kubernetes, health checks, CI/CD pipelines       |
+| **04** | [AI-Assisted Development](./docs/guides/04-sviluppo-ai-assisted-copilot-claude.md)              | Working with AI tools     | Copilot best practices, anti-patterns, critical thinking             |
+| **05** | [BDD/TDD Workflow](./docs/guides/05-bdd-tdd-acceptance-criteria-workflow.md)                    | Test-driven development   | Gherkin scenarios, TDD cycle, acceptance criteria                    |
+| **06** | [Podcast Scalette](./docs/guides/06-podcast-scalette-4-episodi.md)                              | Educational content       | Junior developer training materials                                  |
+| **07** | [Riflessione Etica AI](./docs/guides/07-riflessione-etica-ai-droga-digitale.md)                 | Critical AI analysis      | AI as "digital drug", empirical evidence, balanced usage             |
+| **08** | [Modular Monolith Reference](./docs/guides/08-platformatic-modular-monolith-quick-reference.md) | Quick reference guide     | DB applications, gateway composition, migrations, seeding            |
 
 ### Practical Guides
 
-- **[Development Practical Guide](./docs/guides/DEVELOPMENT_PRATICAL_GUIDE.md)**: Git workflow (trunk-based), quality gates (ESLint, Prettier, Husky), testing strategy (test pyramid), conventional commits, semantic versioning, setup checklists
+- **[Development Practical Guide](./docs/guides/DEVELOPMENT_PRATICAL_GUIDE.md)**: Git workflow
+  (trunk-based), quality gates (ESLint, Prettier, Husky), testing strategy (test pyramid),
+  conventional commits, semantic versioning, setup checklists
 
 ### Examples
 
-- **[EPIC-012: Admin Dashboard Telemetria](./docs/examples/EPIC-012-ADMIN-DASHBOARD-TELEMETRIA.md)**: Example feature epic with acceptance criteria
+- **[EPIC-012: Admin Dashboard Telemetria](./docs/examples/EPIC-012-ADMIN-DASHBOARD-TELEMETRIA.md)**:
+  Example feature epic with acceptance criteria
 
 ---
 
@@ -80,21 +91,21 @@ Before starting work on this project, ensure your Linux system meets the followi
 
 #### System Requirements
 
-| Requirement | Version | Verification Command | Installation |
-|-------------|---------|----------------------|--------------|
-| **Node.js** | >= 22.19.0 | `node --version` | `nvm install 22.19.0 && nvm use 22` |
-| **npm** | >= 10.0.0 | `npm --version` | Included with Node.js |
-| **Git** | >= 2.30.0 | `git --version` | `sudo apt install git` (Debian/Ubuntu) |
-| **Docker** | >= 24.0.0 | `docker --version` | [Install Docker Engine](https://docs.docker.com/engine/install/) |
-| **Docker Compose** | >= 2.20.0 | `docker compose version` | Included with Docker Engine |
+| Requirement        | Version    | Verification Command     | Installation                                                     |
+| ------------------ | ---------- | ------------------------ | ---------------------------------------------------------------- |
+| **Node.js**        | >= 22.19.0 | `node --version`         | `nvm install 22.19.0 && nvm use 22`                              |
+| **npm**            | >= 10.0.0  | `npm --version`          | Included with Node.js                                            |
+| **Git**            | >= 2.30.0  | `git --version`          | `sudo apt install git` (Debian/Ubuntu)                           |
+| **Docker**         | >= 24.0.0  | `docker --version`       | [Install Docker Engine](https://docs.docker.com/engine/install/) |
+| **Docker Compose** | >= 2.20.0  | `docker compose version` | Included with Docker Engine                                      |
 
 #### Optional but Recommended
 
-| Tool | Purpose | Verification | Installation |
-|------|---------|--------------|--------------|
-| **nvm** | Node.js version management | `nvm --version` | `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh \| bash` |
-| **gh CLI** | GitHub integration | `gh --version` | `sudo apt install gh` |
-| **make** | Task automation | `make --version` | `sudo apt install build-essential` |
+| Tool       | Purpose                    | Verification     | Installation                                                                       |
+| ---------- | -------------------------- | ---------------- | ---------------------------------------------------------------------------------- |
+| **nvm**    | Node.js version management | `nvm --version`  | `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh \| bash` |
+| **gh CLI** | GitHub integration         | `gh --version`   | `sudo apt install gh`                                                              |
+| **make**   | Task automation            | `make --version` | `sudo apt install build-essential`                                                 |
 
 #### Verify Your Environment
 
@@ -110,6 +121,7 @@ echo "nvm: $(nvm --version 2>&1 || echo 'Not installed')"
 ```
 
 **Expected Output:**
+
 ```
 Node: v22.19.0 (or higher)
 npm: 10.x.x (or higher)
@@ -156,22 +168,31 @@ node --version  # Should show v22.x.x
 
 ### For Learning
 
-1. Start with **[01 - Guida Completa](./docs/guides/01-guida-completa-platformatic-watt.md)** for technical overview
-2. Read **[02 - Principi Architetturali](./docs/guides/02-principi-architetturali-esagonale-solid.md)** for the mindset
-3. Follow **[05 - BDD/TDD Workflow](./docs/guides/05-bdd-tdd-acceptance-criteria-workflow.md)** for development process
+1. Start with **[01 - Guida Completa](./docs/guides/01-guida-completa-platformatic-watt.md)** for
+   technical overview
+2. Read
+   **[02 - Principi Architetturali](./docs/guides/02-principi-architetturali-esagonale-solid.md)**
+   for the mindset
+3. Follow **[05 - BDD/TDD Workflow](./docs/guides/05-bdd-tdd-acceptance-criteria-workflow.md)** for
+   development process
 4. Review **[Practical Guide](./docs/guides/DEVELOPMENT_PRATICAL_GUIDE.md)** for hands-on practices
 
 ### For Project Setup
 
-1. **Architecture**: [02 - Principi Architetturali](./docs/guides/02-principi-architetturali-esagonale-solid.md) + [08 - Modular Monolith](./docs/guides/08-platformatic-modular-monolith-quick-reference.md)
-2. **Configuration**: [01 - Guida Completa Watt](./docs/guides/01-guida-completa-platformatic-watt.md)
-3. **Testing**: [05 - BDD/TDD Workflow](./docs/guides/05-bdd-tdd-acceptance-criteria-workflow.md) + [Practical Guide](./docs/guides/DEVELOPMENT_PRATICAL_GUIDE.md) (Test Pyramid)
+1. **Architecture**:
+   [02 - Principi Architetturali](./docs/guides/02-principi-architetturali-esagonale-solid.md) +
+   [08 - Modular Monolith](./docs/guides/08-platformatic-modular-monolith-quick-reference.md)
+2. **Configuration**:
+   [01 - Guida Completa Watt](./docs/guides/01-guida-completa-platformatic-watt.md)
+3. **Testing**: [05 - BDD/TDD Workflow](./docs/guides/05-bdd-tdd-acceptance-criteria-workflow.md) +
+   [Practical Guide](./docs/guides/DEVELOPMENT_PRATICAL_GUIDE.md) (Test Pyramid)
 4. **Deployment**: [03 - Cloud Deployment](./docs/guides/03-cloud-deployment-docker-k8s.md)
 5. **Quality Gates**: [Practical Guide](./docs/guides/DEVELOPMENT_PRATICAL_GUIDE.md) (Section 6)
 
 ### For AI-Assisted Development
 
-Read **[.github/copilot-instructions.md](./.github/copilot-instructions.md)** - Comprehensive AI agent instructions covering all documentation with practical workflows and commands.
+Read **[.github/copilot-instructions.md](./.github/copilot-instructions.md)** - Comprehensive AI
+agent instructions covering all documentation with practical workflows and commands.
 
 ---
 
@@ -257,21 +278,22 @@ feat!: breaking change       # → MAJOR bump (1.0.0 → 2.0.0)
 
 ## 🎯 Success Metrics
 
-| Metric | Target | Purpose |
-|--------|--------|---------|
-| **Lead time** | < 1 day | Commit → Production |
-| **Deployment frequency** | Multiple/day | Continuous delivery |
-| **MTTR** | < 1 hour | Recovery speed |
-| **Change failure rate** | < 15% | Deployment reliability |
-| **Test coverage** | > 70% | Code quality |
-| **Cognitive complexity** | < 10 | Maintainability |
-| **Build time** | < 5 min | Fast feedback |
+| Metric                   | Target       | Purpose                |
+| ------------------------ | ------------ | ---------------------- |
+| **Lead time**            | < 1 day      | Commit → Production    |
+| **Deployment frequency** | Multiple/day | Continuous delivery    |
+| **MTTR**                 | < 1 hour     | Recovery speed         |
+| **Change failure rate**  | < 15%        | Deployment reliability |
+| **Test coverage**        | > 70%        | Code quality           |
+| **Cognitive complexity** | < 10         | Maintainability        |
+| **Build time**           | < 5 min      | Fast feedback          |
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! This documentation is a living resource that improves with community input.
+We welcome contributions! This documentation is a living resource that improves with community
+input.
 
 ### How to Contribute
 
@@ -362,6 +384,6 @@ Special thanks to the enterprise development community for real-world insights a
 
 **⭐ If you find this documentation useful, please consider giving it a star! ⭐**
 
-*Built with ❤️ for the developer community*
+_Built with ❤️ for the developer community_
 
 </div>
