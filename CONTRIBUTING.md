@@ -215,13 +215,33 @@ Optional but recommended. Examples: `gateway`, `db`, `auth`, `docs`, `dx`
 - Reference issues: `Closes #123`
 - Breaking changes: `BREAKING CHANGE: description`
 
-### Examples
+### Examples by Type
+
+#### feat: New Features (MINOR bump)
 
 ```bash
 # Simple feature
 feat(gateway): add rate limiting middleware
 
-# Bug fix with body
+# With scope and body
+feat(auth): implement OAuth2 authorization code flow
+
+Add support for OAuth2 authorization code flow with PKCE extension.
+Implements RFC 6749 and RFC 7636 specifications.
+
+Refs: EPIC-003, Task 3.2.1
+
+# Multi-service feature
+feat(db,api): add soft delete support for all entities
+```
+
+#### fix: Bug Fixes (PATCH bump)
+
+```bash
+# Simple fix
+fix(cache): prevent race condition in Redis connection
+
+# With detailed body
 fix(db): prevent connection leak in transaction rollback
 
 Connection pool was exhausted due to unclosed connections when
@@ -229,11 +249,147 @@ transactions failed. Added explicit connection release in error handler.
 
 Closes #456
 
-# Breaking change
+# Security fix
+fix(auth): validate JWT signature before parsing claims
+```
+
+#### docs: Documentation
+
+```bash
+# Documentation update
+docs(readme): add Watt configuration explanation
+
+# API documentation
+docs(api): update OpenAPI schema for user endpoints
+
+# Fix typo
+docs(contributing): fix broken link to SECURITY.md
+```
+
+#### style: Code Style & Formatting
+
+```bash
+# Formatting
+style(gateway): apply Prettier formatting to routes
+
+# Code organization
+style(domain): reorder imports alphabetically
+
+# Linting
+style: fix ESLint warnings in test files
+```
+
+#### refactor: Code Refactoring
+
+```bash
+# Extract function
+refactor(auth): extract JWT validation into separate function
+
+# Simplify logic
+refactor(db): simplify query builder with fluent API
+
+# Remove duplication
+refactor: consolidate error handling across adapters
+```
+
+#### test: Tests
+
+```bash
+# Add tests
+test(auth): add unit tests for password hashing
+
+# Fix flaky test
+test(integration): fix race condition in webhook tests
+
+# Increase coverage
+test(domain): add edge case tests for user validation
+```
+
+#### chore: Maintenance
+
+```bash
+# Dependency update
+chore(deps): update @platformatic/watt to 3.28.0
+
+# Tooling
+chore(dx): configure secretlint for pre-commit hook
+
+# CI/CD
+chore(ci): add caching for npm dependencies in GitHub Actions
+```
+
+#### perf: Performance Improvements
+
+```bash
+# Optimization
+perf(db): add index on user.email for faster lookups
+
+# Caching
+perf(gateway): implement response caching with Redis
+
+# Reduce bundle size
+perf(frontend): lazy load authentication components
+```
+
+#### build: Build System
+
+```bash
+# Build configuration
+build: optimize Docker image with multi-stage build
+
+# Dependencies
+build(deps): update to Node.js 22.21.1
+
+# Webpack/Vite
+build(frontend): configure Vite for production builds
+```
+
+#### ci: CI/CD
+
+```bash
+# GitHub Actions
+ci: add automated security scanning with Snyk
+
+# Pipeline optimization
+ci: parallelize test execution in CI pipeline
+
+# Deployment
+ci: add staging environment deployment step
+```
+
+#### revert: Revert Previous Commit
+
+```bash
+# Revert
+revert: revert "feat(gateway): add rate limiting"
+
+This reverts commit a1b2c3d4. Rate limiting caused performance
+degradation under load. Will re-implement with better approach.
+```
+
+#### Breaking Changes (MAJOR bump)
+
+```bash
+# With ! suffix
 feat(auth)!: change token format to JWT
 
 BREAKING CHANGE: Token format changed from opaque tokens to JWT.
 Clients must update token validation logic.
+
+Migration guide:
+1. Update Authorization header format
+2. Verify JWT signature with RS256 algorithm
+3. Extract claims from payload
+
+# Multiple breaking changes
+feat(api)!: redesign user API endpoints
+
+BREAKING CHANGE: Endpoints renamed for consistency.
+- GET /user → GET /users/:id
+- POST /user/create → POST /users
+- PUT /user/:id → PATCH /users/:id
+
+BREAKING CHANGE: Response format changed to JSON:API spec.
 ```
 
 ## 🔀 Pull Request Process
