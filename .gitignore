@@ -1,0 +1,39 @@
+# Patterns
+*.log
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Temporary files
+compass_artifact_*.md
+*-duplicate.md
+*-old.md
+
+# Node
+node_modules/
+dist/
+build/
+.npm
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Test
+coverage/
+.tap/
+*.lcov
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Build
+*.tgz
