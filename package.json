@@ -1,31 +1,29 @@
 {
   "name": "thc-app",
   "version": "0.1.0",
-  "description": "Healthcare application documentation and reference implementation",
+  "description": "Healthcare application with Platformatic Watt",
   "type": "module",
-  "main": "index.js",
   "scripts": {
-    "dev": "echo 'Note: Requires Node.js >= 22.19.0 for Platformatic Watt'",
-    "build": "echo 'Documentation project - no build required'",
+    "dev": "wattpm dev",
+    "build": "wattpm build",
+    "start": "wattpm start",
     "lint": "prettier --check .",
     "format": "prettier --write .",
     "prepare": "husky"
   },
-  "keywords": [
-    "platformatic",
-    "watt",
-    "healthcare",
-    "hexagonal-architecture",
-    "documentation"
-  ],
+  "keywords": ["platformatic", "watt", "healthcare", "hexagonal-architecture"],
   "author": "Antonio Cittadino",
   "license": "MIT",
-  "engines": {
-    "node": ">=22.19.0",
-    "npm": ">=10.0.0"
+  "dependencies": {
+    "wattpm": "^3.27.0"
   },
   "devDependencies": {
     "husky": "^9.1.7",
     "prettier": "^3.0.0"
-  }
+  },
+  "engines": {
+    "node": ">=22.19.0",
+    "npm": ">=10.0.0"
+  },
+  "workspaces": ["web/*"]
 }

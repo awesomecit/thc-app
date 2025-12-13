@@ -1,0 +1,13 @@
+{
+  "name": "thc-node",
+  "main": "index.ts",
+  "type": "module",
+  "dependencies": {
+    "@platformatic/node": "^3.27.0",
+    "@platformatic/globals": "^3.27.0"
+  },
+  "devDependencies": {
+    "@platformatic/tsconfig": "^0.1.0",
+    "@types/node": "^22.0.0"
+  }
+}

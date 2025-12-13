@@ -1,0 +1,19 @@
+{
+  "name": "thc",
+  "scripts": {
+    "dev": "wattpm dev",
+    "start": "wattpm start",
+    "build": "wattpm build",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "fastify": "^5.0.0",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@platformatic/gateway": "^3.27.0"
+  },
+  "engines": {
+    "node": ">=22.19.0"
+  }
+}

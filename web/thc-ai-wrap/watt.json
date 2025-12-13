@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schemas.platformatic.dev/@platformatic/ai-warp/1.1.3.json",
+  "service": {
+    "openapi": true
+  },
+  "watch": true,
+  "module": "@platformatic/ai-warp",
+  "ai": {
+    "providers": {
+      "openai": {
+        "apiKey": "{PLT_THC_AI_WRAP_OPENAI_API_KEY}"
+      },
+      "deepseek": {
+        "apiKey": "{PLT_THC_AI_WRAP_DEEPSEEK_API_KEY}"
+      },
+      "gemini": {
+        "apiKey": "{PLT_THC_AI_WRAP_GEMINI_API_KEY}"
+      }
+    },
+    "models": [
+      {
+        "provider": "openai",
+        "model": "gpt-4o-mini"
+      },
+      {
+        "provider": "openai",
+        "model": "gpt-4o"
+      },
+      {
+        "provider": "deepseek",
+        "model": "deepseek-chat"
+      },
+      {
+        "provider": "gemini",
+        "model": "gemini-2.5-flash"
+      }
+    ],
+    "limits": {
+      "maxTokens": 1000
+    }
+  }
+}

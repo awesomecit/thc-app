@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.platformatic.dev/@platformatic/db/3.27.0.json",
+  "watch": {
+    "ignore": [
+      "*.sqlite",
+      "*.sqlite-journal"
+    ]
+  },
+  "plugins": {
+    "paths": [
+      {
+        "path": "./plugins",
+        "encapsulate": false
+      },
+      "./routes"
+    ]
+  },
+  "db": {
+    "connectionString": "{PLT_THC_DB_DATABASE_URL}",
+    "graphql": true,
+    "openapi": true,
+    "schemalock": true
+  },
+  "migrations": {
+    "dir": "migrations",
+    "autoApply": "{PLT_THC_DB_APPLY_MIGRATIONS}"
+  },
+  "types": {
+    "autogenerate": true
+  }
+}

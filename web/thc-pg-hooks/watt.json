@@ -1,0 +1,8 @@
+{
+  "$schema": "./stackable.schema.json",
+  "watch": true,
+  "module": "@platformatic/pg-hooks",
+  "db": {
+    "connectionString": "{PLT_THC_PG_HOOKS_DB_URL}"
+  }
+}
