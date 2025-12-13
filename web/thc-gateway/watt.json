@@ -10,16 +10,7 @@
         "id": "thc-service"
       },
       {
-        "id": "thc-pg-hooks"
-      },
-      {
-        "id": "thc-rabbitmq-hooks"
-      },
-      {
         "id": "thc-node"
-      },
-      {
-        "id": "thc-ai-wrap"
       }
     ],
     "refreshTimeout": 1000
