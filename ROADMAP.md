@@ -119,14 +119,16 @@ Task Completion Rate = (Completed / Planned) × 100%
     Then the commit should succeed
     ```
     **Verification**: Tested with "test" (rejected), "feat(dx): ..." (accepted).
-  - **Task 1.2.3**: Document commit message examples [2h]
+  - **Task 1.2.3**: Document commit message examples [2h] ✅
     ```gherkin
     Given conventional commits are enforced
-    When a developer reads COMMIT_CONVENTIONS.md
+    When a developer reads CONTRIBUTING.md
     Then they should see examples for feat, fix, docs, style, refactor, test, chore
     And each example should show scope usage and breaking changes
-    And the document should link to commitlint.config.cjs
+    And the document should reference commitlint.config.cjs
     ```
+    **Implementation**: Expanded CONTRIBUTING.md with comprehensive examples for all 11 commit
+    types, breaking changes with migration guides, scope patterns.
 
 #### Sprint 2: Advanced Automation
 
