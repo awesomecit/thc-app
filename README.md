@@ -6,11 +6,14 @@
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D22-brightgreen)](https://nodejs.org)
 [![Platformatic Watt](https://img.shields.io/badge/Platformatic-Watt-blue)](https://platformatic.dev)
 [![Hexagonal Architecture](https://img.shields.io/badge/Architecture-Hexagonal-blue)]()
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+[![Code Style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/)
 
 **Comprehensive documentation for building enterprise applications with Platformatic Watt**
 
 [Documentation](#documentation) • [Philosophy](#core-philosophy) •
-[Getting Started](#getting-started) • [Contributing](#contributing)
+[Getting Started](#getting-started) • [Contributing](./CONTRIBUTING.md) • [Security](./SECURITY.md)
+• [Changelog](./CHANGELOG.md)
 
 </div>
 
@@ -369,7 +372,11 @@ Special thanks to the enterprise development community for real-world insights a
 
 - **Author**: Antonio Cittadino
 - **Repository**: [github.com/yourusername/thc-app](https://github.com/yourusername/thc-app)
-- **Issues**: Use GitHub Issues for questions, suggestions, and discussions
+- **Issues**: Use GitHub Issues for bugs and feature requests
+- **Discussions**: Use GitHub Discussions for questions and ideas
+- **Security**: See [SECURITY.md](./SECURITY.md) for vulnerability reporting
+- **Contributing**: See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines
+- **Code of Conduct**: See [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
 
 ### Related Resources
 
