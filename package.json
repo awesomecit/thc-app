@@ -11,7 +11,13 @@
     "format": "prettier --write .",
     "prepare": "husky"
   },
-  "keywords": ["platformatic", "watt", "hexagonal-architecture", "modular-monolith", "typescript"],
+  "keywords": [
+    "platformatic",
+    "watt",
+    "hexagonal-architecture",
+    "modular-monolith",
+    "typescript"
+  ],
   "author": "Antonio Cittadino",
   "license": "MIT",
   "dependencies": {
@@ -19,11 +25,22 @@
   },
   "devDependencies": {
     "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.0.0"
+  },
+  "lint-staged": {
+    "*.{ts,js,mjs,cjs}": [
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   },
   "engines": {
     "node": ">=22.19.0",
     "npm": ">=10.0.0"
   },
-  "workspaces": ["web/*"]
+  "workspaces": [
+    "web/*"
+  ]
 }
