@@ -99,14 +99,17 @@ Task Completion Rate = (Completed / Planned) × 100%
     `.secretlintrc.json`, `.secretsignore`, `.secretsafe`
 
 - **Story 1.2**: Commit Validation
-  - **Task 1.2.1**: Install commitlint with conventional config [2h]
+  - **Task 1.2.1**: Install commitlint with conventional config [2h] ✅
     ```gherkin
     Given a project following conventional commits
     When commitlint is installed
     Then @commitlint/config-conventional should be configured
     And the commit-msg hook should validate message format
     ```
-  - **Task 1.2.2**: Configure commit-msg hook [2h]
+    **Implementation**: Installed `@commitlint/cli` and `@commitlint/config-conventional`.
+    Configuration: `commitlint.config.cjs` with custom rules (subject min 10 chars). Hook:
+    `.husky/commit-msg` validates all commit messages.
+  - **Task 1.2.2**: Configure commit-msg hook [2h] ✅
     ```gherkin
     Given commitlint is installed
     When a developer commits with message "invalid message"
@@ -115,6 +118,7 @@ Task Completion Rate = (Completed / Planned) × 100%
     When they commit with "feat(scope): valid message"
     Then the commit should succeed
     ```
+    **Verification**: Tested with "test" (rejected), "feat(dx): ..." (accepted).
   - **Task 1.2.3**: Document commit message examples [2h]
     ```gherkin
     Given conventional commits are enforced
