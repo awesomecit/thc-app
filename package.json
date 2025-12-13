@@ -9,7 +9,7 @@
     "build": "echo 'Documentation project - no build required'",
     "lint": "prettier --check .",
     "format": "prettier --write .",
-    "prepare": "echo 'Git hooks setup - requires husky installation'"
+    "prepare": "husky"
   },
   "keywords": [
     "platformatic",
@@ -25,6 +25,7 @@
     "npm": ">=10.0.0"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
     "prettier": "^3.0.0"
   }
 }

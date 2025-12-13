@@ -1,0 +1,2 @@
+# Run linting and formatting on staged files (will be configured with lint-staged in next task)
+echo "✓ Husky pre-commit hook is active"
