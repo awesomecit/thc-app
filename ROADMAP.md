@@ -62,7 +62,6 @@ Task Completion Rate = (Completed / Planned) × 100%
 #### Sprint 1: Foundation Setup
 
 - **Story 1.1**: Git Hooks & Pre-commit Automation
-  
   - **Task 1.1.1**: Install and configure Husky [4h]
     ```gherkin
     Given a developer working on the project
@@ -71,7 +70,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And pre-commit hook should be executable
     And running "git commit" should trigger the hook
     ```
-  
   - **Task 1.1.2**: Setup lint-staged for incremental linting [2h]
     ```gherkin
     Given Husky is configured
@@ -80,7 +78,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And ESLint --fix should be applied to .ts/.js files
     And the process should complete in <10 seconds for typical changes
     ```
-  
   - **Task 1.1.3**: Configure Prettier with prose wrap for docs [2h]
     ```gherkin
     Given lint-staged is configured
@@ -89,8 +86,7 @@ Task Completion Rate = (Completed / Planned) × 100%
     And markdown files should wrap at 100 characters
     And formatting should not break code blocks
     ```
-  
-  - **Task 1.1.4**: Create secret scanning script [4h]
+  - **Task 1.1.4**: Create secret scanning script [4h] ✅
     ```gherkin
     Given a developer attempts to commit code
     When the pre-commit hook runs
@@ -98,9 +94,11 @@ Task Completion Rate = (Completed / Planned) × 100%
     And commits with secrets should be rejected with helpful error message
     And false positives can be bypassed with documented process
     ```
+    **Implementation**: Integrated `secretlint` with `@secretlint/secretlint-rule-preset-recommend`.
+    Detects GitHub tokens, AWS keys, database connection strings, private keys. Configuration:
+    `.secretlintrc.json`, `.secretsignore`, `.secretsafe`
 
 - **Story 1.2**: Commit Validation
-  
   - **Task 1.2.1**: Install commitlint with conventional config [2h]
     ```gherkin
     Given a project following conventional commits
@@ -108,7 +106,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     Then @commitlint/config-conventional should be configured
     And the commit-msg hook should validate message format
     ```
-  
   - **Task 1.2.2**: Configure commit-msg hook [2h]
     ```gherkin
     Given commitlint is installed
@@ -118,7 +115,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     When they commit with "feat(scope): valid message"
     Then the commit should succeed
     ```
-  
   - **Task 1.2.3**: Document commit message examples [2h]
     ```gherkin
     Given conventional commits are enforced
@@ -131,7 +127,6 @@ Task Completion Rate = (Completed / Planned) × 100%
 #### Sprint 2: Advanced Automation
 
 - **Story 2.1**: Code Quality Enforcement
-  
   - **Task 2.1.1**: Configure ESLint with SonarJS plugin [4h]
     ```gherkin
     Given a TypeScript project
@@ -140,7 +135,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And SonarJS rules should be active (cognitive-complexity, no-duplicate-string, etc.)
     And lint errors should fail the pre-commit hook
     ```
-  
   - **Task 2.1.2**: Set complexity limits (cognitive <10, cyclomatic <10) [2h]
     ```gherkin
     Given ESLint with SonarJS is configured
@@ -150,7 +144,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     When complexity is <= 10
     Then no error should be raised
     ```
-  
   - **Task 2.1.3**: Add pre-push hooks for build verification [2h]
     ```gherkin
     Given TypeScript project with build step
@@ -161,7 +154,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     ```
 
 - **Story 2.2**: Semantic Versioning Automation
-  
   - **Task 2.2.1**: Create auto-release script based on commits [6h]
     ```gherkin
     Given a repository with conventional commits
@@ -172,7 +164,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And BREAKING CHANGE should trigger MAJOR version bump
     And a new git tag should be created (e.g., v1.2.3)
     ```
-  
   - **Task 2.2.2**: Configure CHANGELOG generation [2h]
     ```gherkin
     Given auto-release script calculates new version
@@ -182,7 +173,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And BREAKING CHANGES should be prominently displayed
     And the file should follow Keep a Changelog format
     ```
-  
   - **Task 2.2.3**: Document release workflow [2h]
     ```gherkin
     Given semantic release is configured
@@ -204,7 +194,6 @@ Task Completion Rate = (Completed / Planned) × 100%
 #### Sprint 3: Documentation Pipeline
 
 - **Story 3.1**: Validation & Formatting
-  
   - **Task 3.1.1**: Add markdown linting rules [2h]
     ```gherkin
     Given documentation files in docs/ directory
@@ -214,7 +203,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And line length should be limited to 100 characters for prose
     And code blocks should be properly fenced
     ```
-  
   - **Task 3.1.2**: Configure automated link checking [4h]
     ```gherkin
     Given markdown files with internal and external links
@@ -224,7 +212,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And external links should be checked with warnings (not failures)
     And a report should list all broken links
     ```
-  
   - **Task 3.1.3**: Setup documentation build pipeline [4h]
     ```gherkin
     Given documentation source files
@@ -236,7 +223,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     ```
 
 - **Story 3.2**: ADR Workflow
-  
   - **Task 3.2.1**: Create first ADR for platform choice [2h]
     ```gherkin
     Given the ADR template exists
@@ -246,7 +232,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And it should be stored in docs/architecture/decisions/
     And status should be "Accepted"
     ```
-  
   - **Task 3.2.2**: Add ADR validation script [4h]
     ```gherkin
     Given ADR files in docs/architecture/decisions/
@@ -256,7 +241,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And ADR filename should match format ADR-NNN-title.md
     And validation should fail if structure is incorrect
     ```
-  
   - **Task 3.2.3**: Document ADR creation workflow [2h]
     ```gherkin
     Given developers need to document architectural decisions
@@ -278,7 +262,6 @@ Task Completion Rate = (Completed / Planned) × 100%
 #### Sprint 4: Unit Test Setup
 
 - **Story 4.1**: Jest Configuration
-  
   - **Task 4.1.1**: Install and configure Jest for unit tests [4h]
     ```gherkin
     Given a TypeScript project
@@ -288,7 +271,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And test output should be clear and readable
     And jest.config.cjs should exclude integration tests
     ```
-  
   - **Task 4.1.2**: Setup coverage thresholds (70%) [2h]
     ```gherkin
     Given Jest is configured
@@ -298,7 +280,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And coverage report should be gitignored
     And CI should enforce coverage requirements
     ```
-  
   - **Task 4.1.3**: Create example unit test suite [4h]
     ```gherkin
     Given Jest is configured with coverage
@@ -310,7 +291,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     ```
 
 - **Story 4.2**: Test Utilities
-  
   - **Task 4.2.1**: Create in-memory test adapters [6h]
     ```gherkin
     Given hexagonal architecture with port interfaces
@@ -320,7 +300,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And adapters should support CRUD operations
     And adapters should be easily resettable between tests
     ```
-  
   - **Task 4.2.2**: Setup test data factories [4h]
     ```gherkin
     Given tests requiring domain entities
@@ -330,7 +309,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And specific values should be overridable
     And factories should be reusable across test suites
     ```
-  
   - **Task 4.2.3**: Document testing patterns [2h]
     ```gherkin
     Given unit testing infrastructure is established
@@ -344,7 +322,6 @@ Task Completion Rate = (Completed / Planned) × 100%
 #### Sprint 5: Integration & E2E Tests
 
 - **Story 5.1**: Testcontainers Setup
-  
   - **Task 5.1.1**: Configure Testcontainers for Postgres [4h]
     ```gherkin
     Given integration tests require a real database
@@ -354,7 +331,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And connection string should be automatically configured
     And tests should run in isolation without affecting other databases
     ```
-  
   - **Task 5.1.2**: Configure Testcontainers for Redis [2h]
     ```gherkin
     Given integration tests require Redis for caching
@@ -364,7 +340,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And the container should be cleaned up automatically
     And Redis port should be dynamically assigned
     ```
-  
   - **Task 5.1.3**: Create integration test examples [6h]
     ```gherkin
     Given Testcontainers is configured
@@ -376,7 +351,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     ```
 
 - **Story 5.2**: BDD with Cucumber
-  
   - **Task 5.2.1**: Install and configure Cucumber [4h]
     ```gherkin
     Given BDD approach is adopted
@@ -386,7 +360,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And tests should support tags for filtering (@smoke, @security, etc.)
     And JSON report should be generated for client visibility
     ```
-  
   - **Task 5.2.2**: Create feature file template [2h]
     ```gherkin
     Given developers need to write BDD scenarios
@@ -396,7 +369,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And examples of tags should be provided (@smoke, @slow)
     And template should be in features/template.feature
     ```
-  
   - **Task 5.2.3**: Implement first step definitions [6h]
     ```gherkin
     Given a feature file for user authentication exists
@@ -418,7 +390,6 @@ Task Completion Rate = (Completed / Planned) × 100%
 #### Sprint 6: GitHub Actions Setup
 
 - **Story 6.1**: Basic Pipeline
-  
   - **Task 6.1.1**: Create test workflow (unit + integration) [4h]
     ```gherkin
     Given a GitHub repository with tests
@@ -428,7 +399,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And it should run "npm run test:integration" if unit tests pass
     And Node.js 22.19.0 should be used via setup-node action
     ```
-  
   - **Task 6.1.2**: Add linting and formatting checks [2h]
     ```gherkin
     Given CI pipeline exists
@@ -438,7 +408,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And builds should fail if linting or formatting errors exist
     And error output should be visible in GitHub Actions UI
     ```
-  
   - **Task 6.1.3**: Configure coverage reporting [2h]
     ```gherkin
     Given test workflow runs successfully
@@ -450,7 +419,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     ```
 
 - **Story 6.2**: Deployment Automation
-  
   - **Task 6.2.1**: Create Docker build workflow [4h]
     ```gherkin
     Given a Dockerfile exists in the repository
@@ -460,7 +428,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And image should be pushed to GitHub Container Registry
     And image tags should include version and latest
     ```
-  
   - **Task 6.2.2**: Add semantic release automation [4h]
     ```gherkin
     Given conventional commits are used
@@ -471,7 +438,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And CHANGELOG.md should be updated and committed
     And GitHub Release should be created with notes
     ```
-  
   - **Task 6.2.3**: Document deployment process [2h]
     ```gherkin
     Given CI/CD pipelines are operational
@@ -494,7 +460,6 @@ Task Completion Rate = (Completed / Planned) × 100%
 #### Sprint 7: Backend - Metrics Collection
 
 - **Story 12.1**: Prometheus Integration
-  
   - **Task 12.1.1**: Install prom-client and configure registry [2h]
     ```gherkin
     Given a NestJS backend application
@@ -503,7 +468,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And default metrics should be enabled (CPU, memory, event loop)
     And metrics should be accessible programmatically
     ```
-  
   - **Task 12.1.2**: Create metrics service with counters/gauges [4h]
     ```gherkin
     Given Prometheus registry is configured
@@ -513,7 +477,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And metrics should be injectable via DI
     And service should be documented with usage examples
     ```
-  
   - **Task 12.1.3**: Add HTTP request duration histogram [4h]
     ```gherkin
     Given MetricsService exists
@@ -523,7 +486,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And metrics should include method (GET/POST) and status code labels
     And P50, P95, P99 should be calculable from histogram
     ```
-  
   - **Task 12.1.4**: Expose /metrics endpoint [2h]
     ```gherkin
     Given metrics are collected
@@ -535,7 +497,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     ```
 
 - **Story 12.2**: Health Check Endpoints
-  
   - **Task 12.2.1**: Implement /health/live (liveness) [2h]
     ```gherkin
     Given an application running in Kubernetes
@@ -545,7 +506,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And it should NOT check external dependencies
     And response time should be <50ms
     ```
-  
   - **Task 12.2.2**: Implement /health/ready (readiness) [4h]
     ```gherkin
     Given an application with dependencies
@@ -555,7 +515,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And it should return 200 OK only if all critical dependencies are healthy
     And response should include details: {"status": "ok", "checks": {...}}
     ```
-  
   - **Task 12.2.3**: Add dependency health checks (DB, Redis) [4h]
     ```gherkin
     Given readiness endpoint exists
@@ -571,7 +530,6 @@ Task Completion Rate = (Completed / Planned) × 100%
 #### Sprint 8: Backend - Data Persistence
 
 - **Story 12.3**: Telemetry Data Storage
-  
   - **Task 12.3.1**: Design telemetry schema (Postgres) [4h]
     ```gherkin
     Given need to persist metrics over time
@@ -581,7 +539,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And schema should support time-series queries efficiently
     And retention policy should be documented (e.g., 90 days)
     ```
-  
   - **Task 12.3.2**: Create migration scripts [2h]
     ```gherkin
     Given Platformatic DB is used
@@ -591,7 +548,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And migration should be idempotent
     And running "npx platformatic db migrate" should apply migration
     ```
-  
   - **Task 12.3.3**: Implement telemetry repository [6h]
     ```gherkin
     Given telemetry schema exists
@@ -603,7 +559,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     ```
 
 - **Story 12.4**: API Endpoints
-  
   - **Task 12.4.1**: GET /api/metrics/summary endpoint [4h]
     ```gherkin
     Given telemetry data is stored
@@ -613,7 +568,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And endpoint should support date range query params
     And response time should be <500ms
     ```
-  
   - **Task 12.4.2**: GET /api/metrics/timeseries endpoint [4h]
     ```gherkin
     Given telemetry repository exists
@@ -623,7 +577,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And response should support multiple metrics in single request
     And maximum 10000 data points per response
     ```
-  
   - **Task 12.4.3**: Add filtering and pagination [4h]
     ```gherkin
     Given timeseries endpoint returns large datasets
@@ -637,7 +590,6 @@ Task Completion Rate = (Completed / Planned) × 100%
 #### Sprint 9: Frontend - Dashboard UI
 
 - **Story 12.5**: Dashboard Layout
-  
   - **Task 12.5.1**: Setup Next.js app in Watt structure [4h]
     ```gherkin
     Given Platformatic Watt gateway is configured
@@ -647,7 +599,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And app should be accessible at http://localhost:3042/dashboard
     And hot-reload should work in development mode
     ```
-  
   - **Task 12.5.2**: Create dashboard shell with navigation [4h]
     ```gherkin
     Given Next.js app is configured
@@ -657,7 +608,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And layout should be consistent across all pages
     And navigation should highlight current active section
     ```
-  
   - **Task 12.5.3**: Implement responsive grid layout [4h]
     ```gherkin
     Given dashboard shell exists
@@ -669,7 +619,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     ```
 
 - **Story 12.6**: Metrics Visualization
-  
   - **Task 12.6.1**: Integrate Chart.js for time series [4h]
     ```gherkin
     Given metrics timeseries API is available
@@ -679,7 +628,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And tooltips should show exact values on hover
     And chart colors should match design system
     ```
-  
   - **Task 12.6.2**: Create metrics cards (uptime, requests, errors) [6h]
     ```gherkin
     Given metrics summary API is available
@@ -690,7 +638,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And cards should fetch data from /api/metrics/summary
     And loading states should be displayed during fetch
     ```
-  
   - **Task 12.6.3**: Add real-time WebSocket updates [6h]
     ```gherkin
     Given dashboard displays metrics
@@ -712,7 +659,6 @@ Task Completion Rate = (Completed / Planned) × 100%
 #### Sprint 10: Gateway & Core Services
 
 - **Story 5.1**: Gateway Setup
-  
   - **Task 5.1.1**: Create gateway application with routing [4h]
     ```gherkin
     Given Platformatic Watt project structure
@@ -721,10 +667,11 @@ Task Completion Rate = (Completed / Planned) × 100%
     And gateway should start on port 3042
     And health check should be accessible at /health
     And gateway should log all incoming requests
+    ```
+
 #### Sprint 11: Supporting Services
 
 - **Story 5.3**: Telemetry Service
-  
   - **Task 5.3.1**: Move telemetry logic to dedicated service [4h]
     ```gherkin
     Given telemetry code exists in main application
@@ -734,7 +681,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And service should own telemetry database schema
     And existing functionality should remain unchanged
     ```
-  
   - **Task 5.3.2**: Configure inter-service communication [4h]
     ```gherkin
     Given multiple services in Watt structure
@@ -744,7 +690,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And retry logic should be implemented for transient failures
     And circuit breaker pattern should be considered for resilience
     ```
-  
   - **Task 5.3.3**: Add service discovery patterns [4h]
     ```gherkin
     Given services need to discover each other
@@ -756,7 +701,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     ```
 
 - **Story 5.4**: Integration & Documentation
-  
   - **Task 5.4.1**: Test full gateway routing [4h]
     ```gherkin
     Given all services are deployed in Watt
@@ -766,7 +710,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And request to /api/telemetry/metrics should reach telemetry-service
     And /metrics (Prometheus) should aggregate metrics from all services
     ```
-  
   - **Task 5.4.2**: Document service URLs and contracts [2h]
     ```gherkin
     Given multiple services with APIs
@@ -776,7 +719,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And authentication requirements should be specified
     And examples should be provided with curl commands
     ```
-  
   - **Task 5.4.3**: Create architecture diagram [2h]
     ```gherkin
     Given modular monolith is implemented
@@ -786,7 +728,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And external dependencies (Postgres, Redis, Keycloak) should be shown
     And diagram should be in docs/architecture/diagrams/
     ```
-  
   - **Task 5.1.3**: Add CORS and security headers [2h]
     ```gherkin
     Given gateway handles public traffic
@@ -799,7 +740,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     ```
 
 - **Story 5.2**: Auth Service (NestJS)
-  
   - **Task 5.2.1**: Create auth-service with NestJS [6h]
     ```gherkin
     Given modular monolith architecture
@@ -809,7 +749,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And /api/auth/health should return service status
     And service should use port 3043 internally
     ```
-  
   - **Task 5.2.2**: Implement Keycloak adapter [6h]
     ```gherkin
     Given Keycloak is running via Docker Compose
@@ -819,7 +758,6 @@ Task Completion Rate = (Completed / Planned) × 100%
     And RBAC should map Keycloak roles to application permissions
     And refresh token flow should be supported
     ```
-  
   - **Task 5.2.3**: Add session management with Redis [4h]
     ```gherkin
     Given auth-service handles authentication
@@ -853,7 +791,7 @@ Task Completion Rate = (Completed / Planned) × 100%
 **Capacity**: [Total hours available]
 
 | Task ID | Description | Estimate | Actual | Status | Assignee |
-|---------|-------------|----------|--------|--------|----------|
+| ------- | ----------- | -------- | ------ | ------ | -------- |
 | X.X.X   | Task name   | Xh       | Xh     | TODO   | Name     |
 
 **Velocity**: X tasks completed / Y tasks planned = Z%  
@@ -865,7 +803,7 @@ Task Completion Rate = (Completed / Planned) × 100%
 ## 📈 Velocity History
 
 | Sprint | Planned Tasks | Completed Tasks | Velocity | Completion Rate |
-|--------|---------------|-----------------|----------|-----------------|
+| ------ | ------------- | --------------- | -------- | --------------- |
 | 1      | 8             | TBD             | TBD      | TBD             |
 | 2      | 8             | TBD             | TBD      | TBD             |
 
@@ -876,13 +814,13 @@ Task Completion Rate = (Completed / Planned) × 100%
 
 ## 🎯 Success Metrics
 
-| Metric | Target | Current | Status |
-|--------|--------|---------|--------|
-| Sprint Completion Rate | >80% | TBD | 🟡 |
-| Lead Time (Task → Done) | <3 days | TBD | 🟡 |
-| Bugs in Production | <5% | TBD | 🟡 |
-| Code Coverage | >70% | TBD | 🟡 |
-| Build Time | <5 min | TBD | 🟡 |
+| Metric                  | Target  | Current | Status |
+| ----------------------- | ------- | ------- | ------ |
+| Sprint Completion Rate  | >80%    | TBD     | 🟡     |
+| Lead Time (Task → Done) | <3 days | TBD     | 🟡     |
+| Bugs in Production      | <5%     | TBD     | 🟡     |
+| Code Coverage           | >70%    | TBD     | 🟡     |
+| Build Time              | <5 min  | TBD     | 🟡     |
 
 ---
 
