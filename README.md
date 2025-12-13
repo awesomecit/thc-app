@@ -74,6 +74,86 @@ This filter applies to every decision—before accepting AI suggestions, before 
 
 ## 🚀 Getting Started
 
+### Prerequisites & Dependencies
+
+Before starting work on this project, ensure your Linux system meets the following requirements:
+
+#### System Requirements
+
+| Requirement | Version | Verification Command | Installation |
+|-------------|---------|----------------------|--------------|
+| **Node.js** | >= 22.19.0 | `node --version` | `nvm install 22.19.0 && nvm use 22` |
+| **npm** | >= 10.0.0 | `npm --version` | Included with Node.js |
+| **Git** | >= 2.30.0 | `git --version` | `sudo apt install git` (Debian/Ubuntu) |
+| **Docker** | >= 24.0.0 | `docker --version` | [Install Docker Engine](https://docs.docker.com/engine/install/) |
+| **Docker Compose** | >= 2.20.0 | `docker compose version` | Included with Docker Engine |
+
+#### Optional but Recommended
+
+| Tool | Purpose | Verification | Installation |
+|------|---------|--------------|--------------|
+| **nvm** | Node.js version management | `nvm --version` | `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh \| bash` |
+| **gh CLI** | GitHub integration | `gh --version` | `sudo apt install gh` |
+| **make** | Task automation | `make --version` | `sudo apt install build-essential` |
+
+#### Verify Your Environment
+
+Run this one-liner to check all requirements:
+
+```bash
+echo "Node: $(node --version 2>&1)" && \
+echo "npm: $(npm --version 2>&1)" && \
+echo "Git: $(git --version 2>&1)" && \
+echo "Docker: $(docker --version 2>&1)" && \
+echo "Docker Compose: $(docker compose version 2>&1)" && \
+echo "nvm: $(nvm --version 2>&1 || echo 'Not installed')"
+```
+
+**Expected Output:**
+```
+Node: v22.19.0 (or higher)
+npm: 10.x.x (or higher)
+Git: git version 2.x.x
+Docker: Docker version 24.x.x
+Docker Compose: Docker Compose version v2.x.x
+nvm: 0.39.x (or 'Not installed' if skipped)
+```
+
+#### Setting Up Node.js 22
+
+This project uses Node.js 22.19.0. If you have **nvm** installed:
+
+```bash
+# Install Node.js 22.19.0
+nvm install 22.19.0
+
+# Use it for this project (reads .nvmrc automatically)
+nvm use
+
+# Set as default (optional)
+nvm alias default 22
+
+# Auto-switch on cd (add to ~/.bashrc)
+echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc
+echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> ~/.bashrc
+echo 'autoload -U add-zsh-hook' >> ~/.zshrc  # For Zsh users
+echo 'load-nvmrc() { [[ -f .nvmrc ]] && nvm use }' >> ~/.zshrc
+echo 'add-zsh-hook chpwd load-nvmrc' >> ~/.zshrc
+```
+
+**Without nvm** (manual installation):
+
+```bash
+# Download and install Node.js 22 via NodeSource
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Verify
+node --version  # Should show v22.x.x
+```
+
+---
+
 ### For Learning
 
 1. Start with **[01 - Guida Completa](./docs/guides/01-guida-completa-platformatic-watt.md)** for technical overview
