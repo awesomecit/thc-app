@@ -9,8 +9,8 @@
     "dev:watch": "wattpm dev --watch",
     "dev:debug": "wattpm dev --inspect",
     "------- 🔍 Quality Checks (Pre-commit) -------": "",
-    "lint": "prettier --check .",
-    "lint:fix": "prettier --write .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "secrets:check": "secretlint './**/*.{ts,js,json,yml,yaml,env}' '!./docs/**'",
@@ -32,6 +32,7 @@
     "start:prod": "NODE_ENV=production wattpm start",
     "------- ✅ Verification (CI/Local) -------": "",
     "verify": "npm run format:check && npm run secrets:check && npm run lint",
+    "verify:fix": "npm run format && npm run lint:fix",
     "verify:build": "npm run verify && npm run build",
     "verify:full": "npm run verify && npm run test",
     "------- 🔄 Deployment Workflow -------": "",
@@ -60,15 +61,26 @@
   "devDependencies": {
     "@commitlint/cli": "^20.2.0",
     "@commitlint/config-conventional": "^20.2.0",
+    "@eslint/js": "^9.39.2",
     "@secretlint/node": "^11.2.5",
     "@secretlint/secretlint-rule-preset-recommend": "^11.2.5",
+    "@typescript-eslint/eslint-plugin": "^8.49.0",
+    "@typescript-eslint/parser": "^8.49.0",
+    "eslint": "^9.39.2",
+    "eslint-plugin-sonarjs": "^3.0.5",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "prettier": "^3.0.0",
-    "secretlint": "^11.2.5"
+    "secretlint": "^11.2.5",
+    "typescript-eslint": "^8.49.0"
   },
   "lint-staged": {
-    "*.{ts,js,json,yml,yaml}": [
+    "*.{ts,js}": [
+      "secretlint",
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,yml,yaml}": [
       "secretlint",
       "prettier --write"
     ]
