@@ -1,12 +1,12 @@
-
 # Platformatic Service API
 
-This is a generated [Platformatic Service](https://docs.platformatic.dev/docs/service/overview) application.
+This is a generated [Platformatic Service](https://docs.platformatic.dev/docs/service/overview)
+application.
 
 ## Requirements
 
-Platformatic supports macOS, Linux and Windows ([WSL](https://docs.microsoft.com/windows/wsl/) recommended).
-You'll need to have [Node.js](https://nodejs.org/) >= v18.8.0 or >= v20.6.0
+Platformatic supports macOS, Linux and Windows ([WSL](https://docs.microsoft.com/windows/wsl/)
+recommended). You'll need to have [Node.js](https://nodejs.org/) >= v18.8.0 or >= v20.6.0
 
 ## Setup
 
@@ -25,6 +25,7 @@ npm start
 ```
 
 ### Explore
+
 - ⚡ The Platformatic DB server is running at http://localhost:3042/
 - 📔 View the REST API's Swagger documentation at http://localhost:3042/documentation/
 - 🔍 Try out the GraphiQL web UI at http://localhost:3042/graphiql

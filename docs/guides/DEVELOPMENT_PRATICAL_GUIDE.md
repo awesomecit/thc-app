@@ -24,63 +24,63 @@
 
 ### 1.1 Metodologie Fondamentali
 
-| Pratica | Descrizione | Implementato |
-|---------|-------------|:------------:|
-| **YAGNI** | You Aren't Gonna Need It - implementa solo ciò che serve ora | ☐ |
-| **KISS** | Keep It Simple, Stupid - preferisci soluzioni semplici | ☐ |
-| **DRY** | Don't Repeat Yourself - una sola fonte di verità | ☐ |
-| **SOLID** | Single Responsibility, Open/Closed, Liskov, Interface Segregation, Dependency Inversion | ☐ |
-| **XP** | Extreme Programming - TDD, CI, Small releases, Refactoring | ☐ |
+| Pratica   | Descrizione                                                                             | Implementato |
+| --------- | --------------------------------------------------------------------------------------- | :----------: |
+| **YAGNI** | You Aren't Gonna Need It - implementa solo ciò che serve ora                            |      ☐       |
+| **KISS**  | Keep It Simple, Stupid - preferisci soluzioni semplici                                  |      ☐       |
+| **DRY**   | Don't Repeat Yourself - una sola fonte di verità                                        |      ☐       |
+| **SOLID** | Single Responsibility, Open/Closed, Liskov, Interface Segregation, Dependency Inversion |      ☐       |
+| **XP**    | Extreme Programming - TDD, CI, Small releases, Refactoring                              |      ☐       |
 
 ### 1.2 Workflow e Versionamento
 
-| Pratica | Descrizione | Implementato |
-|---------|-------------|:------------:|
-| **Trunk-Based Development** | Branch short-lived (< 3 giorni), merge frequenti su main | ☐ |
-| **Conventional Commits** | Formato standard per messaggi commit | ☐ |
-| **Semantic Versioning** | Major.Minor.Patch basato su commit types | ☐ |
-| **Protected main branch** | CI deve passare prima del merge | ☐ |
+| Pratica                     | Descrizione                                              | Implementato |
+| --------------------------- | -------------------------------------------------------- | :----------: |
+| **Trunk-Based Development** | Branch short-lived (< 3 giorni), merge frequenti su main |      ☐       |
+| **Conventional Commits**    | Formato standard per messaggi commit                     |      ☐       |
+| **Semantic Versioning**     | Major.Minor.Patch basato su commit types                 |      ☐       |
+| **Protected main branch**   | CI deve passare prima del merge                          |      ☐       |
 
 ### 1.3 Architettura
 
-| Pratica | Descrizione | Implementato |
-|---------|-------------|:------------:|
-| **Hexagonal Architecture** | Separazione Domain/Application/Infrastructure | ☐ |
-| **Ports & Adapters** | Interfacce (ports) + implementazioni (adapters) | ☐ |
-| **Dependency Injection** | Dipendenze iniettate, non create internamente | ☐ |
-| **ADR (Architecture Decision Records)** | Documentazione decisioni architetturali | ☐ |
+| Pratica                                 | Descrizione                                     | Implementato |
+| --------------------------------------- | ----------------------------------------------- | :----------: |
+| **Hexagonal Architecture**              | Separazione Domain/Application/Infrastructure   |      ☐       |
+| **Ports & Adapters**                    | Interfacce (ports) + implementazioni (adapters) |      ☐       |
+| **Dependency Injection**                | Dipendenze iniettate, non create internamente   |      ☐       |
+| **ADR (Architecture Decision Records)** | Documentazione decisioni architetturali         |      ☐       |
 
 ### 1.4 Testing
 
-| Pratica | Descrizione | Implementato |
-|---------|-------------|:------------:|
-| **TDD** | Test-Driven Development - Red/Green/Refactor | ☐ |
-| **BDD** | Behavior-Driven Development - Gherkin/Cucumber | ☐ |
-| **Unit Tests (~70%)** | Test domain logic pura, zero dipendenze esterne | ☐ |
-| **Integration Tests (~20%)** | Test adapters con Testcontainers | ☐ |
-| **E2E Tests (~10%)** | Test flussi utente completi | ☐ |
-| **Coverage Target** | Minimo 70% line coverage | ☐ |
+| Pratica                      | Descrizione                                     | Implementato |
+| ---------------------------- | ----------------------------------------------- | :----------: |
+| **TDD**                      | Test-Driven Development - Red/Green/Refactor    |      ☐       |
+| **BDD**                      | Behavior-Driven Development - Gherkin/Cucumber  |      ☐       |
+| **Unit Tests (~70%)**        | Test domain logic pura, zero dipendenze esterne |      ☐       |
+| **Integration Tests (~20%)** | Test adapters con Testcontainers                |      ☐       |
+| **E2E Tests (~10%)**         | Test flussi utente completi                     |      ☐       |
+| **Coverage Target**          | Minimo 70% line coverage                        |      ☐       |
 
 ### 1.5 Quality Gates
 
-| Pratica | Descrizione | Implementato |
-|---------|-------------|:------------:|
-| **ESLint** | Linting con regole SonarJS | ☐ |
-| **Prettier** | Formattazione codice automatica | ☐ |
-| **Commitlint** | Validazione formato commit messages | ☐ |
-| **Husky** | Git hooks per pre-commit/pre-push | ☐ |
-| **lint-staged** | Linting solo su file staged | ☐ |
-| **Secret scanning** | Prevenzione leak credenziali | ☐ |
-| **Complexity limits** | Cognitive < 10, Cyclomatic < 10 | ☐ |
+| Pratica               | Descrizione                         | Implementato |
+| --------------------- | ----------------------------------- | :----------: |
+| **ESLint**            | Linting con regole SonarJS          |      ☐       |
+| **Prettier**          | Formattazione codice automatica     |      ☐       |
+| **Commitlint**        | Validazione formato commit messages |      ☐       |
+| **Husky**             | Git hooks per pre-commit/pre-push   |      ☐       |
+| **lint-staged**       | Linting solo su file staged         |      ☐       |
+| **Secret scanning**   | Prevenzione leak credenziali        |      ☐       |
+| **Complexity limits** | Cognitive < 10, Cyclomatic < 10     |      ☐       |
 
 ### 1.6 DevOps & CI/CD
 
-| Pratica | Descrizione | Implementato |
-|---------|-------------|:------------:|
-| **Docker Compose** | Infrastruttura containerizzata | ☐ |
-| **Testcontainers** | Container ephemeral per test | ☐ |
-| **Environment Strategy** | Solo Test + Production (no staging) | ☐ |
-| **Semantic Release** | Versioning automatico da commit | ☐ |
+| Pratica                  | Descrizione                         | Implementato |
+| ------------------------ | ----------------------------------- | :----------: |
+| **Docker Compose**       | Infrastruttura containerizzata      |      ☐       |
+| **Testcontainers**       | Container ephemeral per test        |      ☐       |
+| **Environment Strategy** | Solo Test + Production (no staging) |      ☐       |
+| **Semantic Release**     | Versioning automatico da commit     |      ☐       |
 
 ---
 
@@ -88,37 +88,64 @@
 
 ### 2.1 Principi YAGNI, KISS, DRY
 
-Il principio **YAGNI (You Aren't Gonna Need It)** ci impone di implementare solo ciò che serve nel momento presente. Non dobbiamo anticipare funzionalità future che potrebbero non essere mai necessarie, perché questo riduce la complessità del codebase e accelera il time-to-market. In pratica, quando ti trovi a pensare "potrebbe servire in futuro", fermati e chiediti se serve davvero adesso.
+Il principio **YAGNI (You Aren't Gonna Need It)** ci impone di implementare solo ciò che serve nel
+momento presente. Non dobbiamo anticipare funzionalità future che potrebbero non essere mai
+necessarie, perché questo riduce la complessità del codebase e accelera il time-to-market. In
+pratica, quando ti trovi a pensare "potrebbe servire in futuro", fermati e chiediti se serve davvero
+adesso.
 
-Il principio **KISS (Keep It Simple, Stupid)** ci guida verso soluzioni semplici. La complessità è il nemico della manutenibilità: ogni livello di astrazione aggiunto deve giustificare il suo costo in termini di comprensione e debug. Se puoi risolvere un problema con 10 righe di codice invece che con un pattern elaborato, scegli le 10 righe.
+Il principio **KISS (Keep It Simple, Stupid)** ci guida verso soluzioni semplici. La complessità è
+il nemico della manutenibilità: ogni livello di astrazione aggiunto deve giustificare il suo costo
+in termini di comprensione e debug. Se puoi risolvere un problema con 10 righe di codice invece che
+con un pattern elaborato, scegli le 10 righe.
 
-Il principio **DRY (Don't Repeat Yourself)** stabilisce che ogni pezzo di conoscenza deve avere una singola, non ambigua, rappresentazione autorevole nel sistema. Quando ti accorgi di copiare-incollare codice, è il momento di estrarre una funzione o un modulo riutilizzabile.
+Il principio **DRY (Don't Repeat Yourself)** stabilisce che ogni pezzo di conoscenza deve avere una
+singola, non ambigua, rappresentazione autorevole nel sistema. Quando ti accorgi di
+copiare-incollare codice, è il momento di estrarre una funzione o un modulo riutilizzabile.
 
 ### 2.2 Principi SOLID
 
-I principi SOLID rappresentano le fondamenta della programmazione orientata agli oggetti ben progettata.
+I principi SOLID rappresentano le fondamenta della programmazione orientata agli oggetti ben
+progettata.
 
-**Single Responsibility Principle (SRP)** significa che ogni classe o modulo dovrebbe avere una sola ragione per cambiare. Se una classe gestisce sia la logica di business che la persistenza, viola SRP.
+**Single Responsibility Principle (SRP)** significa che ogni classe o modulo dovrebbe avere una sola
+ragione per cambiare. Se una classe gestisce sia la logica di business che la persistenza, viola
+SRP.
 
-**Open/Closed Principle (OCP)** stabilisce che le entità software dovrebbero essere aperte all'estensione ma chiuse alla modifica. Aggiungi nuove funzionalità creando nuove classi, non modificando quelle esistenti.
+**Open/Closed Principle (OCP)** stabilisce che le entità software dovrebbero essere aperte
+all'estensione ma chiuse alla modifica. Aggiungi nuove funzionalità creando nuove classi, non
+modificando quelle esistenti.
 
-**Liskov Substitution Principle (LSP)** richiede che gli oggetti di una superclasse siano sostituibili con oggetti delle sue sottoclassi senza alterare la correttezza del programma.
+**Liskov Substitution Principle (LSP)** richiede che gli oggetti di una superclasse siano
+sostituibili con oggetti delle sue sottoclassi senza alterare la correttezza del programma.
 
-**Interface Segregation Principle (ISP)** afferma che nessun client dovrebbe essere forzato a dipendere da interfacce che non usa. Preferisci molte interfacce specifiche a una singola interfaccia generale.
+**Interface Segregation Principle (ISP)** afferma che nessun client dovrebbe essere forzato a
+dipendere da interfacce che non usa. Preferisci molte interfacce specifiche a una singola
+interfaccia generale.
 
-**Dependency Inversion Principle (DIP)** stabilisce che i moduli di alto livello non dovrebbero dipendere da moduli di basso livello; entrambi dovrebbero dipendere da astrazioni. Questo è il fondamento dell'architettura esagonale.
+**Dependency Inversion Principle (DIP)** stabilisce che i moduli di alto livello non dovrebbero
+dipendere da moduli di basso livello; entrambi dovrebbero dipendere da astrazioni. Questo è il
+fondamento dell'architettura esagonale.
 
 ### 2.3 Extreme Programming (XP)
 
-L'Extreme Programming è la metodologia agile che adottiamo, caratterizzata da pratiche specifiche che si rafforzano a vicenda.
+L'Extreme Programming è la metodologia agile che adottiamo, caratterizzata da pratiche specifiche
+che si rafforzano a vicenda.
 
-**Test-Driven Development (TDD)** significa scrivere i test prima del codice di produzione, seguendo il ciclo Red-Green-Refactor. Prima scrivi un test che fallisce (Red), poi scrivi il codice minimo per farlo passare (Green), infine migliora il codice mantenendo i test verdi (Refactor).
+**Test-Driven Development (TDD)** significa scrivere i test prima del codice di produzione, seguendo
+il ciclo Red-Green-Refactor. Prima scrivi un test che fallisce (Red), poi scrivi il codice minimo
+per farlo passare (Green), infine migliora il codice mantenendo i test verdi (Refactor).
 
-**Continuous Integration (CI)** richiede che ogni sviluppatore integri il proprio codice nel trunk principale almeno una volta al giorno. Ogni integrazione è verificata da una build automatizzata che include l'esecuzione dei test.
+**Continuous Integration (CI)** richiede che ogni sviluppatore integri il proprio codice nel trunk
+principale almeno una volta al giorno. Ogni integrazione è verificata da una build automatizzata che
+include l'esecuzione dei test.
 
-**Small Releases** significa rilasciare frequentemente piccoli incrementi di funzionalità. Questo riduce il rischio e permette feedback rapido dagli utenti.
+**Small Releases** significa rilasciare frequentemente piccoli incrementi di funzionalità. Questo
+riduce il rischio e permette feedback rapido dagli utenti.
 
-**Refactoring continuo** è il processo di miglioramento della struttura interna del codice senza modificarne il comportamento esterno. Il refactoring deve essere fatto in piccoli passi, sempre supportato dai test.
+**Refactoring continuo** è il processo di miglioramento della struttura interna del codice senza
+modificarne il comportamento esterno. Il refactoring deve essere fatto in piccoli passi, sempre
+supportato dai test.
 
 ---
 
@@ -126,7 +153,9 @@ L'Extreme Programming è la metodologia agile che adottiamo, caratterizzata da p
 
 ### 3.1 Fondamenti
 
-L'architettura esagonale, ideata da Alistair Cockburn, separa il codice in tre zone concentriche. La metafora dell'esagono rappresenta un "centro" (il dominio) circondato da "lati" (le porte) attraverso cui il mondo esterno comunica.
+L'architettura esagonale, ideata da Alistair Cockburn, separa il codice in tre zone concentriche. La
+metafora dell'esagono rappresenta un "centro" (il dominio) circondato da "lati" (le porte)
+attraverso cui il mondo esterno comunica.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -162,7 +191,9 @@ L'architettura esagonale, ideata da Alistair Cockburn, separa il codice in tre z
 
 ### 3.2 Regola delle Dipendenze
 
-La regola fondamentale è che **le dipendenze puntano sempre verso l'interno**. Il Domain non conosce nulla degli Adapters. L'Application conosce il Domain ma non gli Adapters. Gli Adapters conoscono tutto ma non sono conosciuti da nessuno.
+La regola fondamentale è che **le dipendenze puntano sempre verso l'interno**. Il Domain non conosce
+nulla degli Adapters. L'Application conosce il Domain ma non gli Adapters. Gli Adapters conoscono
+tutto ma non sono conosciuti da nessuno.
 
 ### 3.3 Struttura Directory Consigliata
 
@@ -213,7 +244,7 @@ export class SessionService {
   isSessionExpired(session: Session): boolean {
     return session.expiresAt < new Date();
   }
-  
+
   calculateNewExpiry(session: Session, extensionMinutes: number): Date {
     return new Date(Date.now() + extensionMinutes * 60 * 1000);
   }
@@ -235,22 +266,22 @@ export class RefreshSessionUseCase {
   constructor(
     private readonly sessionRepository: SessionRepositoryPort,
     private readonly identityProvider: IdentityProviderPort,
-    private readonly sessionService: SessionService,
+    private readonly sessionService: SessionService
   ) {}
 
   async execute(sessionId: string): Promise<RefreshSessionResult> {
     // Orchestrazione della business logic
     const session = await this.sessionRepository.getSession(sessionId);
-    
+
     if (!session || this.sessionService.isSessionExpired(session)) {
       return { success: false, error: 'SESSION_EXPIRED' };
     }
-    
+
     // La logica usa le ports senza sapere l'implementazione
     const newExpiry = this.sessionService.calculateNewExpiry(session, 30);
     session.expiresAt = newExpiry;
     await this.sessionRepository.saveSession(session);
-    
+
     return { success: true, session };
   }
 }
@@ -265,16 +296,11 @@ export class RedisSessionAdapter implements SessionRepositoryPort {
     const data = await this.redis.get(`session:${sessionId}`);
     return data ? JSON.parse(data) : null;
   }
-  
+
   async saveSession(session: Session): Promise<void> {
-    await this.redis.set(
-      `session:${session.id}`,
-      JSON.stringify(session),
-      'EX',
-      3600
-    );
+    await this.redis.set(`session:${session.id}`, JSON.stringify(session), 'EX', 3600);
   }
-  
+
   async deleteSession(sessionId: string): Promise<void> {
     await this.redis.del(`session:${sessionId}`);
   }
@@ -283,13 +309,19 @@ export class RedisSessionAdapter implements SessionRepositoryPort {
 
 ### 3.5 Vantaggi per il Testing
 
-La separazione esagonale permette di testare ogni layer in isolamento, rendendo i test veloci e affidabili.
+La separazione esagonale permette di testare ogni layer in isolamento, rendendo i test veloci e
+affidabili.
 
-I **test unitari** (Domain + Use Cases) usano mock delle Ports, eseguono in millisecondi, e non richiedono alcun container Docker. Questo livello copre circa il 70% dei test totali e verifica tutta la logica di business.
+I **test unitari** (Domain + Use Cases) usano mock delle Ports, eseguono in millisecondi, e non
+richiedono alcun container Docker. Questo livello copre circa il 70% dei test totali e verifica
+tutta la logica di business.
 
-I **test di integrazione** (Adapters) usano Testcontainers per avviare infrastruttura reale come Redis e Keycloak in container ephemeral. Questi test verificano che gli adapter funzionino correttamente con i sistemi esterni e coprono circa il 20% dei test.
+I **test di integrazione** (Adapters) usano Testcontainers per avviare infrastruttura reale come
+Redis e Keycloak in container ephemeral. Questi test verificano che gli adapter funzionino
+correttamente con i sistemi esterni e coprono circa il 20% dei test.
 
-I **test E2E** verificano i flussi utente completi, usano lo stack Docker completo, e coprono circa il 10% dei test. Sono scritti in Gherkin per essere leggibili anche dai non-tecnici.
+I **test E2E** verificano i flussi utente completi, usano lo stack Docker completo, e coprono circa
+il 10% dei test. Sono scritti in Gherkin per essere leggibili anche dai non-tecnici.
 
 ---
 
@@ -297,7 +329,10 @@ I **test E2E** verificano i flussi utente completi, usano lo stack Docker comple
 
 ### 4.1 Rationale
 
-Il Trunk-Based Development è stato scelto per i seguenti motivi. Il team size di 1-2 sviluppatori non giustifica l'overhead di Git Flow. La release frequency è continua, quindi non servono release branches. La complessità è bassa, applicando il principio YAGNI. Il CI/CD richiede fast feedback loops. L'XP methodology pone la continuous integration come pratica core.
+Il Trunk-Based Development è stato scelto per i seguenti motivi. Il team size di 1-2 sviluppatori
+non giustifica l'overhead di Git Flow. La release frequency è continua, quindi non servono release
+branches. La complessità è bassa, applicando il principio YAGNI. Il CI/CD richiede fast feedback
+loops. L'XP methodology pone la continuous integration come pratica core.
 
 ### 4.2 Workflow Visuale
 
@@ -313,7 +348,9 @@ main (protected)
 
 ### 4.3 Regole Fondamentali
 
-Prima regola: **main è sempre deployable** (branch protetto). Seconda regola: **feature branches vivono meno di 3 giorni**. Terza regola: **commit early, push often**. Quarta regola: **CI deve passare prima del merge**. Quinta regola: **niente develop branch** (YAGNI).
+Prima regola: **main è sempre deployable** (branch protetto). Seconda regola: **feature branches
+vivono meno di 3 giorni**. Terza regola: **commit early, push often**. Quarta regola: **CI deve
+passare prima del merge**. Quinta regola: **niente develop branch** (YAGNI).
 
 ### 4.4 Naming Convention per i Branch
 
@@ -346,9 +383,13 @@ gh pr merge --squash --delete-branch
 
 ### 4.6 Alternative Rifiutate
 
-**Git Flow** è stato rifiutato perché è overkill con 5 tipi di branch (main/develop/feature/release/hotfix), richiede overhead per merge ceremonies e long-lived branches, e non è adatto per continuous delivery.
+**Git Flow** è stato rifiutato perché è overkill con 5 tipi di branch
+(main/develop/feature/release/hotfix), richiede overhead per merge ceremonies e long-lived branches,
+e non è adatto per continuous delivery.
 
-**GitHub Flow** è stato rifiutato perché richiede PR reviews obbligatorie che per un solo sviluppatore rappresentano spreco. Diventa utile con 3 o più sviluppatori più processo di code review.
+**GitHub Flow** è stato rifiutato perché richiede PR reviews obbligatorie che per un solo
+sviluppatore rappresentano spreco. Diventa utile con 3 o più sviluppatori più processo di code
+review.
 
 ---
 
@@ -427,11 +468,7 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': ['ts-jest', { useESM: true }],
   },
-  collectCoverageFrom: [
-    'src/**/*.ts',
-    '!src/**/*.d.ts',
-    '!src/**/index.ts',
-  ],
+  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts', '!src/**/index.ts'],
   coverageThreshold: {
     global: {
       branches: 60,
@@ -447,11 +484,8 @@ module.exports = {
   ...require('./jest.preset.cjs'),
   displayName: 'Unit Tests',
   testMatch: ['**/*.spec.ts', '**/*.test.ts'],
-  testPathIgnorePatterns: [
-    '.*\\.integration\\..*',
-    '.*\\.e2e\\..*',
-  ],
-  testTimeout: 10000,  // 10 secondi max
+  testPathIgnorePatterns: ['.*\\.integration\\..*', '.*\\.e2e\\..*'],
+  testTimeout: 10000, // 10 secondi max
 };
 
 // jest.integration.config.cjs - Integration tests
@@ -459,8 +493,8 @@ module.exports = {
   ...require('./jest.preset.cjs'),
   displayName: 'Integration Tests',
   testMatch: ['**/*.integration.spec.ts', '**/*.integration.test.ts'],
-  testTimeout: 120000,  // 2 minuti per container startup
-  maxWorkers: 1,        // Esecuzione seriale per evitare conflitti
+  testTimeout: 120000, // 2 minuti per container startup
+  maxWorkers: 1, // Esecuzione seriale per evitare conflitti
 };
 ```
 
@@ -493,14 +527,14 @@ Feature: Autenticazione Utente
 
 ### 6.1 Stack Quality
 
-| Tool | Scopo | Config File |
-|------|-------|-------------|
-| **ESLint** | Linting + SonarJS rules | `eslint.config.mjs` |
-| **Prettier** | Code formatting | `.prettierrc` o `package.json` |
-| **Husky** | Git hooks automation | `.husky/` |
-| **Commitlint** | Commit message validation | `commitlint.config.cjs` |
-| **lint-staged** | Lint solo file staged | `package.json` |
-| **Secret Scanner** | Previene leak credenziali | `scripts/check-secrets.cjs` |
+| Tool               | Scopo                     | Config File                    |
+| ------------------ | ------------------------- | ------------------------------ |
+| **ESLint**         | Linting + SonarJS rules   | `eslint.config.mjs`            |
+| **Prettier**       | Code formatting           | `.prettierrc` o `package.json` |
+| **Husky**          | Git hooks automation      | `.husky/`                      |
+| **Commitlint**     | Commit message validation | `commitlint.config.cjs`        |
+| **lint-staged**    | Lint solo file staged     | `package.json`                 |
+| **Secret Scanner** | Previene leak credenziali | `scripts/check-secrets.cjs`    |
 
 ### 6.2 Configurazione ESLint
 
@@ -519,18 +553,21 @@ export default [
     rules: {
       // Limiti di complessità per codice leggibile
       'sonarjs/cognitive-complexity': ['error', 10],
-      'complexity': ['error', 10],
+      complexity: ['error', 10],
       'max-lines-per-function': ['warn', 50],
-      
+
       // Best practices
       'no-console': 'warn',
       'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': ['error', { 
-        argsIgnorePattern: '^_' 
-      }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+        },
+      ],
     },
   },
-  prettier,  // Disabilita regole che confliggono con Prettier
+  prettier, // Disabilita regole che confliggono con Prettier
 ];
 ```
 
@@ -541,28 +578,36 @@ export default [
 module.exports = {
   extends: ['@commitlint/config-conventional'],
   rules: {
-    'type-enum': [2, 'always', [
-      'feat',     // Nuove funzionalità → MINOR version
-      'fix',      // Bug fixes → PATCH version
-      'docs',     // Documentazione
-      'style',    // Formattazione (no logic change)
-      'refactor', // Refactoring codice
-      'perf',     // Performance improvements
-      'test',     // Aggiunta/modifica test
-      'build',    // Build system changes
-      'ci',       // CI/CD changes
-      'chore',    // Maintenance tasks
-      'revert',   // Revert changes
-    ]],
-    'scope-enum': [2, 'always', [
-      'gateway',  // Gateway service
-      'auth',     // Auth package
-      'cache',    // Cache package
-      'telemetry',// Telemetry package
-      'infra',    // Infrastructure
-      'test',     // Testing
-      'deps',     // Dependencies
-    ]],
+    'type-enum': [
+      2,
+      'always',
+      [
+        'feat', // Nuove funzionalità → MINOR version
+        'fix', // Bug fixes → PATCH version
+        'docs', // Documentazione
+        'style', // Formattazione (no logic change)
+        'refactor', // Refactoring codice
+        'perf', // Performance improvements
+        'test', // Aggiunta/modifica test
+        'build', // Build system changes
+        'ci', // CI/CD changes
+        'chore', // Maintenance tasks
+        'revert', // Revert changes
+      ],
+    ],
+    'scope-enum': [
+      2,
+      'always',
+      [
+        'gateway', // Gateway service
+        'auth', // Auth package
+        'cache', // Cache package
+        'telemetry', // Telemetry package
+        'infra', // Infrastructure
+        'test', // Testing
+        'deps', // Dependencies
+      ],
+    ],
     'subject-max-length': [2, 'always', 72],
     'body-max-line-length': [2, 'always', 100],
   },
@@ -575,13 +620,8 @@ module.exports = {
 // package.json (sezione lint-staged)
 {
   "lint-staged": {
-    "*.{ts,js}": [
-      "eslint --fix --ignore-pattern '.tap/**'",
-      "prettier --write"
-    ],
-    "*.{json,md,yml}": [
-      "prettier --write"
-    ]
+    "*.{ts,js}": ["eslint --fix --ignore-pattern '.tap/**'", "prettier --write"],
+    "*.{json,md,yml}": ["prettier --write"]
   }
 }
 ```
@@ -635,7 +675,8 @@ fi
 [optional footer]
 ```
 
-Il **type** indica la natura del cambiamento. Lo **scope** indica il modulo interessato (opzionale ma consigliato). Il **subject** è una descrizione breve in modo imperativo.
+Il **type** indica la natura del cambiamento. Lo **scope** indica il modulo interessato (opzionale
+ma consigliato). Il **subject** è una descrizione breve in modo imperativo.
 
 ### 7.2 Esempi di Commit Corretti
 
@@ -661,12 +702,12 @@ Clients must update their token parsing logic.
 
 ### 7.3 Semantic Versioning Automatico
 
-| Commit Type | Version Bump | Esempio |
-|-------------|--------------|---------|
-| `fix:` | PATCH | 1.0.0 → 1.0.1 |
-| `feat:` | MINOR | 1.0.0 → 1.1.0 |
-| `feat!:` o `BREAKING CHANGE:` | MAJOR | 1.0.0 → 2.0.0 |
-| `docs:`, `style:`, `refactor:`, `test:`, `chore:` | Nessuno | - |
+| Commit Type                                       | Version Bump | Esempio       |
+| ------------------------------------------------- | ------------ | ------------- |
+| `fix:`                                            | PATCH        | 1.0.0 → 1.0.1 |
+| `feat:`                                           | MINOR        | 1.0.0 → 1.1.0 |
+| `feat!:` o `BREAKING CHANGE:`                     | MAJOR        | 1.0.0 → 2.0.0 |
+| `docs:`, `style:`, `refactor:`, `test:`, `chore:` | Nessuno      | -             |
 
 ### 7.4 Script Release
 
@@ -706,7 +747,7 @@ flowchart TD
     I --> J{Formato valido?}
     J -->|No| K[❌ ABORT COMMIT]
     J -->|Sì| L[✅ COMMIT SUCCESS]
-    
+
     style H fill:#ff6b6b
     style K fill:#ff6b6b
     style L fill:#51cf66
@@ -731,7 +772,7 @@ flowchart TD
     L --> M[Update CHANGELOG]
     M --> N[Create tag]
     N --> E
-    
+
     style H fill:#ff6b6b
     style E fill:#51cf66
 ```
@@ -761,7 +802,7 @@ flowchart TD
     P -->|No| Q[Rollback]
     Q --> G
     P -->|Sì| R[✅ PIPELINE SUCCESS]
-    
+
     style G fill:#ff6b6b
     style R fill:#51cf66
 ```
@@ -786,7 +827,7 @@ flowchart TD
     J -->|Sì| L{Altri requisiti?}
     L -->|Sì| A
     L -->|No| M[✅ Feature completa]
-    
+
     style B fill:#ff6b6b
     style F fill:#51cf66
     style I fill:#74c0fc
@@ -798,31 +839,31 @@ flowchart TD
 ```mermaid
 flowchart TD
     A[Nuovo Codice] --> B{Tipo di codice?}
-    
+
     B -->|Domain Logic| C[Unit Test]
     C --> D[Mock delle Ports]
     D --> E[Test in millisecondi]
     E --> F[~70% coverage]
-    
+
     B -->|Adapter/Infrastructure| G[Integration Test]
     G --> H[Testcontainers]
     H --> I[Container reali efimeri]
     I --> J[~20% coverage]
-    
+
     B -->|User Flow| K[E2E Test]
     K --> L[Cucumber/Gherkin]
     L --> M[Full Docker stack]
     M --> N[~10% coverage]
-    
+
     F --> O[npm run test:unit]
     J --> P[npm run test:integration]
     N --> Q[npm run test:e2e]
-    
+
     O --> R{CI Pipeline}
     P --> R
     Q --> R
     R --> S[✅ Ready for Deploy]
-    
+
     style S fill:#51cf66
 ```
 
@@ -838,7 +879,7 @@ flowchart TD
         E --> F[npm run test:watch]
         F --> E
     end
-    
+
     subgraph Commit["📝 Commit Phase"]
         E --> G[git add .]
         G --> H[git commit]
@@ -850,8 +891,8 @@ flowchart TD
         M --> H
         L -->|Pass| N[✅ Commit saved]
     end
-    
-    subgraph Push["🚀 Push Phase"]  
+
+    subgraph Push["🚀 Push Phase"]
         N --> O[git push]
         O --> P{Pre-push hook}
         P --> Q[Build check]
@@ -859,7 +900,7 @@ flowchart TD
         R --> E
         Q -->|Pass| S[Push to remote]
     end
-    
+
     subgraph CI["⚙️ CI/CD Phase"]
         S --> T[CI Pipeline]
         T --> U[Lint + Test + Build]
@@ -869,7 +910,7 @@ flowchart TD
         W --> X[Smoke Tests]
         X --> Y[✅ Production]
     end
-    
+
     style M fill:#ff6b6b
     style R fill:#ff6b6b
     style V fill:#ff6b6b
@@ -949,23 +990,23 @@ chmod +x .husky/pre-commit .husky/commit-msg
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    
+
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "tap --no-coverage",
     "test:integration": "tap --no-coverage **/*.integration.test.ts",
     "test:e2e": "cucumber-js",
     "test:cov": "tap --coverage-report=html",
-    
+
     "lint": "eslint . --fix",
     "lint:check": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    
+
     "verify": "npm run format:check && npm run lint:check && npm test && npm run build",
-    
+
     "release:suggest": "node scripts/auto-release.js --dry-run",
     "release": "node scripts/auto-release.js",
-    
+
     "prepare": "husky"
   },
   "lint-staged": {
@@ -1081,16 +1122,16 @@ git commit -m "feat(init): initialize project with quality gates"
 
 ## Appendice A: Metriche di Successo
 
-| Metrica | Target | Misurazione |
-|---------|--------|-------------|
-| **Lead time** | < 1 giorno | Commit → Production |
-| **Deployment frequency** | Multiple/giorno | Deploy count |
-| **MTTR** | < 1 ora | Incident → Recovery |
-| **Change failure rate** | < 15% | Failed deploys / Total deploys |
-| **Test coverage** | > 70% | Line coverage |
-| **Cognitive complexity** | < 10 | SonarJS metric |
-| **Build time** | < 5 minuti | CI pipeline duration |
-| **Unit test time** | < 30 secondi | npm run test:unit |
+| Metrica                  | Target          | Misurazione                    |
+| ------------------------ | --------------- | ------------------------------ |
+| **Lead time**            | < 1 giorno      | Commit → Production            |
+| **Deployment frequency** | Multiple/giorno | Deploy count                   |
+| **MTTR**                 | < 1 ora         | Incident → Recovery            |
+| **Change failure rate**  | < 15%           | Failed deploys / Total deploys |
+| **Test coverage**        | > 70%           | Line coverage                  |
+| **Cognitive complexity** | < 10            | SonarJS metric                 |
+| **Build time**           | < 5 minuti      | CI pipeline duration           |
+| **Unit test time**       | < 30 secondi    | npm run test:unit              |
 
 ---
 

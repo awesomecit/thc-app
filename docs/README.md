@@ -1,6 +1,7 @@
 # Documentation Structure
 
-This directory contains all project documentation organized following software engineering best practices.
+This directory contains all project documentation organized following software engineering best
+practices.
 
 ## Structure
 
@@ -53,4 +54,4 @@ When adding documentation:
 
 ---
 
-*Keep documentation lean, actionable, and pragmatic.*
+_Keep documentation lean, actionable, and pragmatic._

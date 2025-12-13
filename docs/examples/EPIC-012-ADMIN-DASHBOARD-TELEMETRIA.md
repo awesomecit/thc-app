@@ -10,28 +10,31 @@
 
 ### Opzioni a Confronto
 
-| Aspetto | Solo Locale (Markdown) | GitHub Issues + Projects | Raccomandazione |
-|---------|------------------------|--------------------------|-----------------|
-| **Visibilità** | Solo team interno | Pubblico per contributors | GitHub ✅ |
-| **Onboarding** | Richiede clone repo | Navigabile da browser | GitHub ✅ |
-| **Integrazione PR** | Manuale (ref in commit) | Automatica (closes #123) | GitHub ✅ |
-| **Kanban Board** | No (o tool esterno) | GitHub Projects nativo | GitHub ✅ |
-| **Offline Work** | Sempre disponibile | Richiede connessione | Locale ✅ |
-| **Versionamento** | Git history | Separato da code | Locale ✅ |
-| **Complessità** | Zero setup | Richiede configurazione | Locale ✅ |
-| **Community** | Non standard | Standard opensource | GitHub ✅ |
+| Aspetto             | Solo Locale (Markdown)  | GitHub Issues + Projects  | Raccomandazione |
+| ------------------- | ----------------------- | ------------------------- | --------------- |
+| **Visibilità**      | Solo team interno       | Pubblico per contributors | GitHub ✅       |
+| **Onboarding**      | Richiede clone repo     | Navigabile da browser     | GitHub ✅       |
+| **Integrazione PR** | Manuale (ref in commit) | Automatica (closes #123)  | GitHub ✅       |
+| **Kanban Board**    | No (o tool esterno)     | GitHub Projects nativo    | GitHub ✅       |
+| **Offline Work**    | Sempre disponibile      | Richiede connessione      | Locale ✅       |
+| **Versionamento**   | Git history             | Separato da code          | Locale ✅       |
+| **Complessità**     | Zero setup              | Richiede configurazione   | Locale ✅       |
+| **Community**       | Non standard            | Standard opensource       | GitHub ✅       |
 
 ### Raccomandazione: Approccio Ibrido
 
-Per un'azienda **opensource-oriented**, la strategia ottimale combina entrambi gli approcci, mantenendo la documentazione strategica in Markdown versionato e la gestione operativa su GitHub.
+Per un'azienda **opensource-oriented**, la strategia ottimale combina entrambi gli approcci,
+mantenendo la documentazione strategica in Markdown versionato e la gestione operativa su GitHub.
 
 **Documenti in Repository (Markdown versionato)**:
+
 - `docs/project/ROADMAP.md` contiene la vision a lungo termine e le milestone
 - `docs/project/BACKLOG.md` contiene il product backlog prioritizzato
 - `docs/project/epics/EPIC-XXX-*.md` contiene la specifica dettagliata di ogni epic
 - `docs/architecture/decisions/ADR-*.md` contiene le decisioni architetturali
 
 **Gestione su GitHub**:
+
 - **GitHub Issues** per tracking operativo di bugs, tasks, stories
 - **GitHub Projects** per board Kanban e sprint planning
 - **Labels** per categorizzare (epic, story, task, bug, good-first-issue)
@@ -51,7 +54,7 @@ flowchart TD
     H --> I[PR con Closes #123]
     I --> J[Merge chiude Issue automaticamente]
     J --> K[Aggiorna BACKLOG.md status]
-    
+
     style B fill:#e1f5fe
     style E fill:#fff3e0
     style I fill:#e8f5e9
@@ -61,23 +64,23 @@ flowchart TD
 
 **Labels da Creare**:
 
-| Label | Colore | Descrizione |
-|-------|--------|-------------|
-| `epic` | #7057ff | Large feature, multi-week |
-| `story` | #0e8a16 | User-facing functionality |
-| `task` | #1d76db | Implementation work |
-| `bug` | #d73a4a | Something broken |
-| `good first issue` | #7057ff | Good for newcomers |
-| `help wanted` | #008672 | Extra attention needed |
-| `documentation` | #0075ca | Docs improvements |
-| `testing` | #fbca04 | Test additions |
-| `blocked` | #b60205 | Blocked by dependency |
-| `wontfix` | #ffffff | Will not be worked on |
+| Label              | Colore  | Descrizione               |
+| ------------------ | ------- | ------------------------- |
+| `epic`             | #7057ff | Large feature, multi-week |
+| `story`            | #0e8a16 | User-facing functionality |
+| `task`             | #1d76db | Implementation work       |
+| `bug`              | #d73a4a | Something broken          |
+| `good first issue` | #7057ff | Good for newcomers        |
+| `help wanted`      | #008672 | Extra attention needed    |
+| `documentation`    | #0075ca | Docs improvements         |
+| `testing`          | #fbca04 | Test additions            |
+| `blocked`          | #b60205 | Blocked by dependency     |
+| `wontfix`          | #ffffff | Will not be worked on     |
 
 **GitHub Project Board (Kanban)**:
 
-| Backlog | Ready | In Progress | Review | Done |
-|---------|-------|-------------|--------|------|
+| Backlog                  | Ready                          | In Progress           | Review       | Done       |
+| ------------------------ | ------------------------------ | --------------------- | ------------ | ---------- |
 | Issues non ancora pronti | Issues pronti per essere presi | Issues in lavorazione | PR in review | Completati |
 
 ---
@@ -96,20 +99,24 @@ flowchart TD
 
 ### Goal
 
-Costruire un'interfaccia di amministrazione web che permetta di monitorare in tempo reale metriche, logs e traces di un servizio HelloWorld orchestrato tramite Platformatic Watt con configurazione `watt.json`.
+Costruire un'interfaccia di amministrazione web che permetta di monitorare in tempo reale metriche,
+logs e traces di un servizio HelloWorld orchestrato tramite Platformatic Watt con configurazione
+`watt.json`.
 
 ### Value Proposition
 
-Come **operatore di sistema**, voglio una dashboard centralizzata per monitorare la salute e le performance del servizio HelloWorld, così da poter identificare problemi prima che impattino gli utenti e ottimizzare le risorse.
+Come **operatore di sistema**, voglio una dashboard centralizzata per monitorare la salute e le
+performance del servizio HelloWorld, così da poter identificare problemi prima che impattino gli
+utenti e ottimizzare le risorse.
 
 ### Success Metrics
 
-| Metrica | Target | Misurazione |
-|---------|--------|-------------|
-| Time to First Dashboard | < 30 secondi | Dal deploy al primo dato visibile |
-| MTTD (Mean Time To Detect) | < 2 minuti | Tempo per rilevare anomalie |
-| Dashboard Load Time | < 3 secondi | P95 page load |
-| Data Freshness | < 15 secondi | Delay tra evento e visualizzazione |
+| Metrica                    | Target       | Misurazione                        |
+| -------------------------- | ------------ | ---------------------------------- |
+| Time to First Dashboard    | < 30 secondi | Dal deploy al primo dato visibile  |
+| MTTD (Mean Time To Detect) | < 2 minuti   | Tempo per rilevare anomalie        |
+| Dashboard Load Time        | < 3 secondi  | P95 page load                      |
+| Data Freshness             | < 15 secondi | Delay tra evento e visualizzazione |
 
 ### Architectural Flow
 
@@ -119,36 +126,36 @@ flowchart TB
         HW[HelloWorld Service]
         GW[Gateway Service]
         WATT[watt.json Composition]
-        
+
         WATT --> HW
         WATT --> GW
     end
-    
+
     subgraph Telemetry["Telemetry Pipeline"]
         OTEL[OpenTelemetry Collector]
         PROM[Prometheus]
         LOKI[Loki]
         TEMPO[Tempo]
     end
-    
+
     subgraph Dashboard["Admin Dashboard"]
         GRAF[Grafana]
         ALERT[Alertmanager]
     end
-    
+
     HW -->|metrics :9090| OTEL
     HW -->|logs| OTEL
     HW -->|traces| OTEL
-    
+
     OTEL -->|scrape| PROM
     OTEL -->|push| LOKI
     OTEL -->|push| TEMPO
-    
+
     PROM --> GRAF
     LOKI --> GRAF
     TEMPO --> GRAF
     PROM --> ALERT
-    
+
     style HW fill:#4fc3f7
     style GRAF fill:#ff9800
     style WATT fill:#81c784
@@ -193,11 +200,11 @@ Feature: HelloWorld Service con Telemetria
 
 **Tasks**:
 
-| Task | Descrizione | SP | Dipendenze |
-|------|-------------|:--:|------------|
-| T-070.1 | Scaffold servizio HelloWorld Platformatic | 1 | - |
-| T-070.2 | Configurare telemetry in watt.json | 1 | T-070.1 |
-| T-070.3 | Validare metriche e traces generati | 1 | T-070.2 |
+| Task    | Descrizione                               | SP  | Dipendenze |
+| ------- | ----------------------------------------- | :-: | ---------- |
+| T-070.1 | Scaffold servizio HelloWorld Platformatic |  1  | -          |
+| T-070.2 | Configurare telemetry in watt.json        |  1  | T-070.1    |
+| T-070.3 | Validare metriche e traces generati       |  1  | T-070.2    |
 
 ---
 
@@ -230,12 +237,12 @@ Feature: Watt Composition
 
 **Tasks**:
 
-| Task | Descrizione | SP | Dipendenze |
-|------|-------------|:--:|------------|
-| T-071.1 | Creare struttura directory multi-service | 1 | US-070 |
-| T-071.2 | Configurare watt.json root con composition | 2 | T-071.1 |
-| T-071.3 | Configurare routing gateway verso HelloWorld | 1 | T-071.2 |
-| T-071.4 | Testare propagazione trace context | 1 | T-071.3 |
+| Task    | Descrizione                                  | SP  | Dipendenze |
+| ------- | -------------------------------------------- | :-: | ---------- |
+| T-071.1 | Creare struttura directory multi-service     |  1  | US-070     |
+| T-071.2 | Configurare watt.json root con composition   |  2  | T-071.1    |
+| T-071.3 | Configurare routing gateway verso HelloWorld |  1  | T-071.2    |
+| T-071.4 | Testare propagazione trace context           |  1  | T-071.3    |
 
 **Diagramma Composition**:
 
@@ -247,13 +254,13 @@ flowchart LR
         ROOT --> SVC1[services/gateway]
         ROOT --> SVC2[services/helloworld]
     end
-    
+
     subgraph Runtime
         GW[Gateway :3000]
         HW[HelloWorld :3001]
         GW -->|/api/hello| HW
     end
-    
+
     SVC1 -.->|configures| GW
     SVC2 -.->|configures| HW
 ```
@@ -296,13 +303,13 @@ Feature: Telemetry Stack
 
 **Tasks**:
 
-| Task | Descrizione | SP | Dipendenze |
-|------|-------------|:--:|------------|
-| T-072.1 | Creare docker-compose.telemetry.yml base | 1 | - |
-| T-072.2 | Configurare Prometheus con scrape targets | 1 | T-072.1 |
-| T-072.3 | Configurare Loki per log aggregation | 1 | T-072.1 |
-| T-072.4 | Configurare Tempo per distributed tracing | 1 | T-072.1 |
-| T-072.5 | Configurare OpenTelemetry Collector | 1 | T-072.2, T-072.3, T-072.4 |
+| Task    | Descrizione                               | SP  | Dipendenze                |
+| ------- | ----------------------------------------- | :-: | ------------------------- |
+| T-072.1 | Creare docker-compose.telemetry.yml base  |  1  | -                         |
+| T-072.2 | Configurare Prometheus con scrape targets |  1  | T-072.1                   |
+| T-072.3 | Configurare Loki per log aggregation      |  1  | T-072.1                   |
+| T-072.4 | Configurare Tempo per distributed tracing |  1  | T-072.1                   |
+| T-072.5 | Configurare OpenTelemetry Collector       |  1  | T-072.2, T-072.3, T-072.4 |
 
 **Architettura Stack**:
 
@@ -312,27 +319,27 @@ flowchart TB
         HW[HelloWorld :3001]
         GW[Gateway :3000]
     end
-    
+
     subgraph Collector["OpenTelemetry Collector :4317"]
         RECV[Receivers]
         PROC[Processors]
         EXP[Exporters]
         RECV --> PROC --> EXP
     end
-    
+
     subgraph Storage["Telemetry Storage"]
         PROM[Prometheus :9090]
         LOKI[Loki :3100]
         TEMPO[Tempo :3200]
     end
-    
+
     HW -->|OTLP gRPC| RECV
     GW -->|OTLP gRPC| RECV
-    
+
     EXP -->|remote_write| PROM
     EXP -->|loki| LOKI
     EXP -->|otlp| TEMPO
-    
+
     style Collector fill:#fff3e0
 ```
 
@@ -373,13 +380,13 @@ Feature: Grafana Dashboard
 
 **Tasks**:
 
-| Task | Descrizione | SP | Dipendenze |
-|------|-------------|:--:|------------|
-| T-073.1 | Configurare Grafana in docker-compose | 1 | US-072 |
-| T-073.2 | Aggiungere datasource Prometheus | 0.5 | T-073.1 |
-| T-073.3 | Aggiungere datasource Loki | 0.5 | T-073.1 |
-| T-073.4 | Aggiungere datasource Tempo | 0.5 | T-073.1 |
-| T-073.5 | Creare dashboard JSON con pannelli RED | 2.5 | T-073.2 |
+| Task    | Descrizione                            | SP  | Dipendenze |
+| ------- | -------------------------------------- | :-: | ---------- |
+| T-073.1 | Configurare Grafana in docker-compose  |  1  | US-072     |
+| T-073.2 | Aggiungere datasource Prometheus       | 0.5 | T-073.1    |
+| T-073.3 | Aggiungere datasource Loki             | 0.5 | T-073.1    |
+| T-073.4 | Aggiungere datasource Tempo            | 0.5 | T-073.1    |
+| T-073.5 | Creare dashboard JSON con pannelli RED | 2.5 | T-073.2    |
 
 **Layout Dashboard**:
 
@@ -444,12 +451,12 @@ Feature: Correlazione Telemetria
 
 **Tasks**:
 
-| Task | Descrizione | SP | Dipendenze |
-|------|-------------|:--:|------------|
-| T-074.1 | Configurare trace_id nei logs | 1 | US-072 |
-| T-074.2 | Abilitare derived fields in Loki datasource | 1 | T-074.1 |
-| T-074.3 | Configurare Tempo trace-to-logs | 0.5 | T-074.2 |
-| T-074.4 | Abilitare exemplars in Prometheus | 0.5 | US-072 |
+| Task    | Descrizione                                 | SP  | Dipendenze |
+| ------- | ------------------------------------------- | :-: | ---------- |
+| T-074.1 | Configurare trace_id nei logs               |  1  | US-072     |
+| T-074.2 | Abilitare derived fields in Loki datasource |  1  | T-074.1    |
+| T-074.3 | Configurare Tempo trace-to-logs             | 0.5 | T-074.2    |
+| T-074.4 | Abilitare exemplars in Prometheus           | 0.5 | US-072     |
 
 **Flow Correlazione**:
 
@@ -458,27 +465,27 @@ flowchart LR
     subgraph Request["User Request"]
         REQ[GET /api/hello]
     end
-    
+
     subgraph Generated["Generated Telemetry"]
         TRACE[Trace: abc123]
         LOG[Log: trace_id=abc123]
         METRIC[Metric: exemplar=abc123]
     end
-    
+
     subgraph Grafana["Grafana Navigation"]
         TVIEW[Trace View]
         LVIEW[Log View]
         MVIEW[Metric Graph]
-        
+
         LVIEW -->|click trace_id| TVIEW
         TVIEW -->|view logs| LVIEW
         MVIEW -->|click exemplar| TVIEW
     end
-    
+
     REQ --> TRACE
     REQ --> LOG
     REQ --> METRIC
-    
+
     TRACE --> TVIEW
     LOG --> LVIEW
     METRIC --> MVIEW
@@ -520,12 +527,12 @@ Feature: Alerting
 
 **Tasks**:
 
-| Task | Descrizione | SP | Dipendenze |
-|------|-------------|:--:|------------|
-| T-075.1 | Configurare Alertmanager in docker-compose | 1 | US-072 |
-| T-075.2 | Definire alert rules in Prometheus | 2 | T-075.1 |
-| T-075.3 | Configurare notification channel (Slack/Email) | 1 | T-075.1 |
-| T-075.4 | Creare pannello Alert in dashboard | 1 | US-073, T-075.2 |
+| Task    | Descrizione                                    | SP  | Dipendenze      |
+| ------- | ---------------------------------------------- | :-: | --------------- |
+| T-075.1 | Configurare Alertmanager in docker-compose     |  1  | US-072          |
+| T-075.2 | Definire alert rules in Prometheus             |  2  | T-075.1         |
+| T-075.3 | Configurare notification channel (Slack/Email) |  1  | T-075.1         |
+| T-075.4 | Creare pannello Alert in dashboard             |  1  | US-073, T-075.2 |
 
 **Alert Rules**:
 
@@ -581,15 +588,15 @@ Feature: Admin UI
 
 **Tasks**:
 
-| Task | Descrizione | SP | Dipendenze |
-|------|-------------|:--:|------------|
-| T-076.1 | Setup React app con Vite | 1 | - |
-| T-076.2 | Implementare layout base con sidebar | 1 | T-076.1 |
-| T-076.3 | Creare componente ServiceStatus | 1 | T-076.2 |
-| T-076.4 | Creare componente MetricsOverview | 2 | T-076.2 |
-| T-076.5 | Creare componente AlertList | 1 | T-076.2 |
-| T-076.6 | Integrare autenticazione con Gateway | 1 | T-076.2 |
-| T-076.7 | Servire static files da Gateway | 1 | T-076.6 |
+| Task    | Descrizione                          | SP  | Dipendenze |
+| ------- | ------------------------------------ | :-: | ---------- |
+| T-076.1 | Setup React app con Vite             |  1  | -          |
+| T-076.2 | Implementare layout base con sidebar |  1  | T-076.1    |
+| T-076.3 | Creare componente ServiceStatus      |  1  | T-076.2    |
+| T-076.4 | Creare componente MetricsOverview    |  2  | T-076.2    |
+| T-076.5 | Creare componente AlertList          |  1  | T-076.2    |
+| T-076.6 | Integrare autenticazione con Gateway |  1  | T-076.2    |
+| T-076.7 | Servire static files da Gateway      |  1  | T-076.6    |
 
 **Wireframe Admin UI**:
 
@@ -633,11 +640,11 @@ Feature: Admin UI
 
 **Goal**: HelloWorld funzionante con telemetria base
 
-| Story | SP | Priority |
-|-------|:--:|:--------:|
-| US-070: HelloWorld Service | 3 | P0 |
-| US-071: Watt Composition | 5 | P0 |
-| **Sprint Total** | **8** | |
+| Story                      |  SP   | Priority |
+| -------------------------- | :---: | :------: |
+| US-070: HelloWorld Service |   3   |    P0    |
+| US-071: Watt Composition   |   5   |    P0    |
+| **Sprint Total**           | **8** |          |
 
 **Deliverable**: `watt start` avvia gateway + helloworld con metriche esposte
 
@@ -647,11 +654,11 @@ Feature: Admin UI
 
 **Goal**: Stack completo di telemetria operativo
 
-| Story | SP | Priority |
-|-------|:--:|:--------:|
-| US-072: Telemetry Stack Docker | 5 | P0 |
-| US-073: Grafana Dashboard | 5 | P0 |
-| **Sprint Total** | **10** | |
+| Story                          |   SP   | Priority |
+| ------------------------------ | :----: | :------: |
+| US-072: Telemetry Stack Docker |   5    |    P0    |
+| US-073: Grafana Dashboard      |   5    |    P0    |
+| **Sprint Total**               | **10** |          |
 
 **Deliverable**: Dashboard Grafana visualizza metriche HelloWorld
 
@@ -661,11 +668,11 @@ Feature: Admin UI
 
 **Goal**: Correlazione completa e alerting
 
-| Story | SP | Priority |
-|-------|:--:|:--------:|
-| US-074: Correlazione Logs-Traces | 3 | P1 |
-| US-075: Alerting Base | 5 | P1 |
-| **Sprint Total** | **8** | |
+| Story                            |  SP   | Priority |
+| -------------------------------- | :---: | :------: |
+| US-074: Correlazione Logs-Traces |   3   |    P1    |
+| US-075: Alerting Base            |   5   |    P1    |
+| **Sprint Total**                 | **8** |          |
 
 **Deliverable**: Alert attivi quando servizio degrada, navigazione tra telemetry
 
@@ -675,10 +682,10 @@ Feature: Admin UI
 
 **Goal**: Interfaccia admin unificata
 
-| Story | SP | Priority |
-|-------|:--:|:--------:|
-| US-076: Admin UI React | 8 | P2 |
-| **Sprint Total** | **8** | |
+| Story                  |  SP   | Priority |
+| ---------------------- | :---: | :------: |
+| US-076: Admin UI React |   8   |    P2    |
+| **Sprint Total**       | **8** |          |
 
 **Deliverable**: Admin UI accessibile da /admin con overview servizi
 
@@ -690,27 +697,27 @@ Feature: Admin UI
 flowchart TB
     subgraph EPIC["EPIC-012: Admin Dashboard Telemetria"]
         direction TB
-        
+
         subgraph Sprint1["Sprint 1: Foundation"]
             US070[US-070: HelloWorld Service<br/>3 SP]
             US071[US-071: Watt Composition<br/>5 SP]
         end
-        
+
         subgraph Sprint2["Sprint 2: Telemetry"]
             US072[US-072: Telemetry Stack<br/>5 SP]
             US073[US-073: Grafana Dashboard<br/>5 SP]
         end
-        
+
         subgraph Sprint3["Sprint 3: Observability"]
             US074[US-074: Correlazione<br/>3 SP]
             US075[US-075: Alerting<br/>5 SP]
         end
-        
+
         subgraph Sprint4["Sprint 4: Admin"]
             US076[US-076: Admin UI<br/>8 SP]
         end
     end
-    
+
     US070 --> US071
     US071 --> US072
     US072 --> US073
@@ -718,7 +725,7 @@ flowchart TB
     US073 --> US075
     US074 --> US076
     US075 --> US076
-    
+
     style Sprint1 fill:#e3f2fd
     style Sprint2 fill:#fff3e0
     style Sprint3 fill:#e8f5e9
@@ -729,12 +736,12 @@ flowchart TB
 
 ## Rischi e Mitigazioni
 
-| Rischio | Probabilità | Impatto | Mitigazione |
-|---------|:-----------:|:-------:|-------------|
-| Platformatic telemetry non sufficiente | Media | Alto | Fallback a instrumentazione manuale OpenTelemetry |
-| Grafana resource-heavy | Bassa | Medio | Usare Grafana Cloud o ottimizzare queries |
-| Correlazione traces complessa | Media | Medio | Iniziare con logs-traces, aggiungere metrics dopo |
-| Admin UI scope creep | Alta | Alto | MVP minimo, iterare post-launch |
+| Rischio                                | Probabilità | Impatto | Mitigazione                                       |
+| -------------------------------------- | :---------: | :-----: | ------------------------------------------------- |
+| Platformatic telemetry non sufficiente |    Media    |  Alto   | Fallback a instrumentazione manuale OpenTelemetry |
+| Grafana resource-heavy                 |    Bassa    |  Medio  | Usare Grafana Cloud o ottimizzare queries         |
+| Correlazione traces complessa          |    Media    |  Medio  | Iniziare con logs-traces, aggiungere metrics dopo |
+| Admin UI scope creep                   |    Alta     |  Alto   | MVP minimo, iterare post-launch                   |
 
 ---
 
@@ -769,9 +776,7 @@ Per sincronizzare questa EPIC con GitHub:
 ```markdown
 ## User Story
 
-**Come** [ruolo]
-**Voglio** [funzionalità]
-**Per** [beneficio]
+**Come** [ruolo] **Voglio** [funzionalità] **Per** [beneficio]
 
 ## Story Points: X SP
 

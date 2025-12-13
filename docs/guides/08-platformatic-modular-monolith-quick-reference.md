@@ -99,24 +99,24 @@ module.exports = async function ({ entities, logger }) {
 
 ```javascript
 // plugin.js
-const { buildOpenAPIClient } = require('massimo')
-const { resolve } = require('node:path')
+const { buildOpenAPIClient } = require('massimo');
+const { resolve } = require('node:path');
 
 module.exports = async function (app) {
   const client = await buildOpenAPIClient({
     url: 'http://<app-name>.plt.local',
-    path: resolve(__dirname, 'clients/<app>/<app>.openapi.json')
-  })
+    path: resolve(__dirname, 'clients/<app>/<app>.openapi.json'),
+  });
 
   // Hook per modificare response
   app.platformatic.addGatewayOnRouteHook('/books/', ['GET'], (routeOptions) => {
     routeOptions.config.onGatewayResponse = async (request, reply, body) => {
-      const data = await body.json()
+      const data = await body.json();
       // modifica data
-      reply.send(data)
-    }
-  })
-}
+      reply.send(data);
+    };
+  });
+};
 ```
 
 ## Genera Client

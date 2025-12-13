@@ -1,10 +1,7 @@
 {
   "$schema": "https://schemas.platformatic.dev/@platformatic/db/3.27.0.json",
   "watch": {
-    "ignore": [
-      "*.sqlite",
-      "*.sqlite-journal"
-    ]
+    "ignore": ["*.sqlite", "*.sqlite-journal"]
   },
   "plugins": {
     "paths": [

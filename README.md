@@ -169,6 +169,118 @@ node --version  # Should show v22.x.x
 
 ---
 
+## 🎯 Quick Start for Junior Developers
+
+### Complete Local Development Workflow
+
+Follow these commands **in order** to go from setup to deployment:
+
+#### 1️⃣ Local Development (Everything Works)
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server with hot-reload
+npm run dev
+
+# Open browser: http://localhost:3042
+# Make changes → save → see updates automatically
+```
+
+**Verify everything works:**
+
+```bash
+# Check code quality
+npm run verify
+
+# Should pass: formatting ✅ secrets ✅ linting ✅ build ✅
+```
+
+#### 2️⃣ Create Deployment Artifact
+
+```bash
+# Clean build
+npm run build:clean
+
+# Creates production-ready code in dist/
+# Optimized, minified, ready to deploy
+```
+
+**Test the production build locally:**
+
+```bash
+npm run start:prod
+
+# Verify at http://localhost:3042 in production mode
+```
+
+#### 3️⃣ Package for Deployment
+
+```bash
+# The dist/ folder is your deployment artifact
+# Contains production-ready code
+
+# Deploy to any Node.js hosting:
+# - Heroku: git push heroku master
+# - DigitalOcean App Platform: connect GitHub repo
+# - AWS Elastic Beanstalk: eb deploy
+# - Vercel/Netlify: configure build command
+
+# Required on hosting platform:
+# - Node.js >= 22.19.0
+# - Start command: npm run start:prod
+# - Environment variables from .env.example
+```
+
+**Docker (optional, for later):**
+
+```bash
+# Docker support coming in Sprint 3
+# See docs/guides/03-cloud-deployment-docker-k8s.md
+```
+
+#### 4️⃣ Deploy to Staging/Production
+
+```bash
+# Pre-deploy verification (runs all checks)
+npm run predeploy
+
+# Deploy to staging
+npm run deploy:staging
+
+# After testing, deploy to production
+npm run deploy:production
+```
+
+### Daily Development Commands
+
+```bash
+# Start coding
+npm run dev                    # Hot-reload development server
+
+# Before committing (automatic via git hooks)
+npm run verify                 # Manual verification: format, secrets, lint, build
+
+# Full verification (when tests are added)
+npm run verify:full            # Adds test suite
+```
+
+### Troubleshooting
+
+```bash
+# Clean start
+npm run clean:install          # Remove all node_modules and reinstall
+
+# Check for security issues
+npm run deps:audit             # Audit dependencies
+
+# Update dependencies
+npm run deps:update            # Update to latest versions
+```
+
+---
+
 ### For Learning
 
 1. Start with **[01 - Guida Completa](./docs/guides/01-guida-completa-platformatic-watt.md)** for

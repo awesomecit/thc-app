@@ -1,6 +1,8 @@
 # Sviluppo Guidato da Acceptance Criteria: BDD + TDD Incrementale
 
-> **La Regola Zero applicata ai requisiti**: Prima di scrivere un test, chiediti: "Questo acceptance criterion è veramente necessario? Risolve un problema reale dell'utente? Posso validarlo con il cliente prima di implementarlo?"
+> **La Regola Zero applicata ai requisiti**: Prima di scrivere un test, chiediti: "Questo acceptance
+> criterion è veramente necessario? Risolve un problema reale dell'utente? Posso validarlo con il
+> cliente prima di implementarlo?"
 
 ---
 
@@ -21,9 +23,15 @@
 
 ### Il Problema che Risolviamo
 
-Troppo spesso lo sviluppo software segue questo anti-pattern: il cliente descrive vagamente cosa vuole, lo sviluppatore interpreta a modo suo, implementa per settimane, mostra il risultato, e il cliente dice "non è quello che intendevo". Questo ciclo di incomprensione costa tempo, denaro, e frustrazione.
+Troppo spesso lo sviluppo software segue questo anti-pattern: il cliente descrive vagamente cosa
+vuole, lo sviluppatore interpreta a modo suo, implementa per settimane, mostra il risultato, e il
+cliente dice "non è quello che intendevo". Questo ciclo di incomprensione costa tempo, denaro, e
+frustrazione.
 
-Il **Development Driven by Acceptance Criteria** ribalta questo approccio: prima di scrivere una singola riga di codice, definiamo insieme al cliente cosa significa "fatto". Gli acceptance criteria diventano test automatizzati che il cliente può vedere, capire, e validare. Quando tutti i test passano, la feature è completa per definizione.
+Il **Development Driven by Acceptance Criteria** ribalta questo approccio: prima di scrivere una
+singola riga di codice, definiamo insieme al cliente cosa significa "fatto". Gli acceptance criteria
+diventano test automatizzati che il cliente può vedere, capire, e validare. Quando tutti i test
+passano, la feature è completa per definizione.
 
 ### La Catena di Trasformazione
 
@@ -83,11 +91,14 @@ Il **Development Driven by Acceptance Criteria** ribalta questo approccio: prima
 
 ### Cosa Sono gli Acceptance Criteria
 
-Gli acceptance criteria (AC) sono condizioni specifiche e misurabili che una feature deve soddisfare per essere considerata completa. Non sono descrizioni vaghe ma **affermazioni verificabili** che possono essere tradotte direttamente in test.
+Gli acceptance criteria (AC) sono condizioni specifiche e misurabili che una feature deve soddisfare
+per essere considerata completa. Non sono descrizioni vaghe ma **affermazioni verificabili** che
+possono essere tradotte direttamente in test.
 
 ### Il Formato Given-When-Then
 
-Il formato più efficace per scrivere AC è il pattern **Given-When-Then** (GWT), che descrive il contesto iniziale, l'azione da compiere, e il risultato atteso.
+Il formato più efficace per scrivere AC è il pattern **Given-When-Then** (GWT), che descrive il
+contesto iniziale, l'azione da compiere, e il risultato atteso.
 
 **Esempio: Feature di Firma Digitale**
 
@@ -132,15 +143,20 @@ AC4: Catena di firme multiple
 
 ### Regole per Scrivere Buoni AC
 
-**Specifici e Misurabili**: "Il sistema deve essere veloce" non è un AC. "Il tempo di risposta deve essere inferiore a 200ms" lo è.
+**Specifici e Misurabili**: "Il sistema deve essere veloce" non è un AC. "Il tempo di risposta deve
+essere inferiore a 200ms" lo è.
 
-**Indipendenti**: Ogni AC deve poter essere testato isolatamente. Se AC2 dipende da AC1, c'è un problema di design.
+**Indipendenti**: Ogni AC deve poter essere testato isolatamente. Se AC2 dipende da AC1, c'è un
+problema di design.
 
-**Testabili Automaticamente**: Se non puoi scrivere un test automatico per un AC, riscrivilo finché non ci riesci.
+**Testabili Automaticamente**: Se non puoi scrivere un test automatico per un AC, riscrivilo finché
+non ci riesci.
 
-**Comprensibili dal Cliente**: Un AC scritto in linguaggio tecnico che il cliente non capisce non serve a nulla. Deve poterlo leggere e dire "sì, questo è quello che voglio".
+**Comprensibili dal Cliente**: Un AC scritto in linguaggio tecnico che il cliente non capisce non
+serve a nulla. Deve poterlo leggere e dire "sì, questo è quello che voglio".
 
-**Completi ma Minimali**: Copri tutti i casi importanti ma non aggiungere AC "per sicurezza". Ogni AC ha un costo di implementazione e manutenzione.
+**Completi ma Minimali**: Copri tutti i casi importanti ma non aggiungere AC "per sicurezza". Ogni
+AC ha un costo di implementazione e manutenzione.
 
 ---
 
@@ -148,11 +164,16 @@ AC4: Catena di firme multiple
 
 ### Cos'è il BDD
 
-Il Behavior-Driven Development è un'evoluzione del TDD che sposta il focus da "testare il codice" a "specificare il comportamento". Il BDD usa un linguaggio naturale strutturato (Gherkin) che può essere letto da tutti gli stakeholder ma eseguito come test automatico.
+Il Behavior-Driven Development è un'evoluzione del TDD che sposta il focus da "testare il codice" a
+"specificare il comportamento". Il BDD usa un linguaggio naturale strutturato (Gherkin) che può
+essere letto da tutti gli stakeholder ma eseguito come test automatico.
 
 ### Il Linguaggio Gherkin
 
-Gherkin è un linguaggio domain-specific per scrivere specifiche eseguibili. Le keyword principali sono **Feature** (la funzionalità che stai descrivendo), **Scenario** (un caso d'uso specifico), **Given** (il contesto iniziale), **When** (l'azione), **Then** (il risultato atteso), **And/But** (per concatenare step), e **Background** (setup comune a tutti gli scenari).
+Gherkin è un linguaggio domain-specific per scrivere specifiche eseguibili. Le keyword principali
+sono **Feature** (la funzionalità che stai descrivendo), **Scenario** (un caso d'uso specifico),
+**Given** (il contesto iniziale), **When** (l'azione), **Then** (il risultato atteso), **And/But**
+(per concatenare step), e **Background** (setup comune a tutti gli scenari).
 
 ### Struttura di un Feature File
 
@@ -226,7 +247,8 @@ Feature: Firma Digitale Documenti Operatori
 
 ### Tag per Organizzare i Test
 
-I tag (@smoke, @critico, @security) permettono di eseguire subset di test. Questo è fondamentale per la CI/CD dove vuoi test veloci sui commit e test completi prima del deploy.
+I tag (@smoke, @critico, @security) permettono di eseguire subset di test. Questo è fondamentale per
+la CI/CD dove vuoi test veloci sui commit e test completi prima del deploy.
 
 ```bash
 # Esegui solo test critici (smoke test)
@@ -286,34 +308,34 @@ module.exports = {
     // Percorsi
     paths: ['features/**/*.feature'],
     require: ['features/step_definitions/**/*.ts', 'features/support/**/*.ts'],
-    
+
     // TypeScript support
     requireModule: ['ts-node/register'],
-    
+
     // Report multipli
     format: [
-      'progress-bar',                           // Console durante esecuzione
-      'json:features/cucumber.json',            // JSON per il cliente
-      'html:features/cucumber-report.html',     // HTML leggibile
-      'junit:features/cucumber-junit.xml',      // Per CI/CD
+      'progress-bar', // Console durante esecuzione
+      'json:features/cucumber.json', // JSON per il cliente
+      'html:features/cucumber-report.html', // HTML leggibile
+      'junit:features/cucumber-junit.xml', // Per CI/CD
     ],
-    
+
     // Configurazione
-    parallel: 2,                                // Test paralleli
-    retry: 1,                                   // Retry per test flaky
-    retryTagFilter: '@flaky',                   // Solo test marcati flaky
-    
+    parallel: 2, // Test paralleli
+    retry: 1, // Retry per test flaky
+    retryTagFilter: '@flaky', // Solo test marcati flaky
+
     // Tags di default (escludi WIP)
     tags: 'not @wip and not @manual',
   },
-  
+
   // Profilo per CI
   ci: {
     parallel: 4,
     format: ['json:features/cucumber.json'],
     tags: 'not @manual',
   },
-  
+
   // Profilo per smoke test veloci
   smoke: {
     tags: '@smoke',
@@ -343,7 +365,7 @@ declare module '@cucumber/cucumber' {
 }
 
 // Setup prima di ogni scenario
-Before(async function(this: World) {
+Before(async function (this: World) {
   this.signatureService = new SignatureService();
   this.documentService = new DocumentService();
   this.auditService = new AuditService();
@@ -351,91 +373,76 @@ Before(async function(this: World) {
 });
 
 // Cleanup dopo ogni scenario
-After(async function(this: World) {
+After(async function (this: World) {
   // Rollback transazioni, cleanup test data
   await this.documentService.cleanup();
 });
 
 // GIVEN STEPS
 
-Given('il documento {string} è in stato {string}', async function(
-  this: World,
-  docId: string,
-  stato: string
-) {
-  this.currentDocument = await this.documentService.findById(docId);
-  expect(this.currentDocument).to.not.be.null;
-  expect(this.currentDocument!.stato).to.equal(stato);
-});
+Given(
+  'il documento {string} è in stato {string}',
+  async function (this: World, docId: string, stato: string) {
+    this.currentDocument = await this.documentService.findById(docId);
+    expect(this.currentDocument).to.not.be.null;
+    expect(this.currentDocument!.stato).to.equal(stato);
+  }
+);
 
-Given('il medico {string} è autenticato', async function(
-  this: World,
-  nomeMedico: string
-) {
+Given('il medico {string} è autenticato', async function (this: World, nomeMedico: string) {
   this.currentUser = await this.authService.authenticateByName(nomeMedico);
   expect(this.currentUser).to.not.be.null;
   expect(this.currentUser!.ruolo).to.equal('medico');
 });
 
-Given('il medico ha un certificato digitale valido fino al {string}', async function(
-  this: World,
-  dataScadenza: string
-) {
-  const cert = await this.currentUser!.getCertificato();
-  expect(cert.scadenza).to.be.greaterThan(new Date(dataScadenza));
-});
+Given(
+  'il medico ha un certificato digitale valido fino al {string}',
+  async function (this: World, dataScadenza: string) {
+    const cert = await this.currentUser!.getCertificato();
+    expect(cert.scadenza).to.be.greaterThan(new Date(dataScadenza));
+  }
+);
 
-Given('il medico ha un certificato digitale scaduto il {string}', async function(
-  this: World,
-  dataScadenza: string
-) {
-  // Per test, creiamo un certificato mock scaduto
-  await this.currentUser!.setCertificatoScaduto(new Date(dataScadenza));
-});
+Given(
+  'il medico ha un certificato digitale scaduto il {string}',
+  async function (this: World, dataScadenza: string) {
+    // Per test, creiamo un certificato mock scaduto
+    await this.currentUser!.setCertificatoScaduto(new Date(dataScadenza));
+  }
+);
 
 // WHEN STEPS
 
-When('il medico richiede la firma del documento {string}', async function(
-  this: World,
-  docId: string
-) {
-  try {
-    this.currentDocument = await this.signatureService.sign(
-      docId,
-      this.currentUser!.id,
-      this.currentUser!.certificato
-    );
-  } catch (error) {
-    this.lastError = error as Error;
+When(
+  'il medico richiede la firma del documento {string}',
+  async function (this: World, docId: string) {
+    try {
+      this.currentDocument = await this.signatureService.sign(
+        docId,
+        this.currentUser!.id,
+        this.currentUser!.certificato
+      );
+    } catch (error) {
+      this.lastError = error as Error;
+    }
   }
-});
+);
 
-When('il medico tenta di firmare il documento {string}', async function(
-  this: World,
-  docId: string
-) {
-  // "tenta" implica che ci aspettiamo un fallimento
-  try {
-    await this.signatureService.sign(
-      docId,
-      this.currentUser!.id,
-      this.currentUser!.certificato
-    );
-  } catch (error) {
-    this.lastError = error as Error;
+When(
+  'il medico tenta di firmare il documento {string}',
+  async function (this: World, docId: string) {
+    // "tenta" implica che ci aspettiamo un fallimento
+    try {
+      await this.signatureService.sign(docId, this.currentUser!.id, this.currentUser!.certificato);
+    } catch (error) {
+      this.lastError = error as Error;
+    }
   }
-});
+);
 
-When('qualcuno tenta di modificare il campo {string}', async function(
-  this: World,
-  campo: string
-) {
+When('qualcuno tenta di modificare il campo {string}', async function (this: World, campo: string) {
   try {
-    await this.documentService.updateField(
-      this.currentDocument!.id,
-      campo,
-      'nuovo valore'
-    );
+    await this.documentService.updateField(this.currentDocument!.id, campo, 'nuovo valore');
   } catch (error) {
     this.lastError = error as Error;
   }
@@ -443,24 +450,21 @@ When('qualcuno tenta di modificare il campo {string}', async function(
 
 // THEN STEPS
 
-Then('la firma viene applicata con successo', function(this: World) {
+Then('la firma viene applicata con successo', function (this: World) {
   expect(this.lastError).to.be.null;
   expect(this.currentDocument!.firme).to.have.length.greaterThan(0);
 });
 
-Then('la firma viene rifiutata', function(this: World) {
+Then('la firma viene rifiutata', function (this: World) {
   expect(this.lastError).to.not.be.null;
 });
 
-Then('il documento mostra il firmatario {string}', function(
-  this: World,
-  nomeFirmatario: string
-) {
+Then('il documento mostra il firmatario {string}', function (this: World, nomeFirmatario: string) {
   const ultimaFirma = this.currentDocument!.firme.at(-1);
   expect(ultimaFirma?.firmatario.nome).to.equal(nomeFirmatario);
 });
 
-Then('il documento mostra il timestamp della firma', function(this: World) {
+Then('il documento mostra il timestamp della firma', function (this: World) {
   const ultimaFirma = this.currentDocument!.firme.at(-1);
   expect(ultimaFirma?.timestamp).to.be.instanceOf(Date);
   // Il timestamp deve essere recente (ultimi 5 secondi)
@@ -469,38 +473,33 @@ Then('il documento mostra il timestamp della firma', function(this: World) {
   expect(diff).to.be.lessThan(5000);
 });
 
-Then('lo stato del documento diventa {string}', async function(
-  this: World,
-  statoAtteso: string
-) {
+Then('lo stato del documento diventa {string}', async function (this: World, statoAtteso: string) {
   // Ricarica il documento per verificare lo stato persistito
   const doc = await this.documentService.findById(this.currentDocument!.id);
   expect(doc!.stato).to.equal(statoAtteso);
 });
 
-Then('viene mostrato l\'errore {string}', function(
-  this: World,
-  messaggioErrore: string
-) {
+Then("viene mostrato l'errore {string}", function (this: World, messaggioErrore: string) {
   expect(this.lastError).to.not.be.null;
   expect(this.lastError!.message).to.include(messaggioErrore);
 });
 
-Then('viene registrato un evento di audit {string}', async function(
-  this: World,
-  tipoEvento: string
-) {
-  const eventi = await this.auditService.getEventiRecenti(
-    this.currentDocument!.id,
-    1 // ultimo evento
-  );
-  expect(eventi[0].tipo).to.equal(tipoEvento);
-});
+Then(
+  'viene registrato un evento di audit {string}',
+  async function (this: World, tipoEvento: string) {
+    const eventi = await this.auditService.getEventiRecenti(
+      this.currentDocument!.id,
+      1 // ultimo evento
+    );
+    expect(eventi[0].tipo).to.equal(tipoEvento);
+  }
+);
 ```
 
 ### Il Report JSON per il Cliente
 
-Cucumber genera un file `cucumber.json` che può essere trasformato in report leggibili. Questo file è la **prova tangibile** che tutti gli acceptance criteria sono soddisfatti.
+Cucumber genera un file `cucumber.json` che può essere trasformato in report leggibili. Questo file
+è la **prova tangibile** che tutti gli acceptance criteria sono soddisfatti.
 
 ```json
 [
@@ -512,7 +511,7 @@ Cucumber genera un file `cucumber.json` che può essere trasformato in report le
       {
         "keyword": "Scenario",
         "name": "Firma documento con certificato valido",
-        "tags": [{"name": "@happy-path"}, {"name": "@smoke"}],
+        "tags": [{ "name": "@happy-path" }, { "name": "@smoke" }],
         "steps": [
           {
             "keyword": "Given",
@@ -521,7 +520,7 @@ Cucumber genera un file `cucumber.json` che può essere trasformato in report le
               "status": "passed",
               "duration": 1234567
             }
-          },
+          }
           // ... altri step
         ]
       }
@@ -554,9 +553,9 @@ const options = {
   metadata: {
     'App Version': '1.0.0',
     'Test Environment': 'Staging',
-    'Browser': 'Chrome 120',
-    'Platform': 'Linux',
-    'Executed': new Date().toISOString(),
+    Browser: 'Chrome 120',
+    Platform: 'Linux',
+    Executed: new Date().toISOString(),
   },
 };
 
@@ -569,7 +568,8 @@ reporter.generate(options);
 
 ### Il Ciclo Red-Green-Refactor
 
-Una volta che hai i test E2E che definiscono il comportamento esterno, scendi a livello di unit test con TDD classico.
+Una volta che hai i test E2E che definiscono il comportamento esterno, scendi a livello di unit test
+con TDD classico.
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -612,22 +612,18 @@ describe('SignatureService', () => {
     service = new SignatureService();
     mockDocument = createMockDocument({ stato: 'da_firmare' });
     mockUser = createMockUser({ nome: 'Dr. Mario Rossi' });
-    mockCertificate = createMockCertificate({ 
-      scadenza: new Date('2025-12-31') 
+    mockCertificate = createMockCertificate({
+      scadenza: new Date('2025-12-31'),
     });
   });
 
   describe('sign()', () => {
     it('should add signer information to document', async () => {
       // Arrange - già fatto nel beforeEach
-      
+
       // Act
-      const signedDoc = await service.sign(
-        mockDocument,
-        mockUser,
-        mockCertificate
-      );
-      
+      const signedDoc = await service.sign(mockDocument, mockUser, mockCertificate);
+
       // Assert
       expect(signedDoc.firme).toHaveLength(1);
       expect(signedDoc.firme[0].firmatario.nome).toBe('Dr. Mario Rossi');
@@ -641,11 +637,7 @@ describe('SignatureService', () => {
 ```typescript
 // src/services/signature.service.ts
 export class SignatureService {
-  async sign(
-    document: Document,
-    user: User,
-    certificate: Certificate
-  ): Promise<Document> {
+  async sign(document: Document, user: User, certificate: Certificate): Promise<Document> {
     const firma: Firma = {
       firmatario: {
         id: user.id,
@@ -654,7 +646,7 @@ export class SignatureService {
       timestamp: new Date(),
       certificatoId: certificate.id,
     };
-    
+
     document.firme.push(firma);
     return document;
   }
@@ -666,15 +658,11 @@ export class SignatureService {
 ```typescript
 it('should add timestamp to signature', async () => {
   const before = new Date();
-  
-  const signedDoc = await service.sign(
-    mockDocument,
-    mockUser,
-    mockCertificate
-  );
-  
+
+  const signedDoc = await service.sign(mockDocument, mockUser, mockCertificate);
+
   const after = new Date();
-  
+
   expect(signedDoc.firme[0].timestamp).toBeInstanceOf(Date);
   expect(signedDoc.firme[0].timestamp.getTime()).toBeGreaterThanOrEqual(before.getTime());
   expect(signedDoc.firme[0].timestamp.getTime()).toBeLessThanOrEqual(after.getTime());
@@ -690,10 +678,10 @@ it('should reject signature with expired certificate', async () => {
   const expiredCertificate = createMockCertificate({
     scadenza: new Date('2020-01-01'), // Scaduto
   });
-  
-  await expect(
-    service.sign(mockDocument, mockUser, expiredCertificate)
-  ).rejects.toThrow('CERT_EXPIRED');
+
+  await expect(service.sign(mockDocument, mockUser, expiredCertificate)).rejects.toThrow(
+    'CERT_EXPIRED'
+  );
 });
 ```
 
@@ -701,16 +689,12 @@ it('should reject signature with expired certificate', async () => {
 
 ```typescript
 export class SignatureService {
-  async sign(
-    document: Document,
-    user: User,
-    certificate: Certificate
-  ): Promise<Document> {
+  async sign(document: Document, user: User, certificate: Certificate): Promise<Document> {
     // Validazione certificato
     if (certificate.scadenza < new Date()) {
       throw new SignatureError('CERT_EXPIRED', 'Il certificato è scaduto');
     }
-    
+
     const firma: Firma = {
       firmatario: {
         id: user.id,
@@ -719,7 +703,7 @@ export class SignatureService {
       timestamp: new Date(),
       certificatoId: certificate.id,
     };
-    
+
     document.firme.push(firma);
     return document;
   }
@@ -730,20 +714,16 @@ export class SignatureService {
 
 ```typescript
 export class SignatureService {
-  async sign(
-    document: Document,
-    user: User,
-    certificate: Certificate
-  ): Promise<Document> {
+  async sign(document: Document, user: User, certificate: Certificate): Promise<Document> {
     this.validateCertificate(certificate);
     this.validateDocument(document);
-    
+
     const firma = this.createFirma(user, certificate);
     document.addFirma(firma);
-    
+
     return document;
   }
-  
+
   private validateCertificate(certificate: Certificate): void {
     if (certificate.isExpired()) {
       throw new SignatureError('CERT_EXPIRED', 'Il certificato è scaduto');
@@ -752,13 +732,13 @@ export class SignatureService {
       throw new SignatureError('CERT_REVOKED', 'Il certificato è stato revocato');
     }
   }
-  
+
   private validateDocument(document: Document): void {
     if (document.isLocked()) {
       throw new SignatureError('DOC_LOCKED', 'Documento già firmato');
     }
   }
-  
+
   private createFirma(user: User, certificate: Certificate): Firma {
     return {
       firmatario: user.toFirmatario(),
@@ -900,7 +880,8 @@ npm run report:generate
 # 0m12.345s
 ```
 
-Il cliente può vedere il report HTML, capire esattamente cosa è stato implementato, e validare che corrisponda alle sue aspettative.
+Il cliente può vedere il report HTML, capire esattamente cosa è stato implementato, e validare che
+corrisponda alle sue aspettative.
 
 ---
 
@@ -1024,18 +1005,18 @@ watt-healthcare/
   "scripts": {
     "test:unit": "jest --coverage",
     "test:unit:watch": "jest --watch",
-    
+
     "test:e2e": "cucumber-js",
     "test:e2e:smoke": "cucumber-js --profile smoke",
     "test:e2e:ci": "cucumber-js --profile ci",
-    
+
     "test:all": "npm run test:unit && npm run test:e2e",
-    
+
     "report:generate": "node scripts/generate-cucumber-report.js",
     "report:open": "open features/report/cucumber-report.html",
-    
+
     "validate": "npm run lint && npm run test:all && npm run report:generate",
-    
+
     "dev": "wattpm dev",
     "build": "wattpm build",
     "start": "wattpm start"
@@ -1064,17 +1045,17 @@ jobs:
         with:
           node-version: '22'
           cache: 'npm'
-      
+
       - run: npm ci
       - run: npm run test:unit
-      
+
       - name: Upload coverage
         uses: codecov/codecov-action@v3
 
   e2e-tests:
     runs-on: ubuntu-latest
     needs: unit-tests
-    
+
     services:
       postgres:
         image: postgres:15
@@ -1082,33 +1063,33 @@ jobs:
           POSTGRES_PASSWORD: test
         ports:
           - 5432:5432
-    
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
-      
+
       - run: npm ci
       - run: npm run build
-      
+
       # Avvia Watt in background
       - name: Start Watt
         run: npm run start &
         env:
           DATABASE_URL: postgres://postgres:test@localhost:5432/test
-      
+
       # Attendi che sia pronto
       - name: Wait for Watt
         run: npx wait-on http://localhost:3042/health
-      
+
       # Esegui test E2E
       - run: npm run test:e2e:ci
-      
+
       # Genera e salva report
       - run: npm run report:generate
-      
+
       - name: Upload BDD Report
         uses: actions/upload-artifact@v3
         with:
@@ -1120,13 +1101,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: e2e-tests
     if: github.ref == 'refs/heads/main'
-    
+
     steps:
       - name: Download report
         uses: actions/download-artifact@v3
         with:
           name: cucumber-report
-      
+
       # Notifica il cliente (Slack, email, etc.)
       - name: Notify
         run: |
@@ -1137,12 +1118,21 @@ jobs:
 
 ## Conclusione: La Disciplina che Libera
 
-Il workflow AC → BDD → TDD può sembrare burocratico all'inizio. "Perché devo scrivere tutti questi test prima del codice?" Ma questa disciplina porta a una libertà profonda: la libertà di modificare il codice con confidenza, la libertà di dire al cliente "è fatto" e saperlo con certezza, la libertà di andare in vacanza senza paura che qualcuno rompa tutto.
+Il workflow AC → BDD → TDD può sembrare burocratico all'inizio. "Perché devo scrivere tutti questi
+test prima del codice?" Ma questa disciplina porta a una libertà profonda: la libertà di modificare
+il codice con confidenza, la libertà di dire al cliente "è fatto" e saperlo con certezza, la libertà
+di andare in vacanza senza paura che qualcuno rompa tutto.
 
-Il feature file diventa il **contratto vivente** tra te e il cliente. Quando tutti gli scenari passano, non c'è discussione su cosa significa "fatto". Il report HTML è la prova tangibile che ogni acceptance criterion è soddisfatto.
+Il feature file diventa il **contratto vivente** tra te e il cliente. Quando tutti gli scenari
+passano, non c'è discussione su cosa significa "fatto". Il report HTML è la prova tangibile che ogni
+acceptance criterion è soddisfatto.
 
-Il TDD ti libera dalla paura del refactoring. Puoi migliorare il codice sapendo che se rompi qualcosa, un test te lo dirà immediatamente.
+Il TDD ti libera dalla paura del refactoring. Puoi migliorare il codice sapendo che se rompi
+qualcosa, un test te lo dirà immediatamente.
 
-E la checklist per task atomici ti libera dall'ansia del "dove ero rimasto?". Ogni sub-task è autocontenuto, ogni commit è deployabile, ogni interruzione è gestibile.
+E la checklist per task atomici ti libera dall'ansia del "dove ero rimasto?". Ogni sub-task è
+autocontenuto, ogni commit è deployabile, ogni interruzione è gestibile.
 
-Come dice Kent Beck: **"I'm not a great programmer; I'm just a good programmer with great habits."** Questo workflow è un insieme di abitudini che, praticate con disciplina, trasformano sviluppatori buoni in sviluppatori eccellenti.
+Come dice Kent Beck: **"I'm not a great programmer; I'm just a good programmer with great habits."**
+Questo workflow è un insieme di abitudini che, praticate con disciplina, trasformano sviluppatori
+buoni in sviluppatori eccellenti.

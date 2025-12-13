@@ -10,7 +10,9 @@
 
 ## 🎯 Epic Goal
 
-Establish automated quality gates and developer tooling from day one to ensure code quality, consistency, and fast feedback loops. This epic implements the foundation for all future development work.
+Establish automated quality gates and developer tooling from day one to ensure code quality,
+consistency, and fast feedback loops. This epic implements the foundation for all future development
+work.
 
 ---
 
@@ -109,15 +111,18 @@ This epic introduces the foundation layer of our development workflow:
 ## 🧪 Testing Strategy
 
 ### Unit Tests
+
 - Secret scanning script with test fixtures
 - Auto-release script with mock git commands
 
 ### Integration Tests
+
 - Full commit workflow (add → commit → push)
 - Verify hooks trigger correctly
 - Test hook bypass mechanisms
 
 ### Manual Testing
+
 - Attempt commit with invalid message format
 - Attempt commit with hardcoded secret
 - Verify linting fixes are applied automatically
@@ -136,34 +141,36 @@ This epic introduces the foundation layer of our development workflow:
 
 ## ⚠️ Risks & Mitigation
 
-| Risk | Impact | Probability | Mitigation |
-|------|--------|-------------|------------|
-| Hooks too slow | Developer frustration | Medium | Optimize with caching, run only on changed files |
-| False positives in secret scan | Blocked legitimate commits | Low | Document bypass process, refine patterns |
-| Commitlint too strict | Slows initial adoption | Medium | Provide examples, make scope optional |
-| Version bump errors | Wrong release version | Low | Thoroughly test script, add dry-run mode |
+| Risk                           | Impact                     | Probability | Mitigation                                       |
+| ------------------------------ | -------------------------- | ----------- | ------------------------------------------------ |
+| Hooks too slow                 | Developer frustration      | Medium      | Optimize with caching, run only on changed files |
+| False positives in secret scan | Blocked legitimate commits | Low         | Document bypass process, refine patterns         |
+| Commitlint too strict          | Slows initial adoption     | Medium      | Provide examples, make scope optional            |
+| Version bump errors            | Wrong release version      | Low         | Thoroughly test script, add dry-run mode         |
 
 ---
 
 ## 🔄 Dependencies
 
 **Blocks**:
+
 - All future development work (this is foundation)
 
 **Blocked By**:
+
 - None (can start immediately)
 
 ---
 
 ## 💡 Success Metrics
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| Pre-commit time | <10s | Time from `git commit` to hook completion |
-| Commit message compliance | 100% | All commits follow conventional format |
-| Secrets leaked | 0 | Zero secrets reach remote repository |
-| Failed releases | <5% | Semantic release works correctly |
-| Developer satisfaction | >80% | Survey after 2 sprints |
+| Metric                    | Target | Measurement                               |
+| ------------------------- | ------ | ----------------------------------------- |
+| Pre-commit time           | <10s   | Time from `git commit` to hook completion |
+| Commit message compliance | 100%   | All commits follow conventional format    |
+| Secrets leaked            | 0      | Zero secrets reach remote repository      |
+| Failed releases           | <5%    | Semantic release works correctly          |
+| Developer satisfaction    | >80%   | Survey after 2 sprints                    |
 
 ---
 
@@ -173,15 +180,15 @@ This epic introduces the foundation layer of our development workflow:
 
 **Focus**: Basic hooks and commit validation
 
-| Task | Estimate | Assignee | Status |
-|------|----------|----------|--------|
-| 1.1.1: Install Husky | 4h | TBD | TODO |
-| 1.1.2: Setup lint-staged | 2h | TBD | TODO |
-| 1.1.3: Configure Prettier | 2h | TBD | TODO |
-| 1.1.4: Create secret scanner | 4h | TBD | TODO |
-| 1.2.1: Install commitlint | 2h | TBD | TODO |
-| 1.2.2: Configure commit-msg hook | 2h | TBD | TODO |
-| 1.2.3: Document examples | 2h | TBD | TODO |
+| Task                             | Estimate | Assignee | Status |
+| -------------------------------- | -------- | -------- | ------ |
+| 1.1.1: Install Husky             | 4h       | TBD      | TODO   |
+| 1.1.2: Setup lint-staged         | 2h       | TBD      | TODO   |
+| 1.1.3: Configure Prettier        | 2h       | TBD      | TODO   |
+| 1.1.4: Create secret scanner     | 4h       | TBD      | TODO   |
+| 1.2.1: Install commitlint        | 2h       | TBD      | TODO   |
+| 1.2.2: Configure commit-msg hook | 2h       | TBD      | TODO   |
+| 1.2.3: Document examples         | 2h       | TBD      | TODO   |
 
 **Sprint Goal**: Developer can commit with automated quality checks
 
@@ -189,14 +196,14 @@ This epic introduces the foundation layer of our development workflow:
 
 **Focus**: Code quality and release automation
 
-| Task | Estimate | Assignee | Status |
-|------|----------|----------|--------|
-| 2.1.1: Configure ESLint + SonarJS | 4h | TBD | TODO |
-| 2.1.2: Set complexity limits | 2h | TBD | TODO |
-| 2.1.3: Add pre-push hooks | 2h | TBD | TODO |
-| 2.2.1: Create auto-release script | 6h | TBD | TODO |
-| 2.2.2: Configure CHANGELOG | 2h | TBD | TODO |
-| 2.2.3: Document release workflow | 2h | TBD | TODO |
+| Task                              | Estimate | Assignee | Status |
+| --------------------------------- | -------- | -------- | ------ |
+| 2.1.1: Configure ESLint + SonarJS | 4h       | TBD      | TODO   |
+| 2.1.2: Set complexity limits      | 2h       | TBD      | TODO   |
+| 2.1.3: Add pre-push hooks         | 2h       | TBD      | TODO   |
+| 2.2.1: Create auto-release script | 6h       | TBD      | TODO   |
+| 2.2.2: Configure CHANGELOG        | 2h       | TBD      | TODO   |
+| 2.2.3: Document release workflow  | 2h       | TBD      | TODO   |
 
 **Sprint Goal**: Complete DX automation with semantic releases
 
