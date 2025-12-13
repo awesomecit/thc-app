@@ -3,9 +3,7 @@
   "watch": true,
   "autoload": {
     "path": "web",
-    "exclude": [
-      "docs"
-    ]
+    "exclude": ["docs"]
   },
   "logger": {
     "level": "{PLT_SERVER_LOGGER_LEVEL}"
@@ -15,5 +13,5 @@
     "port": "{PORT}"
   },
   "managementApi": "{PLT_MANAGEMENT_API}",
-  "entrypoint": "thc"
+  "entrypoint": "thc-gateway"
 }
