@@ -118,4 +118,24 @@ export default tseslint.config(
     files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
     ...tseslint.configs.disableTypeChecked,
   },
+
+  // Relaxed rules for test files
+  {
+    files: ['**/test/**/*.ts', '**/*.test.ts', '**/*.spec.ts'],
+    rules: {
+      // Allow any in test configs (JSON.parse, etc.)
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      
+      // Allow implicit return types in test helpers
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      
+      // Allow nullish coalescing for config defaults
+      '@typescript-eslint/prefer-nullish-coalescing': 'off',
+      
+      // Keep floating promises error - tests should await properly
+      '@typescript-eslint/no-floating-promises': 'error',
+    },
+  },
 );

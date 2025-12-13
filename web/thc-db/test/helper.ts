@@ -1,11 +1,8 @@
 import { join } from 'node:path';
-import { readFile } from 'node:fs/promises';
+import { readFile, unlink } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { create } from '@platformatic/db';
 import { test } from 'node:test';
-
-const os = require('node:os');
-const path = require('node:path');
-const fs = require('node:fs/promises');
 
 let counter = 0;
 
@@ -13,7 +10,7 @@ type testfn = Parameters<typeof test>[0];
 type TestContext = Parameters<Exclude<testfn, undefined>>[0];
 
 export async function getServer(t: TestContext) {
-  const dbPath = join(os.tmpdir(), 'db-' + process.pid + '-' + counter++ + '.sqlite');
+  const dbPath = join(tmpdir(), 'db-' + process.pid + '-' + counter++ + '.sqlite');
   const connectionString = 'sqlite://' + dbPath;
 
   // We go up two folder because this files executes in the dist folder
@@ -35,7 +32,7 @@ export async function getServer(t: TestContext) {
   t.after(() => server.stop());
 
   t.after(async () => {
-    await fs.unlink(dbPath);
+    await unlink(dbPath);
   });
 
   return server.getApplication();

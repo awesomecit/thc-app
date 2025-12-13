@@ -1,5 +1,6 @@
 {
   "name": "thc-db",
+  "type": "module",
   "scripts": {
     "dev": "wattpm dev",
     "start": "wattpm start",
