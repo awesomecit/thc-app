@@ -62,7 +62,7 @@ This project is designed with **privacy by design** and **privacy by default**:
 7. **Accountability**:
    - Audit logs for data access
    - Data processing records
-   - DPO (Data Protection Officer) contact: privacy@thc-app.dev
+   - DPO (Data Protection Officer) contact: awesome.cit.dev@gmail.com
 
 ### User Rights (GDPR Articles 15-22)
 
@@ -211,10 +211,10 @@ When implementing user interfaces, we commit to:
 
 ## 📞 Compliance Contacts
 
-- **Security**: security@thc-app.dev (see [SECURITY.md](./SECURITY.md))
-- **Privacy (DPO)**: privacy@thc-app.dev
-- **Legal**: legal@thc-app.dev
-- **General**: conduct@thc-app.dev
+- **Security**: awesome.cit.dev@gmail.com (see [SECURITY.md](./SECURITY.md))
+- **Privacy (DPO)**: awesome.cit.dev@gmail.com
+- **Legal**: awesome.cit.dev@gmail.com
+- **General**: awesome.cit.dev@gmail.com
 
 ---
 

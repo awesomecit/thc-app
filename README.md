@@ -241,6 +241,75 @@ watt-project/
 
 ---
 
+## 🔧 How Watt Configuration Works
+
+Platformatic Watt orchestrates multiple applications in a single server process through a
+hierarchical configuration system:
+
+### Configuration Hierarchy
+
+```
+Root watt.json → Defines all applications + shared settings
+     ↓
+Individual app configs (watt.json per app) → App-specific settings
+     ↓
+Shared .env file → Variables interpolated with {VARIABLE_NAME}
+     ↓
+Runtime → Automatic internal DNS (api.plt.local, frontend.plt.local)
+```
+
+### The Magic: Configuration Communication
+
+At runtime, Watt:
+
+1. **Reads** `watt.json` root to discover all applications
+2. **Loads** individual configurations from each app directory
+3. **Creates** internal hostnames automatically using application IDs:
+   - `thc-gateway` → `thc-gateway.plt.local`
+   - `thc-db` → `thc-db.plt.local`
+   - `thc-service` → `thc-service.plt.local`
+4. **Interpolates** environment variables from root `.env` using `{VARIABLE_NAME}` syntax
+
+### Example: Gateway Routes to Services
+
+**Root `.env`:**
+
+```env
+PLT_SERVER_PORT=3042
+DATABASE_URL=sqlite://./db.sqlite
+```
+
+**`watt.json` (root):**
+
+```json
+{
+  "$schema": "https://schemas.platformatic.dev/@platformatic/watt/3.27.0.json",
+  "entrypoint": "thc-gateway",
+  "autoload": { "path": "web", "exclude": ["docs"] },
+  "server": { "hostname": "0.0.0.0", "port": "{PLT_SERVER_PORT}" }
+}
+```
+
+**`web/thc-gateway/platformatic.json`:**
+
+```json
+{
+  "composer": {
+    "services": [
+      {
+        "id": "thc-db",
+        "proxy": { "prefix": "/api/db" }
+      }
+    ]
+  }
+}
+```
+
+At runtime, the gateway automatically proxies `/api/db/*` to `http://thc-db.plt.local` - no manual
+service discovery needed!
+
+---
+
 ## 🛠️ Key Technologies
 
 - **Runtime**: Node.js 22+

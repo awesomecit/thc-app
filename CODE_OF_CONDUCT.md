@@ -51,7 +51,7 @@ an appointed representative at an online or offline event.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community
-leaders responsible for enforcement at **conduct@thc-app.dev** or via GitHub Issues.
+leaders responsible for enforcement at **awesome.cit.dev@gmail.com** or via GitHub Issues.
 
 All complaints will be reviewed and investigated promptly and fairly.
 
