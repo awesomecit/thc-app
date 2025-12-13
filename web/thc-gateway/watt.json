@@ -1,6 +1,9 @@
 {
   "$schema": "https://schemas.platformatic.dev/@platformatic/gateway/3.27.0.json",
   "watch": true,
+  "plugins": {
+    "paths": ["plugins"]
+  },
   "gateway": {
     "applications": [
       {

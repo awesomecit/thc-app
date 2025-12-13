@@ -136,6 +136,19 @@ export default tseslint.config(
       
       // Keep floating promises error - tests should await properly
       '@typescript-eslint/no-floating-promises': 'error',
+      
+      // Allow TODO/FIXME in tests for tracking known issues
+      'sonarjs/todo-tag': 'off',
+      'sonarjs/fixme-tag': 'off',
+    },
+  },
+
+  // Relaxed rules for plugin files
+  {
+    files: ['**/plugins/**/*.ts'],
+    rules: {
+      // Fastify plugins may not need await
+      '@typescript-eslint/require-await': 'off',
     },
   },
 );
