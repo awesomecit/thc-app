@@ -24,11 +24,15 @@
     "wattpm": "^3.27.0"
   },
   "devDependencies": {
+    "@secretlint/node": "^11.2.5",
+    "@secretlint/secretlint-rule-preset-recommend": "^11.2.5",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.0",
+    "secretlint": "^11.2.5"
   },
   "lint-staged": {
+    "*": "secretlint",
     "*.{ts,js,mjs,cjs}": [
       "prettier --write"
     ],
