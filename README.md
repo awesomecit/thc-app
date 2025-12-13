@@ -72,6 +72,11 @@ before adding dependencies.
 | **06** | [Podcast Scalette](./docs/guides/06-podcast-scalette-4-episodi.md)                              | Educational content       | Junior developer training materials                                  |
 | **07** | [Riflessione Etica AI](./docs/guides/07-riflessione-etica-ai-droga-digitale.md)                 | Critical AI analysis      | AI as "digital drug", empirical evidence, balanced usage             |
 | **08** | [Modular Monolith Reference](./docs/guides/08-platformatic-modular-monolith-quick-reference.md) | Quick reference guide     | DB applications, gateway composition, migrations, seeding            |
+| **09** | [Secrets Management](./docs/guides/09-secrets-management-guide.md)                              | Security best practices   | Secrets detection, .env management, pre-commit hooks                 |
+| **10** | [Observability Design](./docs/guides/10-observability-design.md)                                | Monitoring & logging      | Structured logging, metrics, tracing, health checks                  |
+| **11** | [Automatic Versioning](./docs/guides/11-automatic-versioning-release-workflow.md)               | Release automation        | Semantic versioning, changelog, git tags, Docker images              |
+| **12** | [HTTP Caching with Watt](./docs/guides/12-http-caching-watt-guide.md)                           | Performance optimization  | Client-side cache, tag-based invalidation, TTL strategies            |
+| **13** | [Platformatic DB CRUD](./docs/guides/13-platformatic-db-crud-generation-guide.md)               | Database-driven APIs      | SQL migrations, OpenAPI/GraphQL generation, entity hooks             |
 
 ### Practical Guides
 
