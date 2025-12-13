@@ -5,9 +5,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D22-brightgreen)](https://nodejs.org)
 [![Platformatic Watt](https://img.shields.io/badge/Platformatic-Watt-blue)](https://platformatic.dev)
-[![Made with ❤️ for Healthcare](https://img.shields.io/badge/Made%20with%20%E2%9D%A4%EF%B8%8F%20for-Healthcare-red)]()
+[![Hexagonal Architecture](https://img.shields.io/badge/Architecture-Hexagonal-blue)]()
 
-**Comprehensive documentation for building enterprise healthcare applications with Platformatic Watt**
+**Comprehensive documentation for building enterprise applications with Platformatic Watt**
 
 [Documentation](#documentation) • [Philosophy](#core-philosophy) • [Getting Started](#getting-started) • [Contributing](#contributing)
 
@@ -17,7 +17,7 @@
 
 ## 📚 About This Repository
 
-This repository contains **comprehensive, production-ready documentation** for building modern healthcare applications using Platformatic Watt, hexagonal architecture, and industry best practices. While contextualized for healthcare/clinical systems, the principles and patterns apply broadly to any enterprise application.
+This repository contains **comprehensive, production-ready documentation** for building modern enterprise applications using Platformatic Watt, hexagonal architecture, and industry best practices. The patterns and principles apply broadly to any domain including healthcare, fintech, e-commerce, and more.
 
 **This is a documentation repository, not a runnable codebase.** It serves as a complete knowledge base and reference guide for developers building scalable, maintainable applications.
 
@@ -284,7 +284,7 @@ We welcome contributions! This documentation is a living resource that improves 
 ### Guidelines
 
 - Keep examples **concrete** and **actionable**
-- Preserve the **healthcare context** where present
+- Preserve the **domain-agnostic approach** with healthcare as example use case
 - Maintain **consistency** across documents
 - Update cross-references when moving content
 - Follow the documentation structure and numbering
@@ -339,7 +339,7 @@ This documentation draws inspiration from:
 - **Martin Fowler** - Refactoring, Continuous Integration
 - **The Platformatic Team** - Watt framework and tooling
 
-Special thanks to the healthcare development community for real-world insights and patterns.
+Special thanks to the enterprise development community for real-world insights and patterns.
 
 ---
 

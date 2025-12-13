@@ -1,7 +1,7 @@
 {
   "name": "thc-app",
   "version": "0.1.0",
-  "description": "Healthcare application with Platformatic Watt",
+  "description": "Enterprise application with Platformatic Watt and hexagonal architecture",
   "type": "module",
   "scripts": {
     "dev": "wattpm dev",
@@ -11,7 +11,7 @@
     "format": "prettier --write .",
     "prepare": "husky"
   },
-  "keywords": ["platformatic", "watt", "healthcare", "hexagonal-architecture"],
+  "keywords": ["platformatic", "watt", "hexagonal-architecture", "modular-monolith", "typescript"],
   "author": "Antonio Cittadino",
   "license": "MIT",
   "dependencies": {
