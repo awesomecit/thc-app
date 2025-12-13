@@ -13,7 +13,7 @@
 
 [Documentation](#documentation) • [Philosophy](#core-philosophy) •
 [Getting Started](#getting-started) • [Contributing](./CONTRIBUTING.md) • [Security](./SECURITY.md)
-• [Changelog](./CHANGELOG.md)
+• [Compliance](./COMPLIANCE.md) • [Changelog](./CHANGELOG.md) • [Changelog](./CHANGELOG.md)
 
 </div>
 
@@ -371,7 +371,7 @@ Special thanks to the enterprise development community for real-world insights a
 ## 📧 Contact & Community
 
 - **Author**: Antonio Cittadino
-- **Repository**: [github.com/yourusername/thc-app](https://github.com/yourusername/thc-app)
+- **Repository**: [github.com/awesomecit/thc-app](https://github.com/awesomecit/thc-app)
 - **Issues**: Use GitHub Issues for bugs and feature requests
 - **Discussions**: Use GitHub Discussions for questions and ideas
 - **Security**: See [SECURITY.md](./SECURITY.md) for vulnerability reporting
