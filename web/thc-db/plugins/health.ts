@@ -1,5 +1,5 @@
 /// <reference types="@platformatic/db" />
-import { FastifyInstance } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 
 const healthSchema = {
   response: {

@@ -45,6 +45,7 @@
     "clean:install": "npm run clean && npm install",
     "deps:update": "npm update",
     "deps:audit": "npm audit",
+    "postinstall": "patch-package",
     "prepare": "husky"
   },
   "keywords": [
@@ -57,6 +58,7 @@
   "author": "Antonio Cittadino",
   "license": "MIT",
   "dependencies": {
+    "@platformatic/sql-mapper": "^3.27.0",
     "better-sqlite3": "^12.5.0",
     "wattpm": "^3.27.0"
   },
@@ -73,6 +75,7 @@
     "eslint-plugin-sonarjs": "^3.0.5",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
+    "patch-package": "^8.0.1",
     "prettier": "^3.0.0",
     "secretlint": "^11.2.5",
     "tsx": "^4.21.0",
