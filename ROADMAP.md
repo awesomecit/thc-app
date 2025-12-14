@@ -308,7 +308,129 @@ Task Completion Rate = (Completed / Planned) × 100%
 
 ---
 
-### EPIC-003: Testing Infrastructure Foundation
+### EPIC-003: Observability & Admin Foundation
+
+**Goal**: Implement observability stack (health, logging, metrics) + admin dashboard MVP  
+**Team**: 1 developer  
+**Estimated Sprints**: 1
+
+#### Sprint 3: Health & Telemetry
+
+- **Story 3.1**: Health Checks & Logging Centralizzato
+  - **Task 3.1.1**: Implement health endpoints (liveness + readiness) [4h]
+    ```gherkin
+    Given Platformatic services running
+    When GET /health/live is called
+    Then response should be 200 with status "ok"
+    And no external dependencies should be checked (DB, cache)
+    When GET /health/ready is called
+    Then response should be 200 if service is ready to accept traffic
+    And database connection should be verified
+    And cache connection should be verified (if applicable)
+    And response should include checks details
+    ```
+  - **Task 3.1.2**: Unified Pino logger configuration [3h]
+    ```gherkin
+    Given multiple Platformatic services
+    When logger is configured with Pino
+    Then all logs should use structured JSON format
+    And log level should be configurable via PLT_LOG_LEVEL
+    And development mode should use pretty-print
+    And production mode should use JSON output
+    And logger should be shared across all services
+    ```
+  - **Task 3.1.3**: Correlation ID middleware [2h]
+    ```gherkin
+    Given requests flowing through gateway
+    When a request enters the system
+    Then a unique correlation ID should be generated (X-Request-ID)
+    And correlation ID should be propagated to all downstream services
+    And all logs should include the correlation ID
+    And response should include X-Request-ID header
+    ```
+  - **Task 3.1.4**: Centralized error handler [3h]
+    ```gherkin
+    Given errors occurring in services
+    When an error is thrown
+    Then error handler should catch it
+    And error should be logged with correlation ID and stack trace
+    And response should return standard error format (code, message, requestId)
+    And sensitive data should not be exposed in error messages
+    And 500 errors should be logged with FATAL level
+    ```
+
+- **Story 3.2**: Telemetry Stack Base
+  - **Task 3.2.1**: Docker Compose stack (Prometheus + Grafana) [3h]
+    ```gherkin
+    Given development environment
+    When docker-compose up is run
+    Then Prometheus should start on port 9090
+    And Grafana should start on port 3000
+    And Prometheus should scrape /metrics from gateway
+    And Grafana should be pre-configured with Prometheus datasource
+    And docker-compose down should cleanup volumes
+    ```
+  - **Task 3.2.2**: Prometheus metrics for Watt services [4h]
+    ```gherkin
+    Given Platformatic services running
+    When /metrics endpoint is exposed on gateway
+    Then HTTP request metrics should be collected (count, duration, status)
+    And Node.js process metrics should be exposed (memory, CPU, event loop)
+    And custom business metrics should be available (e.g., active users)
+    And metrics should follow Prometheus naming conventions
+    ```
+  - **Task 3.2.3**: Grafana dashboard base [3h]
+    ```gherkin
+    Given Prometheus collecting metrics
+    When Grafana dashboard is created
+    Then dashboard should show HTTP request rate (req/s)
+    And dashboard should show error rate (%) per service
+    And dashboard should show p95/p99 latency
+    And dashboard should show Node.js memory usage
+    And dashboard should be version-controlled (JSON export)
+    ```
+  - **Task 3.2.4**: Basic alerting (error rate > 5%) [2h]
+    ```gherkin
+    Given Prometheus alerting rules configured
+    When error rate exceeds 5% for 5 minutes
+    Then alert should fire
+    And alert should include service name and error rate
+    And alert should be visible in Grafana
+    And webhook notification should be sent (optional)
+    ```
+
+- **Story 3.3**: Admin API + Panel MVP
+  - **Task 3.3.1**: Admin service endpoint /admin/status [2h]
+    ```gherkin
+    Given admin service created
+    When GET /admin/status is called
+    Then response should include all services status (up/down)
+    And response should include system metrics (memory, CPU)
+    And response should include recent errors count
+    And endpoint should require authentication (future: JWT)
+    ```
+  - **Task 3.3.2**: React admin UI skeleton [3h]
+    ```gherkin
+    Given admin frontend needed
+    When admin UI is created with Vite + React
+    Then UI should display services status grid
+    And UI should show health check results
+    And UI should refresh status every 10 seconds
+    And UI should use Tailwind CSS for styling
+    ```
+  - **Task 3.3.3**: Serve UI from Gateway /admin [2h]
+    ```gherkin
+    Given admin UI built
+    When UI is served from gateway at /admin
+    Then gateway should proxy /admin/api/* to admin service
+    And gateway should serve static files from /admin/*
+    And admin UI should load without CORS errors
+    And navigation should work with SPA routing
+    ```
+
+---
+
+### EPIC-005: Testing Infrastructure Foundation
 
 **Goal**: Establish testing pyramid and BDD framework  
 **Team**: 1-2 developers  
@@ -436,7 +558,7 @@ Task Completion Rate = (Completed / Planned) × 100%
 
 ---
 
-### EPIC-004: CI/CD Pipeline
+### EPIC-006: CI/CD Pipeline
 
 **Goal**: Automate build, test, and deployment  
 **Team**: 1 developer  
@@ -505,7 +627,7 @@ Task Completion Rate = (Completed / Planned) × 100%
 
 ---
 
-### EPIC-012: Admin Dashboard Telemetria
+### EPIC-007: Admin Dashboard Telemetria (DEPRECATED - See EPIC-003)
 
 **Goal**: Monitoring dashboard for system health and metrics  
 **Team**: 1-2 developers  
@@ -705,7 +827,7 @@ Task Completion Rate = (Completed / Planned) × 100%
 
 ---
 
-### EPIC-005: Platformatic Watt Multi-App Structure
+### EPIC-008: Platformatic Watt Multi-App Structure
 
 **Goal**: Implement modular monolith architecture  
 **Team**: 1-2 developers  
