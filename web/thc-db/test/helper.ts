@@ -1,22 +1,24 @@
 import { join } from 'node:path';
-import { readFile, unlink } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
+import { readFile } from 'node:fs/promises';
 import { create } from '@platformatic/db';
 import { test } from 'node:test';
-
-let counter = 0;
+import { startTestDatabase, stopTestDatabase } from './integration/test-db.js';
 
 type testfn = Parameters<typeof test>[0];
 type TestContext = Parameters<Exclude<testfn, undefined>>[0];
 
+/**
+ * Create Platformatic DB server for tests
+ * Uses PostgreSQL with Testcontainers to avoid SQLite ESM issues
+ * See: docs/BUG_REPORT_PLATFORMATIC_SQLITE_ESM.md
+ */
 export async function getServer(t: TestContext) {
-  const dbPath = join(tmpdir(), 'db-' + process.pid + '-' + counter++ + '.sqlite');
-  const connectionString = 'sqlite://' + dbPath;
+  // Use PostgreSQL with Testcontainers instead of SQLite
+  const connectionString = await startTestDatabase();
 
   // We go up two folder because this files executes in the dist folder
   const config = JSON.parse(await readFile(join(import.meta.dirname, '..', 'watt.json'), 'utf8'));
-  // Add your config customizations here. For example you want to set
-  // all things that are set in the config file to read from an env variable
+
   config.server ||= {};
   config.server.logger ||= {};
   config.server.logger.level = 'warn';
@@ -26,14 +28,17 @@ export async function getServer(t: TestContext) {
   config.types.autogenerate = false;
   config.db.connectionString = connectionString;
 
-  // Add your config customizations here
   const server = await create(join(import.meta.dirname, '../'), config);
-  await server.start({}); // sets .getApplication()
+  await server.start({});
   t.after(() => server.stop());
 
-  t.after(async () => {
-    await unlink(dbPath);
-  });
-
   return server.getApplication();
+}
+
+/**
+ * Cleanup function to stop PostgreSQL container after all tests
+ * Call this in test suite teardown
+ */
+export async function cleanupTestDatabase() {
+  await stopTestDatabase();
 }

@@ -4,24 +4,26 @@
 
 `@platformatic/sql-mapper` v3.27.0 has an ES module import issue with `@matteo.collina/sqlite-pool` where the default export is an **object containing multiple exports** (not a function), causing "sqlite.default is not a function" error.
 
-## UPDATED FINDING (2024-12-14)
+## RESOLUTION (2024-12-14)
 
-After deeper investigation, we discovered that `@matteo.collina/sqlite-pool@0.6.0` exports its default as an **object** containing:
-- `createConnectionPool` (function) - accessible via `.default` property
-- `sql` (template tag function)
-- `isSqlQuery` (utility)
+After investigation, we found SQLite has complex ESM export issues with Platformatic. 
 
-```javascript
-// Actual structure of default export:
-{
-  sql: [Function: query],
-  isSqlQuery: [Getter],
-  createConnectionPool: [Function: createConnectionPool],
-  default: [Function: createConnectionPool]  // Reference to createConnectionPool
-}
-```
+**Solution adopted: Use PostgreSQL for tests with Testcontainers**
 
-Therefore, the **current Platformatic code is actually CORRECT** - it needs `sqlite.default()` to access the createConnectionPool function.
+- ✅ Development: Continue using SQLite (simple, no dependencies)
+- ✅ Tests: Use PostgreSQL with Testcontainers (production-like)
+- ✅ Production: PostgreSQL (already planned)
+
+Implementation:
+- `web/thc-db/test/integration/test-db.ts` - PostgreSQL container helper
+- `web/thc-db/test/helper.ts` - Updated to use PostgreSQL
+- All 9/9 health check tests now pass
+
+This approach:
+1. Avoids SQLite ESM complexity
+2. Tests against production database (PostgreSQL)
+3. Uses Testcontainers for isolation and cleanup
+4. Keeps development simple with SQLite
 
 ## Environment
 

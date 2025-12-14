@@ -1,6 +1,6 @@
-import test from 'node:test';
+import test, { after } from 'node:test';
 import assert from 'node:assert';
-import { getServer } from '../helper.js';
+import { getServer, cleanupTestDatabase } from '../helper.js';
 
 /**
  * Test di integrazione: health check di thc-db
@@ -10,11 +10,16 @@ import { getServer } from '../helper.js';
  * - thc-db deve rispondere su /health/live
  * - /health/ready deve verificare la connessione al database
  *
- * FIXME: SQLite ESM import issue (sqlite.default is not a function)
- * Tracked in: https://github.com/platformatic/platformatic/issues/...
+ * Uses PostgreSQL with Testcontainers to avoid SQLite ESM issues.
+ * See: docs/BUG_REPORT_PLATFORMATIC_SQLITE_ESM.md
  */
 
-void test.skip('thc-db /health/ready', async (t) => {
+// Cleanup PostgreSQL container after all tests
+after(async () => {
+  await cleanupTestDatabase();
+});
+
+void test('thc-db /health/ready', async (t) => {
   const app = await getServer(t);
 
   const res = await app.inject({
@@ -27,7 +32,7 @@ void test.skip('thc-db /health/ready', async (t) => {
   assert.strictEqual(body.status, 'ok', 'db should be ready');
 });
 
-void test.skip('thc-db /health/live', async (t) => {
+void test('thc-db /health/live', async (t) => {
   const app = await getServer(t);
 
   const res = await app.inject({
