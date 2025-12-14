@@ -1,0 +1,32 @@
+#!/usr/bin/env sh
+
+# Get the remote branch being pushed to
+remote="$1"
+url="$2"
+
+# Read stdin to get local_ref, local_sha, remote_ref, remote_sha
+while read local_ref local_sha remote_ref remote_sha; do
+  # Extract branch name from remote_ref (refs/heads/main -> main)
+  branch=$(echo "$remote_ref" | sed 's|refs/heads/||')
+  
+  # Only run build verification when pushing to main or master
+  if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
+    echo "🔍 Pushing to protected branch: $branch"
+    echo "🏗️  Running build verification..."
+    
+    # Run build - if it fails, push is blocked
+    npm run build
+    
+    if [ $? -ne 0 ]; then
+      echo "❌ Build failed! Push blocked."
+      echo "💡 Fix compilation errors before pushing to $branch"
+      exit 1
+    fi
+    
+    echo "✅ Build successful - push allowed"
+  else
+    echo "⚡ Pushing to feature branch: $branch - skipping build check"
+  fi
+done
+
+exit 0
