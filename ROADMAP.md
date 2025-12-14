@@ -217,15 +217,19 @@ Task Completion Rate = (Completed / Planned) × 100%
     And BREAKING CHANGES should be prominently displayed
     And the file should follow Keep a Changelog format
     ```
-  - **Task 2.2.3**: Document release workflow [2h]
+    - **Task 2.2.3**: Document release workflow [2h] ✅
     ```gherkin
     Given semantic release is configured
-    When a developer reads RELEASE_PROCESS.md
+    When a developer reads CONTRIBUTING.md Release Process section
     Then they should understand how commits affect versioning
     And they should see examples of release commands
     And emergency manual release process should be documented
     And rollback procedures should be explained
     ```
+    **Implementation**: Integrated in `CONTRIBUTING.md` under "🚀 Release Process" section.
+    Covers: standard workflow, emergency hotfix, rollback procedure, pre-push bypass. References
+    existing `npm run release:suggest` and `npm run release` commands. Uses real version examples
+    from v0.4.0 release.
 
 ---
 
@@ -868,5 +872,39 @@ Task Completion Rate = (Completed / Planned) × 100%
 
 ---
 
-**Last Updated**: 2025-12-13  
-**Next Review**: End of Sprint 1
+**Last Updated**: 2025-12-14  
+**Next Review**: End of Sprint 2
+
+---
+
+## 📝 Backlog (Future Considerations)
+
+### Module Versioning Strategy
+**Priority**: Medium  
+**Estimated Effort**: 4-6h research + 8h implementation  
+**Context**: Decide how to version individual components in `web/` directory
+
+**Options to evaluate:**
+1. **Fixed Versions** (simplest): All modules sync with root version
+   - PRO: Simple, atomic deploys
+   - CON: Unnecessary version bumps for unchanged modules
+2. **Independent Versions** (complex): Each module has own version
+   - PRO: Precise tracking, selective deploys
+   - CON: Dependency management overhead, tooling complexity
+3. **Scope-based** (hybrid): Use conventional commit scopes to track module changes
+   - PRO: Leverages existing workflow
+   - CON: Still need to decide: one version or many?
+
+**Decision Criteria:**
+- Deploy strategy (monolithic vs microservices)
+- Team structure (single team vs module owners)
+- Release cadence (synchronized vs independent)
+
+**Related Documents**: 
+- `docs/RELEASE-SYSTEM-SUMMARY.md` (current versioning)
+- `ADR-003` (semantic versioning tool choice)
+
+**Next Steps**: 
+1. Define deployment requirements (Sprint 4+)
+2. Choose strategy based on deploy model
+3. Implement if Independent Versions needed (ADR required)

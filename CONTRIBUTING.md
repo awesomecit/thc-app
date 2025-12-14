@@ -572,6 +572,89 @@ npm test                    # All tests
    - Alternatives considered
    - Impact assessment
 
+## 🚀 Release Process
+
+### Standard Release Workflow
+
+Releases are **fully automated** via conventional commits:
+
+```bash
+# 1. Preview next version (dry-run)
+npm run release:suggest
+# Output: Next version 0.4.0 (MINOR) - 2 features, 1 fix
+
+# 2. Execute release
+npm run release
+# Automatically:
+# ✅ Generates CHANGELOG.md (Keep a Changelog format)
+# ✅ Generates feature.json (client-facing notes)
+# ✅ Updates package.json version
+# ✅ Creates release commit
+# ✅ Creates Git tag (v0.4.0)
+
+# 3. Push to remote
+git push origin main --tags
+```
+
+**Version bump rules**:
+- `fix:` → PATCH (0.1.0 → 0.1.1)
+- `feat:` → MINOR (0.1.0 → 0.2.0)
+- `feat!:` or `BREAKING CHANGE:` → MAJOR (0.1.0 → 1.0.0)
+- Other types (`docs:`, `chore:`, etc.) → No bump
+
+### Emergency Hotfix
+
+```bash
+# 1. Branch from production tag
+git checkout -b hotfix/critical-fix v1.2.3
+
+# 2. Fix and commit
+git commit -m "fix(auth): prevent token leak"
+
+# 3. Release hotfix
+npm run release  # Creates v1.2.4 (PATCH)
+
+# 4. Push and merge back
+git push --tags
+git checkout main && git merge hotfix/critical-fix
+```
+
+### Rollback Procedure
+
+If a release needs rollback:
+
+```bash
+# 1. Delete tag locally
+git tag -d v1.2.3
+
+# 2. Delete tag remotely
+git push origin :refs/tags/v1.2.3
+
+# 3. Revert package.json
+git checkout v1.2.2 -- package.json
+git commit -m "chore: rollback to v1.2.2"
+
+# 4. Remove CHANGELOG entry manually
+# Edit CHANGELOG.md and remove v1.2.3 section
+```
+
+### Bypass Pre-push Hook (Emergency Only)
+
+Pre-push hooks run build + tests on `main`/`master`. To bypass:
+
+```bash
+SKIP_PRE_PUSH_CHECKS=true git push
+```
+
+⚠️ **Use only when**:
+- CI is broken but hotfix needed
+- Tests have false positives
+- Emergency deployment required
+
+**Note**: CI/CD will still verify on pull request.
+
+---
+
 ## 📚 Documentation
 
 - **Code comments**: Explain "why", not "what"
@@ -579,6 +662,7 @@ npm test                    # All tests
 - **ADRs**: For architectural decisions (`docs/architecture/decisions/`)
 - **API docs**: For public interfaces
 - **Examples**: For complex features
+- **Release notes**: Auto-generated in `CHANGELOG.md` and `feature.json`
 
 ## 🏆 Recognition
 
