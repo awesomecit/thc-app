@@ -10,6 +10,7 @@
 ## Context
 
 Il progetto richiede un sistema di **semantic versioning automatico** basato su conventional commits per:
+
 - Calcolare automaticamente la prossima versione (MAJOR.MINOR.PATCH)
 - Generare CHANGELOG.md in formato Keep a Changelog
 - Creare git tags
@@ -22,12 +23,14 @@ Abbiamo analizzato **4 tool all-in-one** e un **approccio ibrido con librerie mo
 #### 1. semantic-release (v25.0.2)
 
 **Pro**:
+
 - ✅ Zero config out-of-the-box
 - ✅ Ecosystem ricco di plugin (@semantic-release/github, @semantic-release/npm, @semantic-release/changelog)
 - ✅ Molto popolare (18K+ GitHub stars)
 - ✅ Integrazione CI/CD nativa
 
 **Contro**:
+
 - ❌ **Opinionated**: workflow rigido, difficile customizzare
 - ❌ Non supporta `feature.json` custom senza plugin complesso
 - ❌ Configurazione tramite file separato (`.releaserc`)
@@ -40,10 +43,12 @@ Abbiamo analizzato **4 tool all-in-one** e un **approccio ibrido con librerie mo
 #### 2. standard-version (Deprecated)
 
 **Pro**:
+
 - ✅ Semplice e standalone
 - ✅ Supporta conventional-changelog
 
 **Contro**:
+
 - ❌ **Deprecato** - manutenzione rallentata/ferma
 - ❌ Raccomanda migrazione a alternative
 
@@ -54,12 +59,14 @@ Abbiamo analizzato **4 tool all-in-one** e un **approccio ibrido con librerie mo
 #### 3. release-it (via @release-it/conventional-changelog)
 
 **Pro**:
+
 - ✅ Molto flessibile con sistema di plugin
 - ✅ Supporta conventional-changelog tramite plugin ufficiale
 - ✅ Configurazione granulare
 - ✅ Attivamente mantenuto
 
 **Contro**:
+
 - ❌ Curva di apprendimento più ripida
 - ❌ Richiede comunque customizzazione per `feature.json`
 - ❌ Plugin dependency chain complessa
@@ -71,11 +78,13 @@ Abbiamo analizzato **4 tool all-in-one** e un **approccio ibrido con librerie mo
 #### 4. changesets (@changesets/cli v2.29.8)
 
 **Pro**:
+
 - ✅ Eccellente per monorepo con npm workspaces
 - ✅ Workflow basato su file `.changeset/` (review-friendly)
 - ✅ Usato da progetti enterprise (Remix, Radix UI)
 
 **Contro**:
+
 - ❌ **Workflow completamente diverso**: non usa conventional commits nativamente
 - ❌ Richiede file `.changeset/` manuali o tramite CLI interattiva
 - ❌ Incompatibile con il nostro workflow Git + commitlint esistente
@@ -96,6 +105,7 @@ Abbiamo analizzato **4 tool all-in-one** e un **approccio ibrido con librerie mo
 | `simple-git` | 3.x | steveukx | Operazioni git |
 
 **Pro**:
+
 - ✅ **Massima flessibilità**: controllo totale su logica custom
 - ✅ **Librerie battle-tested**: conventional-changelog ecosystem con milioni di download
 - ✅ **No vendor lock-in**: librerie modulari, sostituibili singolarmente
@@ -106,6 +116,7 @@ Abbiamo analizzato **4 tool all-in-one** e un **approccio ibrido con librerie mo
 - ✅ **Allineato con Guida 11**: documento di progetto raccomanda questo approccio
 
 **Contro**:
+
 - ⚠️ Richiede scrivere logica orchestrazione (ma abbiamo già pseudocodice in Guida 11)
 - ⚠️ Più codice da testare (ma maggiore controllo qualità)
 
@@ -118,6 +129,7 @@ Abbiamo analizzato **4 tool all-in-one** e un **approccio ibrido con librerie mo
 **Implementiamo un sistema di semantic versioning con approccio ibrido**:
 
 1. **Core Libraries**:
+
    ```bash
    npm install --save-dev conventional-commits-parser semver simple-git
    ```
@@ -130,6 +142,7 @@ Abbiamo analizzato **4 tool all-in-one** e un **approccio ibrido con librerie mo
    - Generazione `feature.json` per integrazione BDD
 
 3. **Workflow**:
+
    ```bash
    npm run release:suggest  # Preview (--dry-run)
    npm run release          # Esegui release completa
@@ -171,22 +184,26 @@ Abbiamo analizzato **4 tool all-in-one** e un **approccio ibrido con librerie mo
 ## Implementation Plan
 
 ### Fase 1 (Sprint 2 - Task 2.2.1)
+
 - [ ] Installare dipendenze: `conventional-commits-parser`, `semver`, `simple-git`
 - [ ] Implementare `scripts/auto-release.js` con analisi commit e calcolo versione
 - [ ] Aggiungere supporto `--dry-run` per preview
 - [ ] Test: validare su commit esistenti del progetto
 
 ### Fase 2 (Sprint 2 - Task 2.2.2)
+
 - [ ] Implementare generazione CHANGELOG.md (Keep a Changelog format)
 - [ ] Raggruppamento per tipo: Features, Bug Fixes, Breaking Changes
 - [ ] Link a commit hash su GitHub
 
 ### Fase 3 (Sprint 2 - Task 2.2.3)
+
 - [ ] Documentare workflow in RELEASE_PROCESS.md
 - [ ] Procedure rollback
 - [ ] Processo hotfix
 
 ### Fase 4 (Futuro - quando implementiamo BDD)
+
 - [ ] Estendere script per generazione `feature.json`
 - [ ] Parsing file `.feature` Gherkin
 - [ ] Correlazione commit → scenari

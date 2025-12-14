@@ -151,4 +151,53 @@ export default tseslint.config(
       '@typescript-eslint/require-await': 'off',
     },
   },
+
+  // Node.js scripts configuration
+  {
+    files: ['scripts/**/*.js', 'scripts/**/*.mjs'],
+    languageOptions: {
+      globals: {
+        // Node.js globals
+        process: 'readonly',
+        console: 'readonly',
+        URL: 'readonly',
+        Buffer: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        module: 'readonly',
+        require: 'readonly',
+        exports: 'writable',
+      },
+      parserOptions: {
+        // Scripts don't have tsconfig
+        projectService: false,
+      },
+    },
+    rules: {
+      // Allow console in scripts
+      'no-console': 'off',
+      
+      // Allow process.exit in CLI scripts
+      'no-process-exit': 'off',
+      
+      // Scripts can be longer
+      'max-lines-per-function': ['warn', { max: 100 }],
+      
+      // No return types needed in JS scripts
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      
+      // Allow string duplication for CLI output
+      'sonarjs/no-duplicate-string': 'off',
+      
+      // Nested templates acceptable for CLI formatting
+      'sonarjs/no-nested-template-literals': 'off',
+      
+      // TypeScript rules don't apply to JS
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+    },
+  },
 );

@@ -45,6 +45,11 @@
     "clean:install": "npm run clean && npm install",
     "deps:update": "npm update",
     "deps:audit": "npm audit",
+    "------- 📦 Release Management -------": "",
+    "release:suggest": "node scripts/auto-release.js --dry-run",
+    "release": "node scripts/auto-release.js",
+    "changelog:generate": "echo 'CHANGELOG generation - TBD (Task 2.2.2)'",
+    "------- 🔧 Setup -------": "",
     "prepare": "husky"
   },
   "keywords": [
