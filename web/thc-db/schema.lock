@@ -4,10 +4,10 @@
     "table": "versions",
     "constraints": [
       {
-        "constraint_catalog": "testdb",
+        "constraint_catalog": "thc_db",
         "constraint_schema": "public",
         "constraint_name": "versions_pkey",
-        "table_catalog": "testdb",
+        "table_catalog": "thc_db",
         "table_schema": "public",
         "table_name": "versions",
         "constraint_type": "PRIMARY KEY",
@@ -63,10 +63,10 @@
     "table": "movies",
     "constraints": [
       {
-        "constraint_catalog": "testdb",
+        "constraint_catalog": "thc_db",
         "constraint_schema": "public",
         "constraint_name": "movies_pkey",
-        "table_catalog": "testdb",
+        "table_catalog": "thc_db",
         "table_schema": "public",
         "table_name": "movies",
         "constraint_type": "PRIMARY KEY",

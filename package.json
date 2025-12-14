@@ -65,6 +65,7 @@
     "@commitlint/cli": "^20.2.0",
     "@commitlint/config-conventional": "^20.2.0",
     "@eslint/js": "^9.39.2",
+    "@fastify/swagger-ui": "^5.2.3",
     "@secretlint/node": "^11.2.5",
     "@secretlint/secretlint-rule-preset-recommend": "^11.2.5",
     "@testcontainers/postgresql": "^11.10.0",
