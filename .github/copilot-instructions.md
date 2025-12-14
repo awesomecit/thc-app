@@ -37,9 +37,12 @@ before adding dependencies.
   applications, gateway composition, migrations, seeding
 - `09-secrets-management-guide.md` - Secrets management: detection, .env handling, pre-commit hooks
 - `10-observability-design.md` - Observability: structured logging, metrics, tracing, health checks
-- `11-automatic-versioning-release-workflow.md` - Semantic versioning: conventional commits, changelog, git tags, Docker image publishing
-- `12-http-caching-watt-guide.md` - HTTP caching with Watt: client-side cache, tag-based invalidation, TTL strategies, service mesh integration
-- `13-platformatic-db-crud-generation-guide.md` - Platformatic DB CRUD: SQL migrations as source of truth, OpenAPI/GraphQL auto-generation, entity hooks, plugins, routes
+- `11-automatic-versioning-release-workflow.md` - Semantic versioning: conventional commits,
+  changelog, git tags, Docker image publishing
+- `12-http-caching-watt-guide.md` - HTTP caching with Watt: client-side cache, tag-based
+  invalidation, TTL strategies, service mesh integration
+- `13-platformatic-db-crud-generation-guide.md` - Platformatic DB CRUD: SQL migrations as source of
+  truth, OpenAPI/GraphQL auto-generation, entity hooks, plugins, routes
 - `DEVELOPMENT_PRATICAL_GUIDE.md` - Practical implementation guide: Git workflow, quality gates,
   testing strategy, setup checklists (based on tech-citizen-sw-gateway)
 

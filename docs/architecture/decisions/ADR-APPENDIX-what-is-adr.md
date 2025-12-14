@@ -5,6 +5,7 @@
 **ADR** = **Architecture Decision Record**
 
 Un ADR è un documento che cattura una decisione architetturale importante, con:
+
 - **Contesto**: perché questa decisione?
 - **Decisione**: cosa abbiamo scelto?
 - **Conseguenze**: impatti positivi e negativi
@@ -33,23 +34,33 @@ Crea un ADR per decisioni che impattano significativamente il sistema:
 **Tags**: `categoria1`, `categoria2`
 
 ## Context
+
 Qual è il problema che stiamo affrontando?
 
 ## Decision
+
 Cosa abbiamo deciso di fare?
 
 ## Consequences
+
 ### Positive
+
 - ✅ Cosa diventa più facile
+
 ### Negative
+
 - ⚠️ Cosa diventa più difficile
+
 ### Neutral
+
 - ℹ️ Trade-off neutri
 
 ## Alternatives Considered
+
 Altre opzioni valutate e perché scartate
 
 ## References
+
 Link a risorse, discussioni, docs
 ```
 
@@ -60,10 +71,12 @@ ADR-NNN-titolo-breve.md
 ```
 
 Dove:
+
 - `NNN` = numero sequenziale (001, 002, 003...)
 - Titolo in kebab-case (tutto minuscolo, trattini)
 
 **Esempi**:
+
 - `ADR-001-choose-platformatic-watt.md`
 - `ADR-002-adopt-hexagonal-architecture.md`
 - `ADR-003-semantic-versioning-tool-choice.md`

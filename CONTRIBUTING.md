@@ -597,6 +597,7 @@ git push origin main --tags
 ```
 
 **Version bump rules**:
+
 - `fix:` → PATCH (0.1.0 → 0.1.1)
 - `feat:` → MINOR (0.1.0 → 0.2.0)
 - `feat!:` or `BREAKING CHANGE:` → MAJOR (0.1.0 → 1.0.0)
@@ -647,6 +648,7 @@ SKIP_PRE_PUSH_CHECKS=true git push
 ```
 
 ⚠️ **Use only when**:
+
 - CI is broken but hotfix needed
 - Tests have false positives
 - Emergency deployment required

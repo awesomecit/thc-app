@@ -49,36 +49,45 @@ thc-node      → 404 (endpoint non esistenti + test skip logic attiva)
 **Story 2.1 - Subtask finale: Implementazione health endpoints** (~2h)
 
 #### 1. thc-db (Platformatic DB)
+
 ```bash
 # File: web/thc-db/plugins/health.ts (nuovo)
 ```
+
 - Crea plugin con route `/health/ready` (check DB connection)
 - Crea route `/health/live` (check app alive)
 - Pattern: https://docs.platformatic.dev/docs/reference/db/plugin
 
 #### 2. thc-service (Platformatic Service)
+
 ```bash
 # File: web/thc-service/plugins/health.ts (nuovo)
 ```
+
 - Route `/health/ready` (dependencies check opzionale)
 - Route `/health/live` (check app alive)
 
 #### 3. thc-gateway (Platformatic Gateway)
+
 ```bash
 # File: web/thc-gateway/plugins/health.ts (nuovo)
 ```
+
 - Route `/health/ready` (check services reachability)
 - Route `/health/live` (check gateway alive)
 - Opzionale: aggregate health dai servizi backend
 
 #### 4. thc-node (Custom HTTP server)
+
 ```bash
 # File: web/thc-node/index.ts (modifica)
 ```
+
 - Aggiungi route handler per `/health/ready` e `/health/live`
 - Rimuovi `t.skip()` da `web/thc-node/test/integration/health.test.ts`
 
 #### 5. Verifica e commit
+
 ```bash
 npm run test:integration:health  # Dovrebbe passare 8/8 test
 git add -A
@@ -100,17 +109,20 @@ git push
 ### Story 2.2 - Semantic Versioning Automation (~10h) - DOPO health checks
 
 **Task 2.2.1**: Auto-release script (~6h)
+
 - Parse conventional commits dalla storia git
 - Calcola bump semver (feat→MINOR, fix→PATCH, BREAKING→MAJOR)
 - Crea git tag con formato `v{major}.{minor}.{patch}`
 - Genera CHANGELOG.md (Keep a Changelog format)
 
 **Task 2.2.2**: CHANGELOG generation (~2h)
+
 - Group commits by type (feat, fix, refactor, docs, chore)
 - Link commit hashes a GitHub/GitLab
 - Detect breaking changes (BREAKING CHANGE footer)
 
 **Task 2.2.3**: Release workflow docs (~2h)
+
 - `RELEASE_PROCESS.md` con workflow manuale e automatico
 - Rollback procedures
 - Emergency hotfix process
@@ -122,6 +134,7 @@ git push
 ## 📝 Note tecniche importanti
 
 ### Test pattern consolidato
+
 ```typescript
 // Pattern helper (web/*/test/helper.ts)
 export async function getServer(t: TestContext) {
@@ -145,6 +158,7 @@ test('App /health/ready', async (t) => {
 ```
 
 ### Comandi test essenziali
+
 ```bash
 npm run test:integration:health    # Solo health checks (veloce)
 npm run test:integration           # Tutti i test integration
@@ -154,12 +168,14 @@ npm run test:watch                 # Watch mode per TDD
 ```
 
 ### File da monitorare
+
 - `package.json` - script test aggiornati con `--experimental-strip-types`
 - `tsconfig.test.json` - config TypeScript per test (nuovo)
 - `web/*/test/helper.ts` - pattern Platformatic consolidato
 - `web/*/test/integration/health.test.ts` - test acceptance infrastrutturali
 
 ### Problema risolto: TypeScript execution
+
 ❌ **Prima**: `tsx` (incompatibile con Platformatic unicorn-magic)  
 ✅ **Dopo**: `node --experimental-strip-types` (Node.js 22 native)  
 📌 **Import**: usa `.ts` extension (non `.js`) per supporto nativo
@@ -173,7 +189,6 @@ npm run test:watch                 # Watch mode per TDD
   - [x] Pre-commit hooks (Husky)
   - [x] Test infrastructure (health checks)
   - [ ] Health endpoints implementation ← **NEXT 2h**
-  
 - [ ] **Story 2.2 - Semantic Versioning Automation** (~10h) - NOT STARTED
   - [ ] Auto-release script
   - [ ] CHANGELOG generation
@@ -196,4 +211,5 @@ Se Platformatic DB/Service ha già health automatici, **NON reimplementarli**. U
 
 ---
 
-**Prossimo comando**: `npm run test:integration:health` per vedere i 404, poi implementa plugin health.
+**Prossimo comando**: `npm run test:integration:health` per vedere i 404, poi implementa plugin
+health.

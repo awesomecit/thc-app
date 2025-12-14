@@ -193,12 +193,12 @@ Task Completion Rate = (Completed / Planned) × 100%
     ```
     **Implementation**: `.husky/pre-push` with branch detection and skip mechanism. Only runs
     `wattpm build` + `npm test` (unit + integration suites) when pushing to `main` or `master`.
-    Feature branches skip all checks for velocity. Emergency bypass: `SKIP_PRE_PUSH_CHECKS=true git
-    push` (warns that CI/CD will still verify). Provides clear feedback with step indicators (1/2,
-    2/2) and helpful error messages.
+    Feature branches skip all checks for velocity. Emergency bypass:
+    `SKIP_PRE_PUSH_CHECKS=true git push` (warns that CI/CD will still verify). Provides clear
+    feedback with step indicators (1/2, 2/2) and helpful error messages.
 
 - **Story 2.2**: Semantic Versioning Automation
-  - **Task 2.2.1**: Create auto-release script based on commits [6h]
+  - **Task 2.2.1**: Create auto-release script based on commits [6h] ✅
     ```gherkin
     Given a repository with conventional commits
     When the auto-release script runs
@@ -208,7 +208,11 @@ Task Completion Rate = (Completed / Planned) × 100%
     And BREAKING CHANGE should trigger MAJOR version bump
     And a new git tag should be created (e.g., v1.2.3)
     ```
-  - **Task 2.2.2**: Configure CHANGELOG generation [2h]
+    **Implementation**: Created `scripts/auto-release.js` (405 lines) with conventional commit
+    parsing, semver calculation, Git tag creation. Handles first release (no tags), calculates
+    version bumps (MAJOR/MINOR/PATCH), supports dry-run mode. Tested with v0.2.0, v0.3.0, v0.4.0
+    releases.
+  - **Task 2.2.2**: Configure CHANGELOG generation [2h] ✅
     ```gherkin
     Given auto-release script calculates new version
     When CHANGELOG.md is generated
@@ -217,7 +221,10 @@ Task Completion Rate = (Completed / Planned) × 100%
     And BREAKING CHANGES should be prominently displayed
     And the file should follow Keep a Changelog format
     ```
-    - **Task 2.2.3**: Document release workflow [2h] ✅
+    **Implementation**: Integrated in `scripts/auto-release.js`. Generates `CHANGELOG.md` (Keep a
+    Changelog format) and `feature.json` (client-facing notes) automatically. Groups commits by
+    Breaking/Features/Fixes sections with commit hashes. Tested end-to-end with 3 releases.
+  - **Task 2.2.3**: Document release workflow [2h] ✅
     ```gherkin
     Given semantic release is configured
     When a developer reads CONTRIBUTING.md Release Process section
@@ -226,10 +233,10 @@ Task Completion Rate = (Completed / Planned) × 100%
     And emergency manual release process should be documented
     And rollback procedures should be explained
     ```
-    **Implementation**: Integrated in `CONTRIBUTING.md` under "🚀 Release Process" section.
-    Covers: standard workflow, emergency hotfix, rollback procedure, pre-push bypass. References
-    existing `npm run release:suggest` and `npm run release` commands. Uses real version examples
-    from v0.4.0 release.
+    **Implementation**: Integrated in `CONTRIBUTING.md` under "🚀 Release Process" section. Covers:
+    standard workflow, emergency hotfix, rollback procedure, pre-push bypass. References existing
+    `npm run release:suggest` and `npm run release` commands. Uses real version examples from v0.4.0
+    release.
 
 ---
 
@@ -880,11 +887,13 @@ Task Completion Rate = (Completed / Planned) × 100%
 ## 📝 Backlog (Future Considerations)
 
 ### Module Versioning Strategy
+
 **Priority**: Medium  
 **Estimated Effort**: 4-6h research + 8h implementation  
 **Context**: Decide how to version individual components in `web/` directory
 
 **Options to evaluate:**
+
 1. **Fixed Versions** (simplest): All modules sync with root version
    - PRO: Simple, atomic deploys
    - CON: Unnecessary version bumps for unchanged modules
@@ -896,15 +905,18 @@ Task Completion Rate = (Completed / Planned) × 100%
    - CON: Still need to decide: one version or many?
 
 **Decision Criteria:**
+
 - Deploy strategy (monolithic vs microservices)
 - Team structure (single team vs module owners)
 - Release cadence (synchronized vs independent)
 
-**Related Documents**: 
+**Related Documents**:
+
 - `docs/RELEASE-SYSTEM-SUMMARY.md` (current versioning)
 - `ADR-003` (semantic versioning tool choice)
 
-**Next Steps**: 
+**Next Steps**:
+
 1. Define deployment requirements (Sprint 4+)
 2. Choose strategy based on deploy model
 3. Implement if Independent Versions needed (ADR required)

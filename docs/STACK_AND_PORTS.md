@@ -3,6 +3,7 @@
 ## Principio Fondamentale
 
 **REGOLA ZERO per Environment Variables:**
+
 - ❌ **MAI** valori hardcoded in config/docker/script
 - ✅ **SEMPRE** variabili d'ambiente con fallback ai default della tecnologia
 - ✅ Tutti i valori configurabili devono essere esternalizzati in `.env`
@@ -12,14 +13,15 @@
 
 ### 1. Platformatic Watt (Application Server)
 
-| Componente | Porta Default | Variabile Env | Descrizione |
-|------------|---------------|---------------|-------------|
-| Server HTTP | 3042 | `PORT` o `PLT_SERVER_PORT` | Server principale Watt |
-| Hostname | 0.0.0.0 | `PLT_SERVER_HOSTNAME` | Bind address |
-| Log Level | info | `PLT_SERVER_LOGGER_LEVEL` | Livello logging (trace, debug, info, warn, error) |
-| Management API | false | `PLT_MANAGEMENT_API` | API gestione Platformatic |
+| Componente     | Porta Default | Variabile Env              | Descrizione                                       |
+| -------------- | ------------- | -------------------------- | ------------------------------------------------- |
+| Server HTTP    | 3042          | `PORT` o `PLT_SERVER_PORT` | Server principale Watt                            |
+| Hostname       | 0.0.0.0       | `PLT_SERVER_HOSTNAME`      | Bind address                                      |
+| Log Level      | info          | `PLT_SERVER_LOGGER_LEVEL`  | Livello logging (trace, debug, info, warn, error) |
+| Management API | false         | `PLT_MANAGEMENT_API`       | API gestione Platformatic                         |
 
 **Routing interno (plt.local DNS):**
+
 - `http://thc-gateway.plt.local` - Gateway (entrypoint)
 - `http://thc-db.plt.local` - Database API
 - `http://thc-service.plt.local` - Business Logic Service
@@ -27,50 +29,50 @@
 
 ### 2. PostgreSQL (Database)
 
-| Parametro | Porta Default | Variabile Env | Descrizione |
-|-----------|---------------|---------------|-------------|
-| Port | 5432 | `POSTGRES_PORT` | Porta esposta PostgreSQL |
-| Host | localhost | `POSTGRES_HOST` | Host PostgreSQL |
-| User | postgres | `POSTGRES_USER` | Username database |
-| Password | - | `POSTGRES_PASSWORD` | **REQUIRED** - Password database |
-| Database | thc_db | `POSTGRES_DB` | Nome database |
-| Connection String | - | `DATABASE_URL` | URL completo `postgres://user:pass@host:port/db` |
+| Parametro         | Porta Default | Variabile Env       | Descrizione                                      |
+| ----------------- | ------------- | ------------------- | ------------------------------------------------ |
+| Port              | 5432          | `POSTGRES_PORT`     | Porta esposta PostgreSQL                         |
+| Host              | localhost     | `POSTGRES_HOST`     | Host PostgreSQL                                  |
+| User              | postgres      | `POSTGRES_USER`     | Username database                                |
+| Password          | -             | `POSTGRES_PASSWORD` | **REQUIRED** - Password database                 |
+| Database          | thc_db        | `POSTGRES_DB`       | Nome database                                    |
+| Connection String | -             | `DATABASE_URL`      | URL completo `postgres://user:pass@host:port/db` |
 
 **Docker Image:** `postgres:16-alpine`  
 **Container Name:** Usa `COMPOSE_PROJECT_NAME` prefix
 
 ### 3. Redis (Caching - Future)
 
-| Parametro | Porta Default | Variabile Env | Descrizione |
-|-----------|---------------|---------------|-------------|
-| Port | 6379 | `REDIS_PORT` | Porta Redis |
-| Host | localhost | `REDIS_HOST` | Host Redis |
-| Connection String | - | `REDIS_URL` | `redis://host:port` |
-| Password | - | `REDIS_PASSWORD` | Password (opzionale) |
+| Parametro         | Porta Default | Variabile Env    | Descrizione          |
+| ----------------- | ------------- | ---------------- | -------------------- |
+| Port              | 6379          | `REDIS_PORT`     | Porta Redis          |
+| Host              | localhost     | `REDIS_HOST`     | Host Redis           |
+| Connection String | -             | `REDIS_URL`      | `redis://host:port`  |
+| Password          | -             | `REDIS_PASSWORD` | Password (opzionale) |
 
 **Docker Image:** `redis:7-alpine`  
 **Status:** Non ancora implementato
 
 ### 4. Keycloak (Authentication - Future)
 
-| Parametro | Porta Default | Variabile Env | Descrizione |
-|-----------|---------------|---------------|-------------|
-| Port | 8080 | `KEYCLOAK_PORT` | Porta Keycloak |
-| Admin Port | 9000 | `KEYCLOAK_ADMIN_PORT` | Admin console |
-| Admin User | admin | `KEYCLOAK_ADMIN` | Username admin |
-| Admin Password | - | `KEYCLOAK_ADMIN_PASSWORD` | **REQUIRED** |
-| Realm | thc | `KEYCLOAK_REALM` | Realm applicazione |
-| URL | - | `KEYCLOAK_URL` | URL completo |
+| Parametro      | Porta Default | Variabile Env             | Descrizione        |
+| -------------- | ------------- | ------------------------- | ------------------ |
+| Port           | 8080          | `KEYCLOAK_PORT`           | Porta Keycloak     |
+| Admin Port     | 9000          | `KEYCLOAK_ADMIN_PORT`     | Admin console      |
+| Admin User     | admin         | `KEYCLOAK_ADMIN`          | Username admin     |
+| Admin Password | -             | `KEYCLOAK_ADMIN_PASSWORD` | **REQUIRED**       |
+| Realm          | thc           | `KEYCLOAK_REALM`          | Realm applicazione |
+| URL            | -             | `KEYCLOAK_URL`            | URL completo       |
 
 **Docker Image:** `quay.io/keycloak/keycloak:latest`  
 **Status:** Non ancora implementato
 
 ### 5. Testcontainers (Solo Test)
 
-| Componente | Porta | Variabile Env | Descrizione |
-|------------|-------|---------------|-------------|
-| PostgreSQL Test | Random | Gestito da Testcontainers | Porta dinamica per test |
-| Docker Socket | /var/run/docker.sock | - | Socket Docker richiesto |
+| Componente      | Porta                | Variabile Env             | Descrizione             |
+| --------------- | -------------------- | ------------------------- | ----------------------- |
+| PostgreSQL Test | Random               | Gestito da Testcontainers | Porta dinamica per test |
+| Docker Socket   | /var/run/docker.sock | -                         | Socket Docker richiesto |
 
 **Requisito:** Docker daemon in esecuzione
 
@@ -226,10 +228,11 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD required}
       POSTGRES_DB: ${POSTGRES_DB:-thc_db}
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - '${POSTGRES_PORT:-5432}:5432'
 ```
 
 **Sintassi:**
+
 - `${VAR}` - Usa variabile o errore se non esiste
 - `${VAR:-default}` - Usa variabile o default
 - `${VAR:?error message}` - Usa variabile o fallisce con messaggio
@@ -260,6 +263,7 @@ services:
 ```
 
 Le porte/config vengono lette da `.env` automaticamente da:
+
 - Platformatic Watt → Legge da `.env` via `watt.json`
 - Docker Compose → Legge da `.env` automaticamente
 

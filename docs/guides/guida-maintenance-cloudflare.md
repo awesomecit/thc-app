@@ -8,7 +8,8 @@
 
 ## Fase 1: Attivare il Proxy sui Record DNS
 
-Il Worker funziona solo se il traffico passa attraverso Cloudflare. Dobbiamo attivare il proxy su tutti i record.
+Il Worker funziona solo se il traffico passa attraverso Cloudflare. Dobbiamo attivare il proxy su
+tutti i record.
 
 1. Vai su **cloudflare.com** → Login → Seleziona **tech-citizen.me**
 2. Nel menu laterale clicca su **DNS** → **Records**
@@ -18,16 +19,17 @@ Il Worker funziona solo se il traffico passa attraverso Cloudflare. Dobbiamo att
 
 **Record da modificare:**
 
-| Nome | Tipo | Stato attuale | Stato richiesto |
-|------|------|---------------|-----------------|
-| app | A | Solo DNS (grigio) | Proxied (arancione) |
-| auth | A | Solo DNS (grigio) | Proxied (arancione) |
-| gateway | A | Solo DNS (grigio) | Proxied (arancione) |
-| grafana | A | Solo DNS (grigio) | Proxied (arancione) |
-| tech-citizen.me | A | Solo DNS (grigio) | Proxied (arancione) |
-| www | A | Solo DNS (grigio) | Proxied (arancione) |
+| Nome            | Tipo | Stato attuale     | Stato richiesto     |
+| --------------- | ---- | ----------------- | ------------------- |
+| app             | A    | Solo DNS (grigio) | Proxied (arancione) |
+| auth            | A    | Solo DNS (grigio) | Proxied (arancione) |
+| gateway         | A    | Solo DNS (grigio) | Proxied (arancione) |
+| grafana         | A    | Solo DNS (grigio) | Proxied (arancione) |
+| tech-citizen.me | A    | Solo DNS (grigio) | Proxied (arancione) |
+| www             | A    | Solo DNS (grigio) | Proxied (arancione) |
 
-> ⚠️ **Nota:** L'icona arancione significa che il traffico passa da Cloudflare. L'icona grigia significa che va diretto al server.
+> ⚠️ **Nota:** L'icona arancione significa che il traffico passa da Cloudflare. L'icona grigia
+> significa che va diretto al server.
 
 ---
 
@@ -130,13 +132,14 @@ Ora dobbiamo dire a Cloudflare di usare questo Worker per tutto il traffico del 
 3. Clicca **Add** → **Add route**
 4. Aggiungi queste route una alla volta:
 
-| Route | Zone |
-|-------|------|
-| `*tech-citizen.me/*` | tech-citizen.me |
+| Route                 | Zone            |
+| --------------------- | --------------- |
+| `*tech-citizen.me/*`  | tech-citizen.me |
 | `*.tech-citizen.me/*` | tech-citizen.me |
 
-> **Spiegazione:**  
-> - `*tech-citizen.me/*` cattura il dominio root (con e senza www)  
+> **Spiegazione:**
+>
+> - `*tech-citizen.me/*` cattura il dominio root (con e senza www)
 > - `*.tech-citizen.me/*` cattura tutti i sottodomini (app, auth, gateway, grafana)
 
 5. Clicca **Add route** per ciascuna
@@ -166,18 +169,19 @@ Quando i lavori sono finiti:
 
 Il traffico tornerà immediatamente al server Hetzner.
 
-> 💡 **Alternativa rapida:** Puoi anche disabilitare temporaneamente il Worker andando su **Settings** → **Disable** senza rimuovere le route.
+> 💡 **Alternativa rapida:** Puoi anche disabilitare temporaneamente il Worker andando su
+> **Settings** → **Disable** senza rimuovere le route.
 
 ---
 
 ## Troubleshooting
 
-| Problema | Soluzione |
-|----------|-----------|
-| La pagina non appare | Verifica che il proxy sia attivo (icona arancione) sui record DNS |
-| Errore 1101 | Il Worker ha un errore di sintassi. Controlla il codice |
-| Funziona solo su alcuni sottodomini | Verifica che la route `*.tech-citizen.me/*` sia configurata |
-| Vedo ancora il sito normale | Svuota la cache del browser o prova in incognito |
+| Problema                            | Soluzione                                                         |
+| ----------------------------------- | ----------------------------------------------------------------- |
+| La pagina non appare                | Verifica che il proxy sia attivo (icona arancione) sui record DNS |
+| Errore 1101                         | Il Worker ha un errore di sintassi. Controlla il codice           |
+| Funziona solo su alcuni sottodomini | Verifica che la route `*.tech-citizen.me/*` sia configurata       |
+| Vedo ancora il sito normale         | Svuota la cache del browser o prova in incognito                  |
 
 ---
 

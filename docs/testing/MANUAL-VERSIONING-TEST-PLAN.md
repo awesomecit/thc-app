@@ -61,6 +61,7 @@ cp /path/to/thc-app/scripts/auto-release.js ./scripts/
 **Scenario**: Bug fix should increment PATCH (0.1.0 → 0.1.1)
 
 **Setup**:
+
 ```bash
 cd /tmp/versioning-test
 git checkout -b test/patch-bump
@@ -70,12 +71,14 @@ git commit -m "fix(auth): prevent token leak in logs"
 ```
 
 **Expected Behavior**:
+
 - ✅ Version: `0.1.0 → 0.1.1`
 - ✅ CHANGELOG entry under `### Bug Fixes`
 - ✅ Commit type: `fix`
 - ✅ Scope: `auth`
 
 **Execution**:
+
 ```bash
 # Dry-run (preview)
 npm run release:suggest
@@ -88,6 +91,7 @@ npm run release:suggest
 ```
 
 **Verification**:
+
 ```bash
 # Check version NOT changed yet
 grep '"version"' package.json  # Should be 0.1.0
@@ -101,6 +105,7 @@ git tag | grep v0.1.1          # Tag should exist
 ```
 
 **Pass Criteria**:
+
 - [ ] Dry-run shows `0.1.1` as next version
 - [ ] package.json updated to `0.1.1`
 - [ ] Git tag `v0.1.1` created
@@ -108,6 +113,7 @@ git tag | grep v0.1.1          # Tag should exist
 - [ ] Commit listed under `### Bug Fixes`
 
 **Rollback**:
+
 ```bash
 git tag -d v0.1.1
 git reset --hard v0.1.0
@@ -121,6 +127,7 @@ npm pkg set version="0.1.0"
 **Scenario**: New feature should increment MINOR (0.1.1 → 0.2.0)
 
 **Setup**:
+
 ```bash
 cd /tmp/versioning-test
 git checkout -b test/minor-bump
@@ -130,12 +137,14 @@ git commit -m "feat(gateway): add circuit breaker for patient-api"
 ```
 
 **Expected Behavior**:
+
 - ✅ Version: `0.1.1 → 0.2.0` (PATCH resets to 0)
 - ✅ CHANGELOG entry under `### Features`
 - ✅ Commit type: `feat`
 - ✅ Scope: `gateway`
 
 **Execution**:
+
 ```bash
 npm run release:suggest
 # Expected: Next version: 0.2.0 (MINOR)
@@ -144,6 +153,7 @@ npm run release
 ```
 
 **Verification**:
+
 ```bash
 grep '"version"' package.json  # Should be 0.2.0
 git tag | grep v0.2.0          # Tag should exist
@@ -152,6 +162,7 @@ grep "### Features" CHANGELOG.md  # Section exists
 ```
 
 **Pass Criteria**:
+
 - [ ] Dry-run shows `0.2.0` as next version
 - [ ] PATCH counter reset to 0
 - [ ] package.json updated to `0.2.0`
@@ -160,6 +171,7 @@ grep "### Features" CHANGELOG.md  # Section exists
 - [ ] Commit listed with scope `(gateway)`
 
 **Rollback**:
+
 ```bash
 git tag -d v0.2.0
 git reset --hard v0.1.1
@@ -173,6 +185,7 @@ npm pkg set version="0.1.1"
 **Scenario**: Breaking change should increment MAJOR (0.2.0 → 1.0.0)
 
 **Setup**:
+
 ```bash
 cd /tmp/versioning-test
 git checkout -b test/major-bump
@@ -185,12 +198,14 @@ Old tokens are invalid. Users must re-authenticate."
 ```
 
 **Expected Behavior**:
+
 - ✅ Version: `0.2.0 → 1.0.0` (MINOR and PATCH reset to 0)
 - ✅ CHANGELOG entry under `### BREAKING CHANGES`
 - ✅ Commit type: `feat!` (exclamation mark detected)
 - ✅ Breaking change footer detected
 
 **Execution**:
+
 ```bash
 npm run release:suggest
 # Expected: Next version: 1.0.0 (MAJOR)
@@ -200,6 +215,7 @@ npm run release
 ```
 
 **Verification**:
+
 ```bash
 grep '"version"' package.json  # Should be 1.0.0
 git tag | grep v1.0.0          # Tag should exist
@@ -209,6 +225,7 @@ grep "Token format changed" CHANGELOG.md  # Breaking change description included
 ```
 
 **Pass Criteria**:
+
 - [ ] Dry-run shows `1.0.0` as next version
 - [ ] Dry-run warns about breaking changes
 - [ ] MINOR and PATCH reset to 0
@@ -218,6 +235,7 @@ grep "Token format changed" CHANGELOG.md  # Breaking change description included
 - [ ] Full breaking change message included in CHANGELOG
 
 **Rollback**:
+
 ```bash
 git tag -d v1.0.0
 git reset --hard v0.2.0
@@ -231,6 +249,7 @@ npm pkg set version="0.2.0"
 **Scenario**: Only chore/docs/style commits → NO version bump
 
 **Setup**:
+
 ```bash
 cd /tmp/versioning-test
 git checkout -b test/no-bump
@@ -248,24 +267,28 @@ git commit -m "chore: update ESLint config"
 ```
 
 **Expected Behavior**:
+
 - ✅ Version: `1.0.0 → 1.0.0` (NO CHANGE)
 - ✅ Script exits with message "No releasable changes"
 - ✅ No tag created
 - ✅ No CHANGELOG update
 
 **Execution**:
+
 ```bash
 npm run release:suggest
 # Expected: "No releasable changes detected. Version remains 1.0.0"
 ```
 
 **Verification**:
+
 ```bash
 grep '"version"' package.json  # Should still be 1.0.0
 git tag | grep v1.0.0 | wc -l  # Should be 1 (only old tag)
 ```
 
 **Pass Criteria**:
+
 - [ ] Dry-run reports "No releasable changes"
 - [ ] package.json version unchanged
 - [ ] No new Git tag created
@@ -281,6 +304,7 @@ git tag | grep v1.0.0 | wc -l  # Should be 1 (only old tag)
 **Scenario**: Batch of commits with different types → Highest priority wins
 
 **Setup**:
+
 ```bash
 cd /tmp/versioning-test
 git checkout -b test/mixed-commits
@@ -307,15 +331,17 @@ git commit -m "docs: add API documentation"
 ```
 
 **Expected Behavior**:
+
 - ✅ Version: `1.0.0 → 1.1.0` (MINOR wins over PATCH)
 - ✅ CHANGELOG has both `### Features` and `### Bug Fixes`
 - ✅ docs commit ignored (not listed)
 
 **Execution**:
+
 ```bash
 npm run release:suggest
 # Expected: Next version: 1.1.0 (MINOR)
-# Expected: 
+# Expected:
 # Features: 1
 # Bug Fixes: 2
 # Docs: 1 (ignored)
@@ -324,6 +350,7 @@ npm run release
 ```
 
 **Verification**:
+
 ```bash
 grep '"version"' package.json  # Should be 1.1.0
 grep "### Features" CHANGELOG.md  # Section exists
@@ -335,6 +362,7 @@ grep "add API documentation" CHANGELOG.md && echo "FAIL: docs should be ignored"
 ```
 
 **Pass Criteria**:
+
 - [ ] Dry-run shows `1.1.0` (MINOR wins)
 - [ ] Dry-run summary shows 1 feature, 2 fixes
 - [ ] CHANGELOG has separate sections for features and fixes
@@ -342,6 +370,7 @@ grep "add API documentation" CHANGELOG.md && echo "FAIL: docs should be ignored"
 - [ ] All releasable commits listed
 
 **Rollback**:
+
 ```bash
 git tag -d v1.1.0
 git reset --hard v1.0.0
@@ -355,6 +384,7 @@ npm pkg set version="1.0.0"
 **Scenario**: Test all breaking change detection patterns
 
 **Setup**:
+
 ```bash
 cd /tmp/versioning-test
 git checkout -b test/breaking-variants
@@ -380,11 +410,13 @@ BREAKING-CHANGE: Database table 'users' renamed to 'accounts'"
 ```
 
 **Expected Behavior**:
+
 - ✅ Version: `1.1.0 → 2.0.0` (MAJOR)
 - ✅ All 3 variants detected as breaking changes
 - ✅ CHANGELOG lists all 3 under `### BREAKING CHANGES`
 
 **Execution**:
+
 ```bash
 npm run release:suggest
 # Expected: Next version: 2.0.0 (MAJOR)
@@ -394,6 +426,7 @@ npm run release
 ```
 
 **Verification**:
+
 ```bash
 grep '"version"' package.json  # Should be 2.0.0
 grep "### BREAKING CHANGES" CHANGELOG.md  # Section exists
@@ -403,12 +436,14 @@ grep "renamed to 'accounts'" CHANGELOG.md  # Breaking 3 listed
 ```
 
 **Pass Criteria**:
+
 - [ ] All 3 breaking change patterns detected (`!`, `BREAKING CHANGE:`, `BREAKING-CHANGE:`)
 - [ ] Version bumped to MAJOR (2.0.0)
 - [ ] CHANGELOG has all 3 breaking changes with descriptions
 - [ ] Warning shown during dry-run
 
 **Rollback**:
+
 ```bash
 git tag -d v2.0.0
 git reset --hard v1.1.0
@@ -422,6 +457,7 @@ npm pkg set version="1.1.0"
 **Scenario**: Verify scope extraction and formatting
 
 **Setup**:
+
 ```bash
 cd /tmp/versioning-test
 git checkout -b test/scopes
@@ -436,17 +472,20 @@ git commit --allow-empty -m "fix: prevent memory leak"
 ```
 
 **Expected Behavior**:
+
 - ✅ Scopes extracted correctly: `(gateway)`, `(auth)`
 - ✅ No-scope commits work: no parentheses in CHANGELOG
 - ✅ CHANGELOG format: `- **gateway**: add rate limiting` or `- add Docker Compose support`
 
 **Execution**:
+
 ```bash
 npm run release:suggest
 npm run release
 ```
 
 **Verification**:
+
 ```bash
 # Verify CHANGELOG formatting
 grep "\*\*gateway\*\*" CHANGELOG.md  # Should match
@@ -456,12 +495,14 @@ grep "prevent memory leak" CHANGELOG.md  # No scope prefix
 ```
 
 **Pass Criteria**:
+
 - [ ] Scoped commits: `- **scope**: description`
 - [ ] No-scope commits: `- description`
 - [ ] No parsing errors
 - [ ] All commits correctly categorized
 
 **Rollback**:
+
 ```bash
 git reset --hard v1.1.0
 ```
@@ -473,6 +514,7 @@ git reset --hard v1.1.0
 ### Edge Case 1: First Release (No Previous Tag)
 
 **Setup**:
+
 ```bash
 cd /tmp/versioning-test-first-release
 git init
@@ -486,6 +528,7 @@ git commit --allow-empty -m "feat: initial implementation"
 **Expected**: Version `0.0.0 → 0.1.0` (first feature)
 
 **Verification**:
+
 ```bash
 npm run release:suggest
 # Should detect no previous tags and start from package.json version
@@ -496,17 +539,20 @@ npm run release:suggest
 ### Edge Case 2: Invalid Conventional Commit Format
 
 **Setup**:
+
 ```bash
 cd /tmp/versioning-test
 git commit --allow-empty -m "This is not a conventional commit"
 git commit --allow-empty -m "Add some stuff"
 ```
 
-**Expected**: 
+**Expected**:
+
 - ⚠️ Commits ignored with warning
 - ⚠️ No version bump (unless other valid commits exist)
 
 **Verification**:
+
 ```bash
 npm run release:suggest
 # Should warn: "Skipped 2 commits with invalid format"
@@ -517,17 +563,20 @@ npm run release:suggest
 ### Edge Case 3: Monorepo Multi-Scope
 
 **Setup**:
+
 ```bash
 git commit --allow-empty -m "feat(frontend): add login page"
 git commit --allow-empty -m "feat(backend): add auth endpoint"
 git commit --allow-empty -m "fix(db): optimize user query"
 ```
 
-**Expected**: 
+**Expected**:
+
 - ✅ All scopes listed in CHANGELOG
 - ✅ MINOR version bump (feat wins)
 
 **Verification**:
+
 ```bash
 npm run release
 grep "frontend" CHANGELOG.md  # Should exist
@@ -544,18 +593,18 @@ Use this checklist to track test execution:
 ```markdown
 ## Test Run: YYYY-MM-DD HH:MM
 
-| Test Case | Pass | Fail | Notes |
-|-----------|------|------|-------|
-| TC1: PATCH bump | ☑️ | ☐ | Version 0.1.0→0.1.1 ✅ |
-| TC2: MINOR bump | ☑️ | ☐ | Version 0.1.1→0.2.0 ✅ |
-| TC3: MAJOR bump | ☑️ | ☐ | Breaking change detected ✅ |
-| TC4: No bump | ☑️ | ☐ | Ignored chore/docs ✅ |
-| TC5: Mixed commits | ☑️ | ☐ | MINOR won over PATCH ✅ |
-| TC6: Breaking variants | ☑️ | ☐ | All 3 patterns detected ✅ |
-| TC7: Scope handling | ☑️ | ☐ | Formatted correctly ✅ |
-| EC1: First release | ☑️ | ☐ | Started from 0.0.0 ✅ |
-| EC2: Invalid format | ☑️ | ☐ | Warning shown ✅ |
-| EC3: Monorepo scopes | ☑️ | ☐ | All scopes listed ✅ |
+| Test Case              | Pass | Fail | Notes                       |
+| ---------------------- | ---- | ---- | --------------------------- |
+| TC1: PATCH bump        | ☑️   | ☐    | Version 0.1.0→0.1.1 ✅      |
+| TC2: MINOR bump        | ☑️   | ☐    | Version 0.1.1→0.2.0 ✅      |
+| TC3: MAJOR bump        | ☑️   | ☐    | Breaking change detected ✅ |
+| TC4: No bump           | ☑️   | ☐    | Ignored chore/docs ✅       |
+| TC5: Mixed commits     | ☑️   | ☐    | MINOR won over PATCH ✅     |
+| TC6: Breaking variants | ☑️   | ☐    | All 3 patterns detected ✅  |
+| TC7: Scope handling    | ☑️   | ☐    | Formatted correctly ✅      |
+| EC1: First release     | ☑️   | ☐    | Started from 0.0.0 ✅       |
+| EC2: Invalid format    | ☑️   | ☐    | Warning shown ✅            |
+| EC3: Monorepo scopes   | ☑️   | ☐    | All scopes listed ✅        |
 
 **Overall Result**: ✅ PASS / ❌ FAIL  
 **Tested By**: [Your Name]  
@@ -578,6 +627,7 @@ npm run test:versioning
 ```
 
 **Test structure**:
+
 ```javascript
 describe('Semantic Versioning', () => {
   it('should bump PATCH for fix commits', async () => {
@@ -601,10 +651,12 @@ After each test run, document:
 5. **Recommendations** for script improvements
 
 **Example Report**:
+
 ```markdown
 ## Test Report: 2025-12-14 15:30
 
 **Environment**:
+
 - OS: Ubuntu 22.04
 - Node: v22.0.0
 - Git: 2.43.0
@@ -632,5 +684,5 @@ Script is ready for production when:
 - [ ] Error messages are clear and actionable
 - [ ] Documentation is complete
 
-**Approved By**: ________________  
-**Date**: ________________
+**Approved By**: **\*\***\_\_\_\_**\*\***  
+**Date**: **\*\***\_\_\_\_**\*\***

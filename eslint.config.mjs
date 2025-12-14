@@ -127,27 +127,38 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-argument': 'off',
-      
+
       // Allow implicit return types in test helpers
       '@typescript-eslint/explicit-function-return-type': 'off',
-      
+
       // Allow nullish coalescing for config defaults
       '@typescript-eslint/prefer-nullish-coalescing': 'off',
-      
+
       // Keep floating promises error - tests should await properly
       '@typescript-eslint/no-floating-promises': 'error',
-      
+
       // Allow TODO/FIXME in tests for tracking known issues
       'sonarjs/todo-tag': 'off',
       'sonarjs/fixme-tag': 'off',
     },
   },
 
-  // Relaxed rules for plugin files
+  // Config files (allow TODO/FIXME for planning)
   {
-    files: ['**/plugins/**/*.ts'],
+    files: ['eslint.config.mjs', '**/*.config.{js,mjs,cjs}'],
     rules: {
-      // Fastify plugins may not need await
+      'sonarjs/todo-tag': 'off',
+      'sonarjs/fixme-tag': 'off',
+    },
+  },
+
+  // Relaxed rules for plugin files and routes
+  {
+    files: ['**/plugins/**/*.ts', '**/routes/**/*.ts'],
+    rules: {
+      // Dashboard plugin has large HTML template - expected
+      'max-lines-per-function': 'off',
+      // Fastify routes/plugins registration doesn't need await
       '@typescript-eslint/require-await': 'off',
     },
   },
@@ -176,22 +187,22 @@ export default tseslint.config(
     rules: {
       // Allow console in scripts
       'no-console': 'off',
-      
+
       // Allow process.exit in CLI scripts
       'no-process-exit': 'off',
-      
+
       // Scripts can be longer
       'max-lines-per-function': ['warn', { max: 100 }],
-      
+
       // No return types needed in JS scripts
       '@typescript-eslint/explicit-function-return-type': 'off',
-      
+
       // Allow string duplication for CLI output
       'sonarjs/no-duplicate-string': 'off',
-      
+
       // Nested templates acceptable for CLI formatting
       'sonarjs/no-nested-template-literals': 'off',
-      
+
       // TypeScript rules don't apply to JS
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
@@ -199,5 +210,5 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-return': 'off',
     },
-  },
+  }
 );

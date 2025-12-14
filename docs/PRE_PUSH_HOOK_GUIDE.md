@@ -2,7 +2,8 @@
 
 ## Overview
 
-The pre-push hook runs quality checks **only when pushing to protected branches** (`main` or `master`).
+The pre-push hook runs quality checks **only when pushing to protected branches** (`main` or
+`master`).
 
 ## What Gets Checked
 

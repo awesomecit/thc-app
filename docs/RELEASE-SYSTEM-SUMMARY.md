@@ -28,12 +28,15 @@ npm run release
 ## [0.3.0] - 2025-12-14
 
 ### ✨ Features
+
 - **release**: add CHANGELOG and feature.json generation ([90cafee])
 
 ### 🐛 Bug Fixes
+
 - **db**: connection pool leak ([abc1234])
 
 ### ⚠️ BREAKING CHANGES
+
 - **api**: remove deprecated endpoint ([def5678])
 ```
 
@@ -67,6 +70,7 @@ npm run release
 ```
 
 **Comportamento**:
+
 - ✅ Legge versione da `package.json`
 - ✅ Analizza TUTTI i commit dall'inizio
 - ✅ Calcola bump correttamente
@@ -89,6 +93,7 @@ npm run release
 ```
 
 **Comportamento**:
+
 - ✅ Trova ultimo tag automaticamente
 - ✅ Analizza solo commit NUOVI
 - ✅ Calcola diff corretto
@@ -107,6 +112,7 @@ npm run release
 ```
 
 **Logica Implementata**:
+
 ```javascript
 // Step 1: Cerca tag
 const lastTag = await getLastTag(git);
@@ -136,42 +142,43 @@ if (!lastTag) {
 
 ```json
 {
-  "version": "0.3.0",           // ← Versione APPENA rilasciata
+  "version": "0.3.0", // ← Versione APPENA rilasciata
   "releaseDate": "2025-12-14T15:19:56.148Z",
-  "previousVersion": "0.2.0",   // ← Tag precedente (baseline)
-  
+  "previousVersion": "0.2.0", // ← Tag precedente (baseline)
+
   "summary": {
-    "featuresCount": 1,         // ← Conteggio automatico
+    "featuresCount": 1, // ← Conteggio automatico
     "fixesCount": 0,
     "breakingChangesCount": 0
   },
-  
-  "features": [                 // ← SOLO commit feat: dal tag precedente
+
+  "features": [
+    // ← SOLO commit feat: dal tag precedente
     {
-      "id": "release-90cafee",  // ← scope + hash univoco
+      "id": "release-90cafee", // ← scope + hash univoco
       "title": "add CHANGELOG and feature.json generation",
-      "scope": "release",       // ← Estratto da commit
-      "commit": "90cafee",      // ← Hash commit (primi 7 caratteri)
+      "scope": "release", // ← Estratto da commit
+      "commit": "90cafee", // ← Hash commit (primi 7 caratteri)
       "type": "feature"
     }
   ],
-  
-  "fixes": [],                  // ← SOLO commit fix: dal tag
-  "breakingChanges": []         // ← SOLO commit con BREAKING CHANGE
+
+  "fixes": [], // ← SOLO commit fix: dal tag
+  "breakingChanges": [] // ← SOLO commit con BREAKING CHANGE
 }
 ```
 
 ### Allineamento Garantito
 
-| Elemento | Source | Allineamento |
-|----------|--------|-------------|
-| **version** | Tag Git creato | ✅ Stesso valore (0.3.0 → v0.3.0) |
-| **previousVersion** | Tag precedente Git | ✅ Estratto da `lastTag.replace('v', '')` |
-| **features[]** | Commit con `type: 'feat'` | ✅ Filtrati da commit analizzati |
-| **fixes[]** | Commit con `type: 'fix'` o `'perf'` | ✅ Filtrati da commit analizzati |
-| **breakingChanges[]** | Commit con `!` o `BREAKING CHANGE:` | ✅ Filtrati da commit analizzati |
-| **commit hash** | Git commit SHA | ✅ Primi 7 caratteri del hash |
-| **releaseDate** | Timestamp esecuzione | ✅ ISO 8601 (UTC) |
+| Elemento              | Source                              | Allineamento                              |
+| --------------------- | ----------------------------------- | ----------------------------------------- |
+| **version**           | Tag Git creato                      | ✅ Stesso valore (0.3.0 → v0.3.0)         |
+| **previousVersion**   | Tag precedente Git                  | ✅ Estratto da `lastTag.replace('v', '')` |
+| **features[]**        | Commit con `type: 'feat'`           | ✅ Filtrati da commit analizzati          |
+| **fixes[]**           | Commit con `type: 'fix'` o `'perf'` | ✅ Filtrati da commit analizzati          |
+| **breakingChanges[]** | Commit con `!` o `BREAKING CHANGE:` | ✅ Filtrati da commit analizzati          |
+| **commit hash**       | Git commit SHA                      | ✅ Primi 7 caratteri del hash             |
+| **releaseDate**       | Timestamp esecuzione                | ✅ ISO 8601 (UTC)                         |
 
 ### Workflow Garantisce Consistenza
 
@@ -210,23 +217,28 @@ npm run release
 ```
 
 **Risultato CHANGELOG.md**:
+
 ```markdown
 ## [0.3.0] - 2025-12-14
 
 ### ⚠️ BREAKING CHANGES
+
 - **auth**: change JWT algorithm ([def5678])
 
 ### ✨ Features
+
 - **release**: add CHANGELOG generation ([90cafee])
 
 ### 🐛 Bug Fixes
+
 - **db**: prevent connection leak ([abc1234])
 ```
 
 **Risultato feature.json**:
+
 ```json
 {
-  "version": "1.0.0",  // ← MAJOR bump per BREAKING
+  "version": "1.0.0", // ← MAJOR bump per BREAKING
   "previousVersion": "0.2.0",
   "summary": {
     "featuresCount": 2,
@@ -272,6 +284,7 @@ npm run release
 ```
 
 **Commit docs ignora**:
+
 ```
 # ghi9012 docs: update README
 # ← NON appare né in CHANGELOG né in feature.json (type='docs')
@@ -283,15 +296,15 @@ npm run release
 
 ### ✅ Cosa Abbiamo Implementato
 
-| Feature | Status | Output |
-|---------|--------|--------|
-| **Auto-versioning** | ✅ | package.json aggiornato |
-| **CHANGELOG.md** | ✅ | Keep a Changelog format |
-| **feature.json** | ✅ | Client-facing JSON |
-| **Git tag** | ✅ | v{semver} |
-| **Primo release** | ✅ | Gestito automaticamente |
-| **Commit grouping** | ✅ | Features, Fixes, Breaking |
-| **Dry-run mode** | ✅ | Preview senza modifiche |
+| Feature             | Status | Output                    |
+| ------------------- | ------ | ------------------------- |
+| **Auto-versioning** | ✅     | package.json aggiornato   |
+| **CHANGELOG.md**    | ✅     | Keep a Changelog format   |
+| **feature.json**    | ✅     | Client-facing JSON        |
+| **Git tag**         | ✅     | v{semver}                 |
+| **Primo release**   | ✅     | Gestito automaticamente   |
+| **Commit grouping** | ✅     | Features, Fixes, Breaking |
+| **Dry-run mode**    | ✅     | Preview senza modifiche   |
 
 ### 📂 File Generati Automaticamente
 

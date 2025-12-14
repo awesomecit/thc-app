@@ -1,6 +1,8 @@
 # Guida 11: Platformatic DB - Generazione Dinamica CRUD con Fastify
 
-> **Filosofia**: Il database è il contratto. Le migrazioni SQL definiscono lo schema, Platformatic lo introspecta e genera automaticamente REST API, GraphQL, e tipi TypeScript. Zero boilerplate, massima coerenza.
+> **Filosofia**: Il database è il contratto. Le migrazioni SQL definiscono lo schema, Platformatic
+> lo introspecta e genera automaticamente REST API, GraphQL, e tipi TypeScript. Zero boilerplate,
+> massima coerenza.
 
 ---
 
@@ -26,7 +28,8 @@
 
 ### 1.1 Stack dei Componenti
 
-Platformatic DB è costruito come una serie di layer che collaborano per trasformare uno schema SQL in API complete.
+Platformatic DB è costruito come una serie di layer che collaborano per trasformare uno schema SQL
+in API complete.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -65,13 +68,19 @@ Platformatic DB è costruito come una serie di layer che collaborano per trasfor
 
 Ogni componente ha una responsabilità precisa nel sistema.
 
-**@platformatic/sql-mapper** rappresenta il cuore del sistema: un ORM leggero che introspecta il database, mappa le tabelle in entities, e fornisce metodi CRUD type-safe. Non usa un query builder pesante, ma genera query SQL ottimizzate direttamente.
+**@platformatic/sql-mapper** rappresenta il cuore del sistema: un ORM leggero che introspecta il
+database, mappa le tabelle in entities, e fornisce metodi CRUD type-safe. Non usa un query builder
+pesante, ma genera query SQL ottimizzate direttamente.
 
-**@platformatic/sql-openapi** prende le entities dal mapper e genera automaticamente endpoint REST seguendo le convenzioni OpenAPI 3.0. Include validazione JSON Schema, pagination, filtering, e sorting out-of-the-box.
+**@platformatic/sql-openapi** prende le entities dal mapper e genera automaticamente endpoint REST
+seguendo le convenzioni OpenAPI 3.0. Include validazione JSON Schema, pagination, filtering, e
+sorting out-of-the-box.
 
-**@platformatic/sql-graphql** genera uno schema GraphQL completo dalle stesse entities, con query, mutations, subscriptions (se abilitate), e relazioni automatiche basate sulle foreign keys.
+**@platformatic/sql-graphql** genera uno schema GraphQL completo dalle stesse entities, con query,
+mutations, subscriptions (se abilitate), e relazioni automatiche basate sulle foreign keys.
 
-**Fastify** è il web server sottostante che gestisce routing, serializzazione JSON veloce, plugin system, e lifecycle hooks.
+**Fastify** è il web server sottostante che gestisce routing, serializzazione JSON veloce, plugin
+system, e lifecycle hooks.
 
 ### 1.3 Flusso dei Dati
 
@@ -82,26 +91,26 @@ flowchart LR
         INTRO["Schema\nIntrospection"]
         MAP["Entity\nMapping"]
     end
-    
+
     subgraph GENERATION["⚡ Generation"]
         REST["REST Routes\n(/entities)"]
         GQL["GraphQL\nSchema"]
         TYPES["TypeScript\nTypes"]
     end
-    
+
     subgraph RUNTIME["🔄 Runtime"]
         REQ["HTTP Request"]
         VALID["Validation"]
         QUERY["SQL Query"]
         RES["Response"]
     end
-    
+
     MIG --> INTRO
     INTRO --> MAP
     MAP --> REST
     MAP --> GQL
     MAP --> TYPES
-    
+
     REQ --> VALID
     VALID --> QUERY
     QUERY --> RES
@@ -113,7 +122,8 @@ flowchart LR
 
 ### 2.1 Processo di Boot
 
-All'avvio, Platformatic DB esegue una sequenza ordinata di operazioni che trasformano lo schema SQL in API funzionanti.
+All'avvio, Platformatic DB esegue una sequenza ordinata di operazioni che trasformano lo schema SQL
+in API funzionanti.
 
 ```mermaid
 sequenceDiagram
@@ -121,28 +131,28 @@ sequenceDiagram
     participant PLT as Platformatic DB
     participant DB as Database
     participant FASTIFY as Fastify
-    
+
     WATT->>PLT: Start application
     PLT->>DB: Connect (connectionString)
-    
+
     alt Migrations enabled
         PLT->>DB: Check migration status
         DB-->>PLT: Current version
         PLT->>DB: Apply pending migrations
     end
-    
+
     PLT->>DB: Introspect schema
     DB-->>PLT: Tables, columns, FKs, indexes
-    
+
     PLT->>PLT: Build entity definitions
     PLT->>PLT: Generate JSON Schemas
-    
+
     PLT->>FASTIFY: Register sql-mapper plugin
     PLT->>FASTIFY: Register sql-openapi plugin
     PLT->>FASTIFY: Register sql-graphql plugin
     PLT->>FASTIFY: Load custom plugins/
     PLT->>FASTIFY: Load custom routes/
-    
+
     FASTIFY->>FASTIFY: Compile routes
     FASTIFY-->>PLT: Ready
     PLT-->>WATT: Application started
@@ -154,41 +164,41 @@ sequenceDiagram
 FUNCTION bootPlatformaticDB(config):
     // 1. Connessione database
     connection ← connectDatabase(config.db.connectionString)
-    
+
     // 2. Migrazioni (se abilitate)
     IF config.migrations.autoApply:
         pendingMigrations ← findPendingMigrations(config.migrations.dir)
         FOR EACH migration IN pendingMigrations:
             executeMigration(connection, migration)
-    
+
     // 3. Introspection
     schema ← introspectDatabase(connection)
     // schema = { tables: [...], columns: {...}, foreignKeys: [...], indexes: [...] }
-    
+
     // 4. Entity Mapping
     entities ← {}
     FOR EACH table IN schema.tables:
         entity ← createEntity(table, schema.columns[table], schema.foreignKeys)
         entities[entity.name] ← entity
-    
+
     // 5. JSON Schema Generation
     FOR EACH entity IN entities:
         entity.jsonSchema ← generateJSONSchema(entity.columns)
         entity.inputSchema ← generateInputSchema(entity.columns)
-    
+
     // 6. Fastify Plugin Registration
     fastify.register(sqlMapper, { entities, connection })
-    
+
     IF config.db.openapi:
         fastify.register(sqlOpenAPI, { entities })
-    
+
     IF config.db.graphql:
         fastify.register(sqlGraphQL, { entities })
-    
+
     // 7. Custom Code Loading
     FOR EACH pluginPath IN config.plugins.paths:
         fastify.register(loadPlugin(pluginPath))
-    
+
     // 8. Ready
     RETURN fastify
 ```
@@ -281,30 +291,32 @@ flowchart TD
         P2["hooks.js"]
         P3["decorators.js"]
     end
-    
+
     subgraph ROUTES["routes/ (encapsulate: true)"]
         R1["health.js\n→ /health"]
         R2["admin/index.js\n→ /admin"]
         R3["admin/users.js\n→ /admin/users"]
     end
-    
+
     subgraph FASTIFY["Fastify Instance"]
         GLOBAL["Global Scope\n(decorators, hooks)"]
         SCOPED["Scoped Routes\n(isolated)"]
     end
-    
+
     P1 --> GLOBAL
     P2 --> GLOBAL
     P3 --> GLOBAL
-    
+
     R1 --> SCOPED
     R2 --> SCOPED
     R3 --> SCOPED
-    
+
     GLOBAL -.->|"disponibile in"| SCOPED
 ```
 
-**Differenza chiave**: I plugins sono "non-encapsulated", quindi decorators e hooks definiti lì sono disponibili globalmente. Le routes sono "encapsulated", quindi modifiche allo scope non si propagano.
+**Differenza chiave**: I plugins sono "non-encapsulated", quindi decorators e hooks definiti lì sono
+disponibili globalmente. Le routes sono "encapsulated", quindi modifiche allo scope non si
+propagano.
 
 ---
 
@@ -312,7 +324,8 @@ flowchart TD
 
 ### 4.1 Filosofia
 
-Le migrazioni SQL sono l'unica fonte di verità per lo schema del database. Non esiste un "model file" separato: il database IS the schema.
+Le migrazioni SQL sono l'unica fonte di verità per lo schema del database. Non esiste un "model
+file" separato: il database IS the schema.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -354,7 +367,7 @@ CREATE TABLE IF NOT EXISTS movies (
     rating DECIMAL(3,1),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
+
     FOREIGN KEY (director_id) REFERENCES directors(id)
 );
 
@@ -429,17 +442,17 @@ flowchart LR
     subgraph DATABASE["Database Schema"]
         TABLE["Table: movies\n- id: INTEGER PK\n- title: VARCHAR\n- year: INTEGER\n- rating: DECIMAL"]
     end
-    
+
     subgraph MAPPER["SQL Mapper"]
         ENTITY["Entity: Movie\n- find()\n- findOne()\n- save()\n- insert()\n- delete()\n- count()"]
     end
-    
+
     subgraph ACCESS["Access Points"]
         DECORATOR["app.platformatic.entities.movie"]
         OPENAPI["REST /movies"]
         GRAPHQL["GraphQL { movies }"]
     end
-    
+
     TABLE -->|"introspection"| ENTITY
     ENTITY --> DECORATOR
     ENTITY --> OPENAPI
@@ -529,7 +542,7 @@ flowchart LR
     subgraph ENTITY["Entity: Movie"]
         E["movie entity"]
     end
-    
+
     subgraph ROUTES["Generated Routes"]
         R1["GET    /movies"]
         R2["GET    /movies/:id"]
@@ -537,20 +550,20 @@ flowchart LR
         R4["PUT    /movies/:id"]
         R5["DELETE /movies/:id"]
     end
-    
+
     subgraph FEATURES["Built-in Features"]
         F1["Pagination\n(?limit=10&offset=0)"]
         F2["Filtering\n(?where.year.gt=2000)"]
         F3["Sorting\n(?orderBy.year=desc)"]
         F4["Field Selection\n(?fields=id,title)"]
     end
-    
+
     E --> R1
     E --> R2
     E --> R3
     E --> R4
     E --> R5
-    
+
     R1 --> F1
     R1 --> F2
     R1 --> F3
@@ -711,12 +724,12 @@ flowchart LR
         MOVIES["movies\n- director_id FK"]
         DIRECTORS["directors\n- id PK"]
     end
-    
+
     subgraph GRAPHQL["GraphQL Schema"]
         M_TYPE["type Movie {\n  ...\n  director: Director\n}"]
         D_TYPE["type Director {\n  ...\n  movies: [Movie]\n}"]
     end
-    
+
     MOVIES -->|"FK detected"| M_TYPE
     DIRECTORS -->|"reverse relation"| D_TYPE
 ```
@@ -740,11 +753,7 @@ GET  http://localhost:3042/api/db/graphiql
 ```graphql
 # Lista film con regista (nested)
 query {
-  movies(
-    where: { year: { gte: 2020 } }
-    orderBy: [{ field: rating, direction: DESC }]
-    limit: 5
-  ) {
+  movies(where: { year: { gte: 2020 } }, orderBy: [{ field: rating, direction: DESC }], limit: 5) {
     id
     title
     year
@@ -758,11 +767,7 @@ query {
 
 # Mutation: crea nuovo film
 mutation {
-  saveMovie(input: {
-    title: "New Movie"
-    year: 2025
-    directorId: 1
-  }) {
+  saveMovie(input: { title: "New Movie", year: 2025, directorId: 1 }) {
     id
     title
   }
@@ -812,13 +817,13 @@ EXPORT ASYNC FUNCTION plugin(fastify, options):
         user ← verifyToken(token)
         request.user ← user
     )
-    
+
     // 2. Hook globale su tutte le route
     fastify.addHook('preHandler', ASYNC FUNCTION(request, reply):
         // Skip per route pubbliche
         IF request.routeOptions.config.public:
             RETURN
-        
+
         AWAIT fastify.authenticate(request)
     )
 
@@ -831,11 +836,11 @@ EXPORT ASYNC FUNCTION plugin(fastify, options):
             input.createdAt ← NOW()
             input.updatedAt ← NOW()
             RETURN input
-        
+
         beforeUpdate: ASYNC FUNCTION(entity, input):
             input.updatedAt ← NOW()
             RETURN input
-        
+
         afterFind: ASYNC FUNCTION(entity, results):
             // Post-processing dei risultati
             RETURN results.map(addComputedFields)
@@ -907,7 +912,7 @@ Le route custom estendono le API generate con endpoint specifici.
 // routes/reports.js
 
 EXPORT DEFAULT ASYNC FUNCTION (fastify, options):
-    
+
     fastify.get('/top-rated', ASYNC FUNCTION(request, reply):
         // Accesso diretto all'entity Movie
         movies ← AWAIT fastify.platformatic.entities.movie.find({
@@ -915,18 +920,18 @@ EXPORT DEFAULT ASYNC FUNCTION (fastify, options):
             orderBy: [{ field: 'rating', direction: 'DESC' }],
             limit: 10
         })
-        
+
         RETURN { topRated: movies }
     )
-    
+
     fastify.get('/stats', ASYNC FUNCTION(request, reply):
         // Query aggregate custom
         totalMovies ← AWAIT fastify.platformatic.entities.movie.count({})
-        
+
         avgRating ← AWAIT fastify.platformatic.db.query(
             'SELECT AVG(rating) as avg FROM movies'
         )
-        
+
         RETURN {
             total: totalMovies,
             averageRating: avgRating[0].avg
@@ -943,7 +948,7 @@ EXPORT DEFAULT ASYNC FUNCTION (fastify, options):
 // Sovrascrive GET /movies per aggiungere logica custom
 
 EXPORT DEFAULT ASYNC FUNCTION (fastify, options):
-    
+
     // Questa route ha precedenza su quella generata
     fastify.get('/movies', {
         schema: {
@@ -956,16 +961,16 @@ EXPORT DEFAULT ASYNC FUNCTION (fastify, options):
         }
     }, ASYNC FUNCTION(request, reply):
         where ← {}
-        
+
         IF request.query.genre:
             where.genre ← request.query.genre
-        
+
         // Usa l'entity ma con logica custom
         movies ← AWAIT fastify.platformatic.entities.movie.find({
             where,
             limit: 20
         })
-        
+
         // Aggiungi campi computati
         RETURN movies.map(m => ({
             ...m,
@@ -992,7 +997,7 @@ flowchart TD
     HANDLER --> preSerialization
     preSerialization --> onSend
     onSend --> RES([Response])
-    
+
     onRequest -.->|"Logging, Auth check"| N1[" "]
     preHandler -.->|"Authorization, Rate limit"| N2[" "]
     preSerialization -.->|"Transform response"| N3[" "]
@@ -1126,7 +1131,7 @@ CREATE INDEX idx_movies_deleted ON movies(deleted_at);
 // plugins/soft-delete.js
 
 EXPORT ASYNC FUNCTION plugin(fastify):
-    
+
     // Intercetta DELETE e trasformalo in UPDATE
     fastify.platformatic.addEntityHooks('movie', {
         beforeDelete: ASYNC FUNCTION(entity, { where }):
@@ -1134,10 +1139,10 @@ EXPORT ASYNC FUNCTION plugin(fastify):
             AWAIT entity.save({
                 input: { ...where, deletedAt: NOW() }
             })
-            
+
             // Ritorna array vuoto per saltare DELETE reale
             RETURN { skipDelete: true }
-        
+
         beforeFind: ASYNC FUNCTION(entity, params):
             // Escludi automaticamente i soft-deleted
             params.where ← params.where OR {}
@@ -1154,17 +1159,17 @@ Isolare dati per tenant automaticamente.
 // plugins/multi-tenant.js
 
 EXPORT ASYNC FUNCTION plugin(fastify):
-    
+
     // Aggiungi tenantId a tutte le query
     FOR EACH entityName IN fastify.platformatic.entities:
         entity ← fastify.platformatic.entities[entityName]
-        
+
         fastify.platformatic.addEntityHooks(entityName, {
             beforeFind: ASYNC FUNCTION(e, params, context):
                 tenantId ← context.request.user.tenantId
                 params.where ← { ...params.where, tenantId }
                 RETURN params
-            
+
             beforeInsert: ASYNC FUNCTION(e, input, context):
                 input.tenantId ← context.request.user.tenantId
                 RETURN input
@@ -1180,7 +1185,7 @@ Logging automatico delle modifiche.
 
 EXPORT ASYNC FUNCTION plugin(fastify):
     auditLog ← fastify.platformatic.entities.auditLog
-    
+
     FOR EACH entityName IN ['movie', 'director', 'actor']:
         fastify.platformatic.addEntityHooks(entityName, {
             afterInsert: ASYNC FUNCTION(e, result, context):
@@ -1194,10 +1199,10 @@ EXPORT ASYNC FUNCTION plugin(fastify):
                         timestamp: NOW()
                     }
                 })
-            
+
             afterUpdate: ASYNC FUNCTION(e, result, context):
                 // Simile per UPDATE
-            
+
             afterDelete: ASYNC FUNCTION(e, result, context):
                 // Simile per DELETE
         })
@@ -1265,7 +1270,7 @@ flowchart TB
         PLUGIN["Scrivi Plugin\n(hooks, auth)"]
         ROUTE["Scrivi Route\n(custom endpoints)"]
     end
-    
+
     subgraph PLATFORMATIC["⚡ Platformatic DB"]
         APPLY["Apply Migrations"]
         INTRO["Introspect Schema"]
@@ -1274,23 +1279,23 @@ flowchart TB
         GEN_GQL["Generate GraphQL"]
         GEN_TYPES["Generate Types"]
     end
-    
+
     subgraph RUNTIME["🔄 Runtime"]
         SWAGGER["Swagger UI\n/documentation"]
         GRAPHIQL["GraphiQL\n/graphiql"]
         API["REST API\n/movies, /directors"]
     end
-    
+
     MIG --> APPLY
     APPLY --> INTRO
     INTRO --> GEN_E
     GEN_E --> GEN_REST
     GEN_E --> GEN_GQL
     GEN_E --> GEN_TYPES
-    
+
     PLUGIN --> GEN_REST
     ROUTE --> GEN_REST
-    
+
     GEN_REST --> API
     GEN_REST --> SWAGGER
     GEN_GQL --> GRAPHIQL
@@ -1325,14 +1330,14 @@ LOG_LEVEL=debug npm run dev            # Verbose logging
 
 ## Riferimenti
 
-| Risorsa | URL/Path |
-|---------|----------|
-| Platformatic DB Docs | https://docs.platformatic.dev/db |
-| Fastify Docs | https://fastify.dev |
-| SQL Mapper API | https://docs.platformatic.dev/reference/sql-mapper |
-| Guida 01 | Watt Architecture |
-| Guida 08 | Modular Monolith Quick Reference |
-| Guida 10 | HTTP Caching |
+| Risorsa              | URL/Path                                           |
+| -------------------- | -------------------------------------------------- |
+| Platformatic DB Docs | https://docs.platformatic.dev/db                   |
+| Fastify Docs         | https://fastify.dev                                |
+| SQL Mapper API       | https://docs.platformatic.dev/reference/sql-mapper |
+| Guida 01             | Watt Architecture                                  |
+| Guida 08             | Modular Monolith Quick Reference                   |
+| Guida 10             | HTTP Caching                                       |
 
 ---
 

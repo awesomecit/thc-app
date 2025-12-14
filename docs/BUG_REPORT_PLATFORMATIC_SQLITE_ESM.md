@@ -2,11 +2,13 @@
 
 ## Summary
 
-`@platformatic/sql-mapper` v3.27.0 has an ES module import issue with `@matteo.collina/sqlite-pool` where the default export is an **object containing multiple exports** (not a function), causing "sqlite.default is not a function" error.
+`@platformatic/sql-mapper` v3.27.0 has an ES module import issue with `@matteo.collina/sqlite-pool`
+where the default export is an **object containing multiple exports** (not a function), causing
+"sqlite.default is not a function" error.
 
 ## RESOLUTION (2024-12-14)
 
-After investigation, we found SQLite has complex ESM export issues with Platformatic. 
+After investigation, we found SQLite has complex ESM export issues with Platformatic.
 
 **Solution adopted: Use PostgreSQL for tests with Testcontainers**
 
@@ -15,11 +17,13 @@ After investigation, we found SQLite has complex ESM export issues with Platform
 - ✅ Production: PostgreSQL (already planned)
 
 Implementation:
+
 - `web/thc-db/test/integration/test-db.ts` - PostgreSQL container helper
 - `web/thc-db/test/helper.ts` - Updated to use PostgreSQL
 - All 9/9 health check tests now pass
 
 This approach:
+
 1. Avoids SQLite ESM complexity
 2. Tests against production database (PostgreSQL)
 3. Uses Testcontainers for isolation and cleanup
@@ -57,10 +61,11 @@ db = sqlite.default(  // ❌ BUG: sqlite is ALREADY the default export!
 When using ES module dynamic import with destructuring:
 
 ```javascript
-const { default: sqlite } = await import('@matteo.collina/sqlite-pool')
+const { default: sqlite } = await import('@matteo.collina/sqlite-pool');
 ```
 
-The variable `sqlite` **already contains** the default export. Accessing `sqlite.default` tries to call a non-existent property.
+The variable `sqlite` **already contains** the default export. Accessing `sqlite.default` tries to
+call a non-existent property.
 
 ### Why This Happens
 
@@ -69,18 +74,18 @@ ES module imports have two patterns:
 #### ✅ Pattern 1: Destructure default (current usage)
 
 ```javascript
-const { default: sqlite } = await import('module')
+const { default: sqlite } = await import('module');
 // sqlite is now the default export directly
-sqlite() // ✅ CORRECT
-sqlite.default() // ❌ WRONG - undefined is not a function
+sqlite(); // ✅ CORRECT
+sqlite.default(); // ❌ WRONG - undefined is not a function
 ```
 
 #### ✅ Pattern 2: Import namespace then access default
 
 ```javascript
-const sqlite = await import('module')
+const sqlite = await import('module');
 // sqlite is the module namespace
-sqlite.default() // ✅ CORRECT
+sqlite.default(); // ✅ CORRECT
 ```
 
 Platformatic mixes both patterns incorrectly.
@@ -120,21 +125,21 @@ npm init @platformatic/db
 
 ```typescript
 // test/helper.ts
-import { create } from '@platformatic/db'
+import { create } from '@platformatic/db';
 
 export async function getServer() {
   const config = {
     db: {
-      connectionString: 'sqlite://test.db'
+      connectionString: 'sqlite://test.db',
     },
     migrations: {
-      autoApply: true
-    }
-  }
-  
-  const server = await create('./', config)
-  await server.start({})
-  return server
+      autoApply: true,
+    },
+  };
+
+  const server = await create('./', config);
+  await server.start({});
+  return server;
 }
 ```
 

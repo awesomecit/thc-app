@@ -9,7 +9,8 @@
 
 ## Context
 
-Il progetto richiede un sistema di **semantic versioning automatico** basato su conventional commits per:
+Il progetto richiede un sistema di **semantic versioning automatico** basato su conventional commits
+per:
 
 - Calcolare automaticamente la prossima versione (MAJOR.MINOR.PATCH)
 - Generare CHANGELOG.md in formato Keep a Changelog
@@ -25,7 +26,8 @@ Abbiamo analizzato **4 tool all-in-one** e un **approccio ibrido con librerie mo
 **Pro**:
 
 - ✅ Zero config out-of-the-box
-- ✅ Ecosystem ricco di plugin (@semantic-release/github, @semantic-release/npm, @semantic-release/changelog)
+- ✅ Ecosystem ricco di plugin (@semantic-release/github, @semantic-release/npm,
+  @semantic-release/changelog)
 - ✅ Molto popolare (18K+ GitHub stars)
 - ✅ Integrazione CI/CD nativa
 
@@ -98,11 +100,11 @@ Abbiamo analizzato **4 tool all-in-one** e un **approccio ibrido con librerie mo
 
 **Librerie Core**:
 
-| Libreria | Versione | Maintainer | Uso |
-|----------|----------|------------|-----|
-| `conventional-commits-parser` | 6.2.1 | bcoe, dangreen, stevemao | Parsing commit messages |
-| `semver` | 7.x | npm team | Calcolo versioni |
-| `simple-git` | 3.x | steveukx | Operazioni git |
+| Libreria                      | Versione | Maintainer               | Uso                     |
+| ----------------------------- | -------- | ------------------------ | ----------------------- |
+| `conventional-commits-parser` | 6.2.1    | bcoe, dangreen, stevemao | Parsing commit messages |
+| `semver`                      | 7.x      | npm team                 | Calcolo versioni        |
+| `simple-git`                  | 3.x      | steveukx                 | Operazioni git          |
 
 **Pro**:
 
@@ -150,11 +152,13 @@ Abbiamo analizzato **4 tool all-in-one** e un **approccio ibrido con librerie mo
 
 ### Motivazioni Chiave
 
-1. **Requirement BDD**: Il progetto ha bisogno di `feature.json` custom che mappa commit a scenari Gherkin - nessun tool all-in-one supporta questo
+1. **Requirement BDD**: Il progetto ha bisogno di `feature.json` custom che mappa commit a scenari
+   Gherkin - nessun tool all-in-one supporta questo
 2. **Flessibilità vs Semplicità**: Preferenza per controllo totale su workflow rigido
 3. **Manutenibilità**: Librerie modulari sono più facili da aggiornare/sostituire
 4. **Team familiarity**: Script JavaScript custom è più debuggabile di configurazioni complesse
-5. **Allineamento documentazione**: Guida 11 fornisce già pseudocodice e architettura per questa soluzione
+5. **Allineamento documentazione**: Guida 11 fornisce già pseudocodice e architettura per questa
+   soluzione
 
 ---
 
@@ -212,19 +216,20 @@ Abbiamo analizzato **4 tool all-in-one** e un **approccio ibrido con librerie mo
 
 ## Alternatives Considered
 
-| Alternative | Perché Scartata |
-|-------------|------------------|
-| semantic-release | Troppo opinionated, `feature.json` richiederebbe plugin complesso |
-| standard-version | Deprecato, non mantenuto |
-| release-it | Overkill, curva apprendimento alta per beneficio limitato |
-| changesets | Workflow incompatibile con conventional commits esistente |
+| Alternative      | Perché Scartata                                                          |
+| ---------------- | ------------------------------------------------------------------------ |
+| semantic-release | Troppo opinionated, `feature.json` richiederebbe plugin complesso        |
+| standard-version | Deprecato, non mantenuto                                                 |
+| release-it       | Overkill, curva apprendimento alta per beneficio limitato                |
+| changesets       | Workflow incompatibile con conventional commits esistente                |
 | Script bash puro | Parsing commit in bash è fragile, meglio JavaScript con librerie testate |
 
 ---
 
 ## References
 
-- [Guida 11: Versionamento Automatico](../../guides/11-automatic-versioning-release-workflow.md) - Architettura e pseudocodice
+- [Guida 11: Versionamento Automatico](../../guides/11-automatic-versioning-release-workflow.md) -
+  Architettura e pseudocodice
 - [Semantic Versioning 2.0.0](https://semver.org/)
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [Keep a Changelog](https://keepachangelog.com/)

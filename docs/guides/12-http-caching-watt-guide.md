@@ -1,6 +1,9 @@
 # Guida 10: HTTP Caching con Platformatic Watt
 
-> **Filosofia**: Il caching non è un'ottimizzazione opzionale, è una **decisione architetturale** che influenza la scalabilità, la consistenza dei dati e l'esperienza utente. Watt implementa un caching **client-side unificato** che opera a livello HTTP, rendendo trasparente la cache attraverso l'intero service mesh.
+> **Filosofia**: Il caching non è un'ottimizzazione opzionale, è una **decisione architetturale**
+> che influenza la scalabilità, la consistenza dei dati e l'esperienza utente. Watt implementa un
+> caching **client-side unificato** che opera a livello HTTP, rendendo trasparente la cache
+> attraverso l'intero service mesh.
 
 ---
 
@@ -23,7 +26,9 @@
 
 ### 1.1 Il Modello Client-Based
 
-Watt implementa un **caching HTTP client-based** che differisce dai tradizionali cache server-side come Redis o Memcached. Il principio fondamentale è che la cache vive all'interno del processo Watt stesso, eliminando la latenza di rete verso servizi esterni.
+Watt implementa un **caching HTTP client-based** che differisce dai tradizionali cache server-side
+come Redis o Memcached. Il principio fondamentale è che la cache vive all'interno del processo Watt
+stesso, eliminando la latenza di rete verso servizi esterni.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -44,15 +49,21 @@ Watt implementa un **caching HTTP client-based** che differisce dai tradizionali
 
 ### 1.2 Vantaggi Chiave
 
-Il caching di Watt offre diversi vantaggi architetturali che lo distinguono dalle soluzioni tradizionali.
+Il caching di Watt offre diversi vantaggi architetturali che lo distinguono dalle soluzioni
+tradizionali.
 
-Il primo vantaggio è l'**assenza di dipendenze esterne**: non serve Redis, Memcached o altri servizi. Questo semplifica il deployment e riduce i punti di failure.
+Il primo vantaggio è l'**assenza di dipendenze esterne**: non serve Redis, Memcached o altri
+servizi. Questo semplifica il deployment e riduce i punti di failure.
 
-Il secondo vantaggio riguarda le **zero network calls**: le cache hit non attraversano mai lo stack di rete, anche per chiamate inter-servizio all'interno del mesh.
+Il secondo vantaggio riguarda le **zero network calls**: le cache hit non attraversano mai lo stack
+di rete, anche per chiamate inter-servizio all'interno del mesh.
 
-Il terzo vantaggio è la **propagazione automatica degli header**: quando il Service A chiama il Service B, gli header di cache del Service B vengono automaticamente propagati attraverso l'intera catena di richieste.
+Il terzo vantaggio è la **propagazione automatica degli header**: quando il Service A chiama il
+Service B, gli header di cache del Service B vengono automaticamente propagati attraverso l'intera
+catena di richieste.
 
-Infine, c'è l'**invalidazione unificata**: un singolo comando può invalidare cache entries attraverso tutti i servizi del mesh.
+Infine, c'è l'**invalidazione unificata**: un singolo comando può invalidare cache entries
+attraverso tutti i servizi del mesh.
 
 ### 1.3 Trade-off da Considerare
 
@@ -75,7 +86,8 @@ Come ogni decisione architetturale, il caching client-based ha dei trade-off che
 └────────────────────────────────────────────────────────────┘
 ```
 
-**Implicazione pratica**: Se hai multiple istanze Watt in un cluster, ogni istanza ha la propria cache. L'invalidazione deve raggiungere tutte le istanze.
+**Implicazione pratica**: Se hai multiple istanze Watt in un cluster, ogni istanza ha la propria
+cache. L'invalidazione deve raggiungere tutte le istanze.
 
 ---
 
@@ -88,38 +100,39 @@ flowchart TB
     subgraph EXTERNAL["🌐 External"]
         CLIENT["Client HTTP"]
     end
-    
+
     subgraph WATT["⚡ Watt Process"]
         subgraph CACHE_LAYER["Cache Layer"]
             CACHE[("HTTP Cache\n(In-Memory)")]
         end
-        
+
         subgraph COMPOSER["Composer (Entrypoint)"]
             GW["Gateway/Router"]
         end
-        
+
         subgraph SERVICES["Internal Services"]
             API["api-service\n(.plt.local)"]
             DATA["data-service\n(.plt.local)"]
             DB["db-service\n(.plt.local)"]
         end
     end
-    
+
     CLIENT -->|"GET /api/products"| GW
     GW -->|"Cache Miss"| API
     API -->|"fetch()"| DATA
     DATA -->|"query"| DB
-    
+
     GW -.->|"Cache Hit"| CACHE
     CACHE -.->|"Cached Response"| CLIENT
-    
+
     API -.->|"X-Cache-Tags"| CACHE
     DATA -.->|"Cache-Control"| CACHE
 ```
 
 ### 2.2 Flusso di una Richiesta Cached
 
-Il ciclo di vita di una richiesta attraverso il sistema di cache segue un percorso ben definito che possiamo rappresentare come una sequenza di decisioni e azioni.
+Il ciclo di vita di una richiesta attraverso il sistema di cache segue un percorso ben definito che
+possiamo rappresentare come una sequenza di decisioni e azioni.
 
 ```mermaid
 sequenceDiagram
@@ -128,10 +141,10 @@ sequenceDiagram
     participant CACHE as Cache Layer
     participant SVC as Service
     participant DB as Database
-    
+
     C->>GW: GET /api/products/123
     GW->>CACHE: Check cache key
-    
+
     alt Cache HIT
         CACHE-->>GW: Cached response
         GW-->>C: 200 OK (from cache)
@@ -190,16 +203,16 @@ Non tutte le risposte dovrebbero essere cached. Usa questo albero per decidere.
 ```mermaid
 flowchart TD
     START([Endpoint da cachare?]) --> Q1{Modifica stato?}
-    
+
     Q1 -->|"POST/PUT/DELETE"| NO_CACHE["❌ Non cachare\n(side effects)"]
     Q1 -->|"GET/HEAD"| Q2{Dati personalizzati?}
-    
+
     Q2 -->|"User-specific"| Q3{Auth header varia?}
     Q2 -->|"Pubblici"| Q4{Frequenza cambio?}
-    
+
     Q3 -->|"Sì"| PRIVATE["⚠️ Cache private\n(Cache-Control: private)"]
     Q3 -->|"No"| NO_CACHE
-    
+
     Q4 -->|"Real-time\n(< 1s)"| NO_CACHE
     Q4 -->|"Frequente\n(1s - 1min)"| SHORT["✅ Cache breve\n(s-maxage=30)"]
     Q4 -->|"Moderata\n(1min - 1h)"| MEDIUM["✅ Cache media\n(s-maxage=300)"]
@@ -210,15 +223,15 @@ flowchart TD
 
 La scelta del Time-To-Live dipende dalla natura dei dati e dal contesto applicativo.
 
-| Tipo Risorsa | TTL Suggerito | Rationale |
-|--------------|---------------|-----------|
-| **Configurazioni statiche** | 3600s (1h) | Cambiano raramente, invalidazione manuale |
-| **Catalogo prodotti** | 300s (5min) | Aggiornamenti periodici, tolleranza stale |
-| **Profilo utente** | 60s (1min) | Cambiamenti moderati, privacy |
-| **Dashboard metriche** | 30s | Refresh frequente, aggregazioni costose |
-| **Search results** | 60s | Query costose, risultati semi-stabili |
-| **Health check** | 0s | Mai cachare, deve essere real-time |
-| **Auth tokens** | 0s | Mai cachare, security critical |
+| Tipo Risorsa                | TTL Suggerito | Rationale                                 |
+| --------------------------- | ------------- | ----------------------------------------- |
+| **Configurazioni statiche** | 3600s (1h)    | Cambiano raramente, invalidazione manuale |
+| **Catalogo prodotti**       | 300s (5min)   | Aggiornamenti periodici, tolleranza stale |
+| **Profilo utente**          | 60s (1min)    | Cambiamenti moderati, privacy             |
+| **Dashboard metriche**      | 30s           | Refresh frequente, aggregazioni costose   |
+| **Search results**          | 60s           | Query costose, risultati semi-stabili     |
+| **Health check**            | 0s            | Mai cachare, deve essere real-time        |
+| **Auth tokens**             | 0s            | Mai cachare, security critical            |
 
 ### 3.3 Pseudocodice Decisionale
 
@@ -227,23 +240,23 @@ FUNCTION shouldCache(request, response):
     // Rule 1: Solo metodi safe
     IF request.method NOT IN ["GET", "HEAD"]:
         RETURN { cache: false, reason: "unsafe method" }
-    
+
     // Rule 2: Status code cacheable
     IF response.status NOT IN [200, 203, 204, 206, 300, 301, 404, 410]:
         RETURN { cache: false, reason: "non-cacheable status" }
-    
+
     // Rule 3: Rispetta Cache-Control esplicito
     IF response.headers["Cache-Control"] CONTAINS "no-store":
         RETURN { cache: false, reason: "explicit no-store" }
-    
+
     // Rule 4: Verifica presenza TTL
     IF NOT hasTTL(response.headers):
         RETURN { cache: false, reason: "no TTL specified" }
-    
+
     // Rule 5: Estrai TTL e tags
     ttl ← extractTTL(response.headers["Cache-Control"])
     tags ← parseTagHeader(response.headers["X-Cache-Tags"])
-    
+
     RETURN {
         cache: true,
         ttl: ttl,
@@ -290,17 +303,18 @@ Watt utilizza header HTTP standard più un header custom per i tag.
 
 Le direttive `Cache-Control` controllano il comportamento della cache a vari livelli.
 
-| Direttiva | Significato | Uso in Watt |
-|-----------|-------------|-------------|
-| `public` | Cacheable da qualsiasi cache | ✅ Default per API pubbliche |
-| `private` | Solo cache del browser | ⚠️ Dati user-specific |
-| `s-maxage=N` | TTL per shared cache (proxy) | ✅ **Preferito in Watt** |
-| `max-age=N` | TTL per tutte le cache | ⚠️ Meno controllo |
-| `no-cache` | Valida sempre prima di usare | ⚠️ Performance hit |
-| `no-store` | Mai memorizzare | ✅ Dati sensibili |
-| `must-revalidate` | Dopo TTL, deve revalidare | ⚠️ Raramente necessario |
+| Direttiva         | Significato                  | Uso in Watt                  |
+| ----------------- | ---------------------------- | ---------------------------- |
+| `public`          | Cacheable da qualsiasi cache | ✅ Default per API pubbliche |
+| `private`         | Solo cache del browser       | ⚠️ Dati user-specific        |
+| `s-maxage=N`      | TTL per shared cache (proxy) | ✅ **Preferito in Watt**     |
+| `max-age=N`       | TTL per tutte le cache       | ⚠️ Meno controllo            |
+| `no-cache`        | Valida sempre prima di usare | ⚠️ Performance hit           |
+| `no-store`        | Mai memorizzare              | ✅ Dati sensibili            |
+| `must-revalidate` | Dopo TTL, deve revalidare    | ⚠️ Raramente necessario      |
 
-**Best Practice**: Usa sempre `s-maxage` invece di `max-age` per avere controllo preciso sulla shared cache di Watt, lasciando al browser la libertà di gestire la propria cache.
+**Best Practice**: Usa sempre `s-maxage` invece di `max-age` per avere controllo preciso sulla
+shared cache di Watt, lasciando al browser la libertà di gestire la propria cache.
 
 ### 4.3 Strategia di Tagging
 
@@ -372,7 +386,8 @@ RATIONALE: Configurazioni stabili, 1 ora
 
 ### 5.1 Concetto Fondamentale
 
-L'invalidazione basata su tag permette di invalidare gruppi di cache entries senza conoscere le exact URL. Questo risolve il problema classico del "cache invalidation is hard".
+L'invalidazione basata su tag permette di invalidare gruppi di cache entries senza conoscere le
+exact URL. Questo risolve il problema classico del "cache invalidation is hard".
 
 ```mermaid
 flowchart LR
@@ -382,13 +397,13 @@ flowchart LR
         E3["GET /products/2\n[product-2, products]"]
         E4["GET /categories\n[categories, catalog]"]
     end
-    
+
     subgraph INVALIDATION["Invalidazione"]
         T1["invalidate('product-1')"]
         T2["invalidate('products')"]
         T3["invalidate('catalog')"]
     end
-    
+
     T1 -.->|"invalida"| E2
     T2 -.->|"invalida"| E1
     T2 -.->|"invalida"| E2
@@ -496,16 +511,16 @@ sequenceDiagram
     participant API as API Service
     participant DB as Database
     participant CACHE as Cache Layer
-    
+
     C->>API: PUT /products/123 {price: 99}
     API->>DB: UPDATE products SET price=99
     DB-->>API: OK
-    
+
     API->>CACHE: invalidateHttpCache({tags: ["product-123"]})
     CACHE-->>API: Invalidated
-    
+
     API-->>C: 200 OK {id: 123, price: 99}
-    
+
     Note over C,CACHE: Prossima GET riceverà dati freschi
 ```
 
@@ -524,17 +539,17 @@ flowchart LR
         DB[("Database")]
         QUEUE["Event Queue"]
     end
-    
+
     subgraph INVALIDATION_PATH["Invalidation Path"]
         WORKER["Cache Worker"]
         CACHE[("HTTP Cache")]
     end
-    
+
     API -->|"1. Write"| DB
     API -->|"2. Emit event"| QUEUE
     QUEUE -->|"3. Consume"| WORKER
     WORKER -->|"4. Invalidate"| CACHE
-    
+
     API -.->|"Response immediata"| CLIENT["Client"]
 ```
 
@@ -550,14 +565,14 @@ In alcuni casi, può essere utile aggiornare la cache invece di invalidarla.
 FUNCTION updateProductWithCacheRefresh(productId, newData):
     // 1. Aggiorna database
     updatedProduct ← database.update("products", productId, newData)
-    
+
     // 2. Invalida vecchia entry
     invalidateHttpCache({ tags: ["product-{productId}"] })
-    
+
     // 3. Pre-warm cache con GET interno
     // (opzionale, per endpoint critici)
     fetch("http://api.plt.local/products/{productId}")
-    
+
     RETURN updatedProduct
 ```
 
@@ -567,33 +582,35 @@ FUNCTION updateProductWithCacheRefresh(productId, newData):
 
 ### 7.1 Caching Cross-Service
 
-Quando i servizi comunicano attraverso il mesh interno, la cache opera a livello del Composer (entrypoint).
+Quando i servizi comunicano attraverso il mesh interno, la cache opera a livello del Composer
+(entrypoint).
 
 ```mermaid
 flowchart TB
     subgraph EXTERNAL["External Request"]
         REQ["GET /api/orders/123"]
     end
-    
+
     subgraph WATT["Watt Service Mesh"]
         COMPOSER["Composer\n(cache layer)"]
-        
+
         subgraph INTERNAL["Internal Calls"]
             ORDER_SVC["order-service"]
             PRODUCT_SVC["product-service"]
             USER_SVC["user-service"]
         end
     end
-    
+
     REQ --> COMPOSER
     COMPOSER -->|"1"| ORDER_SVC
     ORDER_SVC -->|"2"| PRODUCT_SVC
     ORDER_SVC -->|"3"| USER_SVC
-    
+
     COMPOSER -.->|"Cache entire\nresponse chain"| CACHE[("Unified Cache")]
 ```
 
-**Punto chiave**: La cache entry contiene la risposta completa, inclusi i dati aggregati da tutti i servizi interni. Non c'è caching a livello di singolo servizio interno.
+**Punto chiave**: La cache entry contiene la risposta completa, inclusi i dati aggregati da tutti i
+servizi interni. Non c'è caching a livello di singolo servizio interno.
 
 ### 7.2 Header Propagation
 
@@ -632,14 +649,14 @@ Quando un endpoint aggrega dati da più servizi con TTL diversi, applica il TTL 
 FUNCTION calculateAggregatedTTL(serviceResponses):
     minTTL ← INFINITY
     allTags ← []
-    
+
     FOR EACH response IN serviceResponses:
         ttl ← extractTTL(response.headers["Cache-Control"])
         tags ← parseTags(response.headers["X-Cache-Tags"])
-        
+
         minTTL ← MIN(minTTL, ttl)
         allTags ← CONCAT(allTags, tags)
-    
+
     RETURN {
         ttl: minTTL,
         tags: UNIQUE(allTags)
@@ -657,30 +674,30 @@ La configurazione del caching avviene nel file `watt.json` di root.
 ```
 {
   "$schema": "https://schemas.platformatic.dev/wattpm/3.0.0.json",
-  
+
   "httpCache": {
     "cacheTagsHeader": "X-Cache-Tags"
   },
-  
+
   "server": {
     "hostname": "0.0.0.0",
     "port": "{PLT_SERVER_PORT}"
   },
-  
+
   "autoload": {
     "path": "web"
   },
-  
+
   "entrypoint": "composer"
 }
 ```
 
 ### 8.2 Opzioni di Configurazione
 
-| Opzione | Tipo | Default | Descrizione |
-|---------|------|---------|-------------|
-| `httpCache` | object | `undefined` | Abilita il caching se presente |
-| `httpCache.cacheTagsHeader` | string | `"X-Cache-Tags"` | Nome header per i tag |
+| Opzione                     | Tipo   | Default          | Descrizione                    |
+| --------------------------- | ------ | ---------------- | ------------------------------ |
+| `httpCache`                 | object | `undefined`      | Abilita il caching se presente |
+| `httpCache.cacheTagsHeader` | string | `"X-Cache-Tags"` | Nome header per i tag          |
 
 **Nota**: La sola presenza di `httpCache: {}` abilita il caching con defaults.
 
@@ -837,39 +854,39 @@ thc-app/
 
 ### 10.1 Fase 1: Abilitazione Base
 
-| Task | Descrizione | Verifica |
-|:----:|-------------|----------|
-| ☐ | Aggiungere `httpCache` in watt.json root | Config presente |
-| ☐ | Configurare `cacheTagsHeader` | Header name definito |
-| ☐ | Verificare Composer come entrypoint | `entrypoint: "composer"` |
-| ☐ | Test: risposta senza cache headers | Nessun caching |
+| Task | Descrizione                              | Verifica                 |
+| :--: | ---------------------------------------- | ------------------------ |
+|  ☐   | Aggiungere `httpCache` in watt.json root | Config presente          |
+|  ☐   | Configurare `cacheTagsHeader`            | Header name definito     |
+|  ☐   | Verificare Composer come entrypoint      | `entrypoint: "composer"` |
+|  ☐   | Test: risposta senza cache headers       | Nessun caching           |
 
 ### 10.2 Fase 2: Primi Endpoint Cached
 
-| Task | Descrizione | Verifica |
-|:----:|-------------|----------|
-| ☐ | Identificare 2-3 endpoint candidati | Lista endpoint |
-| ☐ | Aggiungere Cache-Control headers | `s-maxage` presente |
-| ☐ | Aggiungere X-Cache-Tags | Tag significativi |
-| ☐ | Test: seconda chiamata più veloce | Logs non mostrano DB query |
+| Task | Descrizione                         | Verifica                   |
+| :--: | ----------------------------------- | -------------------------- |
+|  ☐   | Identificare 2-3 endpoint candidati | Lista endpoint             |
+|  ☐   | Aggiungere Cache-Control headers    | `s-maxage` presente        |
+|  ☐   | Aggiungere X-Cache-Tags             | Tag significativi          |
+|  ☐   | Test: seconda chiamata più veloce   | Logs non mostrano DB query |
 
 ### 10.3 Fase 3: Invalidazione
 
-| Task | Descrizione | Verifica |
-|:----:|-------------|----------|
-| ☐ | Creare endpoint admin `/invalidate-cache` | Endpoint funzionante |
-| ☐ | Implementare invalidazione su CREATE | Test manuale |
-| ☐ | Implementare invalidazione su UPDATE | Test manuale |
-| ☐ | Implementare invalidazione su DELETE | Test manuale |
+| Task | Descrizione                               | Verifica             |
+| :--: | ----------------------------------------- | -------------------- |
+|  ☐   | Creare endpoint admin `/invalidate-cache` | Endpoint funzionante |
+|  ☐   | Implementare invalidazione su CREATE      | Test manuale         |
+|  ☐   | Implementare invalidazione su UPDATE      | Test manuale         |
+|  ☐   | Implementare invalidazione su DELETE      | Test manuale         |
 
 ### 10.4 Fase 4: Monitoring e Tuning
 
-| Task | Descrizione | Verifica |
-|:----:|-------------|----------|
-| ☐ | Aggiungere logging cache hit/miss | Log visibili |
-| ☐ | Monitorare TTL effectiveness | Metriche |
-| ☐ | Ottimizzare TTL per endpoint | Valori aggiustati |
-| ☐ | Documentare strategia caching | Doc aggiornata |
+| Task | Descrizione                       | Verifica          |
+| :--: | --------------------------------- | ----------------- |
+|  ☐   | Aggiungere logging cache hit/miss | Log visibili      |
+|  ☐   | Monitorare TTL effectiveness      | Metriche          |
+|  ☐   | Ottimizzare TTL per endpoint      | Valori aggiustati |
+|  ☐   | Documentare strategia caching     | Doc aggiornata    |
 
 ---
 
@@ -882,23 +899,23 @@ flowchart TB
         SET_TAGS["Definisci Tag Strategy"]
         IMPL_INVALIDATION["Implementa Invalidation\nsu mutations"]
     end
-    
+
     subgraph WATT["⚡ Watt Runtime"]
         COMPOSER["Composer\n(entrypoint)"]
         CACHE[("HTTP Cache\n(in-memory)")]
         MESH["Service Mesh\n(.plt.local)"]
     end
-    
+
     subgraph FLOW["📊 Request Flow"]
         HIT["Cache HIT\n→ risposta immediata"]
         MISS["Cache MISS\n→ call services"]
         STORE["Store in cache\ncon TTL + tags"]
     end
-    
+
     SET_HEADERS --> COMPOSER
     SET_TAGS --> CACHE
     IMPL_INVALIDATION --> CACHE
-    
+
     COMPOSER --> HIT
     COMPOSER --> MISS
     MISS --> MESH
@@ -910,11 +927,11 @@ flowchart TB
 
 ## Riferimenti
 
-| Risorsa | Descrizione |
-|---------|-------------|
-| Guida 01 | Platformatic Watt - Architettura e configurazione |
-| Guida 08 | Modular Monolith Quick Reference |
-| HTTP Caching RFC | RFC 7234 - HTTP/1.1 Caching |
+| Risorsa           | Descrizione                                               |
+| ----------------- | --------------------------------------------------------- |
+| Guida 01          | Platformatic Watt - Architettura e configurazione         |
+| Guida 08          | Modular Monolith Quick Reference                          |
+| HTTP Caching RFC  | RFC 7234 - HTTP/1.1 Caching                               |
 | Cache-Control MDN | developer.mozilla.org/docs/Web/HTTP/Headers/Cache-Control |
 
 ---
