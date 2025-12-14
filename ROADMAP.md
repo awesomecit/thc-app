@@ -182,16 +182,20 @@ Task Completion Rate = (Completed / Planned) × 100%
     complexity checks (extracted helper functions).
   - **Task 2.1.3**: Add pre-push hooks for build verification [2h] ✅
     ```gherkin
-    Given TypeScript project with build step
+    Given TypeScript project with build step and test suite
     When a developer pushes to main or master branch
     Then the pre-push hook should run "npm run build"
-    And if build fails, push should be prevented
+    And then run "npm test"
+    And if build or tests fail, push should be prevented
     When pushing to feature branches
-    Then build check should be skipped for fast workflow
+    Then all checks should be skipped for fast workflow
+    And developer can bypass with SKIP_PRE_PUSH_CHECKS=true
     ```
-    **Implementation**: `.husky/pre-push` with branch detection. Only runs `wattpm build` (compiles
-    all sub-apps via Platformatic orchestration) when pushing to `main` or `master`. Feature
-    branches skip build check for developer velocity.
+    **Implementation**: `.husky/pre-push` with branch detection and skip mechanism. Only runs
+    `wattpm build` + `npm test` (unit + integration suites) when pushing to `main` or `master`.
+    Feature branches skip all checks for velocity. Emergency bypass: `SKIP_PRE_PUSH_CHECKS=true git
+    push` (warns that CI/CD will still verify). Provides clear feedback with step indicators (1/2,
+    2/2) and helpful error messages.
 
 - **Story 2.2**: Semantic Versioning Automation
   - **Task 2.2.1**: Create auto-release script based on commits [6h]
