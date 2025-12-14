@@ -14,7 +14,13 @@ fi
 # Read stdin to get local_ref, local_sha, remote_ref, remote_sha
 while read local_ref local_sha remote_ref remote_sha; do
   # Extract branch name from remote_ref (refs/heads/main -> main)
-  branch=$(echo "$remote_ref" | sed 's|refs/heads/||')
+  branch=$(echo "$remote_ref" | sed 's|^refs/heads/||')
+  
+  # If branch is empty (shouldn't happen), exit gracefully
+  if [ -z "$branch" ]; then
+    echo "⚠️  Could not determine branch name - skipping checks"
+    exit 0
+  fi
   
   # Only run verification when pushing to main or master
   if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
