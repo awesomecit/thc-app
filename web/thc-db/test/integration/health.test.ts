@@ -19,19 +19,6 @@ after(async () => {
   await cleanupTestDatabase();
 });
 
-void test('thc-db /health/ready', async (t) => {
-  const app = await getServer(t);
-
-  const res = await app.inject({
-    method: 'GET',
-    url: '/health/ready',
-  });
-
-  assert.strictEqual(res.statusCode, 200, 'should return 200 OK');
-  const body = res.json();
-  assert.strictEqual(body.status, 'ok', 'db should be ready');
-});
-
 void test('thc-db /health/live', async (t) => {
   const app = await getServer(t);
 
@@ -42,5 +29,25 @@ void test('thc-db /health/live', async (t) => {
 
   assert.strictEqual(res.statusCode, 200, 'should return 200 OK');
   const body = res.json();
-  assert.strictEqual(body.status, 'ok', 'application should be alive');
+  assert.strictEqual(body.status, 'ok', 'status should be ok');
+  assert.strictEqual(body.service, 'thc-db', 'service name should be thc-db');
+  assert.ok(body.timestamp, 'timestamp should be present');
+  assert.ok(new Date(body.timestamp).getTime() > 0, 'timestamp should be valid ISO8601');
+});
+
+void test('thc-db /health/ready', async (t) => {
+  const app = await getServer(t);
+
+  const res = await app.inject({
+    method: 'GET',
+    url: '/health/ready',
+  });
+
+  assert.strictEqual(res.statusCode, 200, 'should return 200 OK');
+  const body = res.json();
+  assert.strictEqual(body.status, 'ready', 'status should be ready');
+  assert.strictEqual(body.service, 'thc-db', 'service name should be thc-db');
+  assert.ok(body.timestamp, 'timestamp should be present');
+  assert.ok(body.checks, 'checks should be present');
+  assert.strictEqual(body.checks.database, 'ok', 'database check should be ok');
 });

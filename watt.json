@@ -6,7 +6,8 @@
     "exclude": ["docs", "thc-rabbitmq-hooks", "thc-pg-hooks", "thc-ai-wrap"]
   },
   "logger": {
-    "level": "{PLT_SERVER_LOGGER_LEVEL}"
+    "level": "{PLT_SERVER_LOGGER_LEVEL}",
+    "transport": "{PLT_LOGGER_TRANSPORT}"
   },
   "server": {
     "hostname": "{PLT_SERVER_HOSTNAME}",
