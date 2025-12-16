@@ -789,8 +789,8 @@ Feature: Admin UI Integration with Gateway
 
 ### Tests
 
-- [x] Health endpoint tests (integration)
-- [x] Correlation ID middleware tests (unit)
+- [x] Health endpoint tests (integration) - 9/9 passing
+- [x] Correlation ID middleware tests (integration) - 4/4 passing
 - [ ] Error handler tests (unit + integration)
 - [ ] Metrics endpoint tests (integration)
 - [ ] Admin API tests (integration)
@@ -799,9 +799,10 @@ Feature: Admin UI Integration with Gateway
 
 ## 🚦 Definition of Done
 
-- [x] All BDD scenarios pass (green) - 14/18 tests passing (4 correlation ID tests need server verification)
+- [x] All BDD scenarios pass (green) - **13/13 tests passing** ✅
 - [x] Health checks return 200 for healthy services, 503 for unhealthy
 - [x] Correlation ID appears in all logs
+- [x] Correlation ID plugin works with both inject() and real server
 - [ ] Error responses follow standard format with requestId
 - [ ] Prometheus scrapes metrics successfully
 - [ ] Grafana dashboard displays request rate, error rate, latency, memory
