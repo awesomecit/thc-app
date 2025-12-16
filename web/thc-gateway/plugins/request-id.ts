@@ -1,5 +1,6 @@
 /// <reference types="@platformatic/gateway" />
-import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyPluginAsync, FastifyRequest, FastifyReply } from 'fastify';
+import fp from 'fastify-plugin';
 import { randomUUID } from 'node:crypto';
 
 /**
@@ -12,8 +13,11 @@ import { randomUUID } from 'node:crypto';
  * - Propagate to downstream services via proxy
  * - Include requestId in all logs via child logger
  */
-export default function requestIdPlugin(app: FastifyInstance): void {
-  app.addHook('onRequest', async (request: FastifyRequest, reply: FastifyReply) => {
+const requestIdPluginCallback: FastifyPluginAsync = async (app) => {
+  app.log.info('🔌 Request ID plugin loaded');
+
+  // Use preHandler hook to ensure it works with both inject() and real server
+  app.addHook('preHandler', async (request: FastifyRequest, reply: FastifyReply) => {
     // Extract or generate correlation ID
     const requestId = (request.headers['x-request-id'] as string) || randomUUID();
 
@@ -39,4 +43,10 @@ export default function requestIdPlugin(app: FastifyInstance): void {
       'Request completed'
     );
   });
-}
+};
+
+// Wrap with fastify-plugin to ensure hooks are applied correctly
+export default fp(requestIdPluginCallback, {
+  name: 'request-id-plugin',
+  fastify: '5.x',
+});

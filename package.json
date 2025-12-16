@@ -65,6 +65,7 @@
   "dependencies": {
     "@platformatic/sql-mapper": "^3.27.0",
     "better-sqlite3": "^12.5.0",
+    "fastify-plugin": "^5.1.0",
     "wattpm": "^3.27.0"
   },
   "devDependencies": {

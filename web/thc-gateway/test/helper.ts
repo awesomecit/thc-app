@@ -13,13 +13,16 @@ export async function getServer(t: TestContext) {
   // Configurazione per test: logger minimale, no watch, no applications
   config.server ||= {};
   config.server.logger ||= {};
-  config.server.logger.level = 'warn';
+  config.server.logger.level = 'info'; // Enable info to see plugin loading messages
   config.watch = false;
 
   // Remove gateway applications for unit testing (test only gateway health endpoints)
   if (config.gateway) {
     config.gateway.applications = [];
   }
+
+  // Keep plugins configuration to load all plugins from plugins/ directory
+  // Platformatic will automatically load plugins before calling start()
 
   // Crea il server gateway
   const server = await create(join(import.meta.dirname, '../'), config);

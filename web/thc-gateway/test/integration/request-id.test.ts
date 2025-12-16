@@ -10,6 +10,9 @@ import { getServer } from '../helper.js';
  * - Preserve existing X-Request-ID from client
  * - Add X-Request-ID to response headers
  * - requestId should appear in logs (verified via response header)
+ *
+ * Note: Il plugin request-id viene caricato automaticamente da Platformatic
+ * tramite la configurazione plugins.paths in watt.json
  */
 
 const REQUEST_ID_HEADER = 'x-request-id';
