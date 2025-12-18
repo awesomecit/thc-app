@@ -8,7 +8,10 @@ type TestContext = Parameters<Exclude<testfn, undefined>>[0];
 
 export async function getServer(t: TestContext) {
   // Legge la configurazione del gateway
-  const config = JSON.parse(await readFile(join(import.meta.dirname, '..', 'watt.json'), 'utf8'));
+  // Note: import.meta.dirname points to dist/test after compilation, so we need ../../
+  const config = JSON.parse(
+    await readFile(join(import.meta.dirname, '..', '..', 'watt.json'), 'utf8')
+  );
 
   // Configurazione per test: logger minimale, no watch, no applications
   config.server ||= {};
@@ -25,7 +28,8 @@ export async function getServer(t: TestContext) {
   // Platformatic will automatically load plugins before calling start()
 
   // Crea il server gateway
-  const server = await create(join(import.meta.dirname, '../'), config);
+  // Note: import.meta.dirname points to dist/test, we need project root (../..)
+  const server = await create(join(import.meta.dirname, '../../'), config);
   await server.start({});
   t.after(() => server.stop());
 

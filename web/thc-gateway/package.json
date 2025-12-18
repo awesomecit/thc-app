@@ -5,13 +5,22 @@
     "dev": "wattpm dev",
     "start": "wattpm start",
     "build": "wattpm build",
-    "test": "node --test"
+    "prebuild": "npm run clean",
+    "clean": "rm -rf dist",
+    "compile": "tsc",
+    "pretest": "npm run compile",
+    "test": "node --test 'dist/test/**/*.test.js'",
+    "test:watch": "node --test --watch 'dist/test/**/*.test.js'",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix",
+    "verify": "npm run lint && npm test"
   },
   "devDependencies": {
     "fastify": "^5.0.0",
     "typescript": "^5.5.4"
   },
   "dependencies": {
+    "@fastify/sensible": "^6.0.4",
     "@platformatic/gateway": "^3.27.0"
   },
   "engines": {
