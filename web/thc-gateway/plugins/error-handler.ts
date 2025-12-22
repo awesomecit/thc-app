@@ -70,12 +70,13 @@ const errorHandlerPlugin: FastifyPluginAsync = async (app) => {
 
   app.log.info('🔌 Error handler plugin loaded');
 
-  // eslint-disable-next-line sonarjs/cognitive-complexity, complexity -- Error handling requires comprehensive logic for different error types
+  // Error handler requires comprehensive logic for different error types (Fastify validation, custom AppError, generic errors)
+  // Each type needs specific handling for proper status codes, message sanitization, and logging
   app.setErrorHandler(
+    // eslint-disable-next-line sonarjs/cognitive-complexity, complexity
     async (error: FastifyError | AppError, request: FastifyRequest, reply: FastifyReply) => {
       const requestId = request.id;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access -- Dynamic error handling requires any
-      const statusCode = (error as any).statusCode ?? 500;
+      const statusCode = (error as { statusCode?: number }).statusCode ?? 500;
 
       // Determine if message should be exposed to client
       // Rule: 5xx = ALWAYS masked, 4xx = controlled by AppError.expose flag
@@ -107,20 +108,17 @@ const errorHandlerPlugin: FastifyPluginAsync = async (app) => {
 
       request.log[logLevel](logData, `Request error: ${error.message}`);
 
-      // Prometheus metrics integration planned for Task 3.2.2
-      // Will increment: httpErrorsTotal.labels({ code: errorCode, status: statusCode.toString() }).inc();
+      // Error metrics are tracked by the metrics plugin via onResponse hook
 
       // Handle custom AppError (duck typing to avoid instanceof issues with duplicated classes)
       if ('statusCode' in error && 'code' in error && typeof error.code === 'string') {
         const appError = error as AppError;
+        const errorDetails = (error as { details?: unknown[] }).details;
         return reply.status(appError.statusCode).send({
           error: {
             code: appError.code,
             message: shouldExpose ? error.message : getGenericMessage(appError.statusCode),
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access -- ValidationError details duck typing
-            ...('details' in error && Array.isArray((error as any).details)
-              ? { details: (error as any).details }
-              : {}),
+            ...(Array.isArray(errorDetails) ? { details: errorDetails } : {}),
             requestId,
           },
         });
@@ -153,7 +151,6 @@ const errorHandlerPlugin: FastifyPluginAsync = async (app) => {
       return reply.status(statusCode).send({
         error: {
           code: errorCode,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- statusCode from dynamic error
           message: getGenericMessage(statusCode),
           requestId,
         },

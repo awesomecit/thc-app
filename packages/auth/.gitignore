@@ -1,0 +1,27 @@
+# Build output
+dist/
+*.tsbuildinfo
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Test artifacts
+test-*.pem
+test-*.key
+test/helpers/test-keys.ts
+test/helpers/test-keys.js
+
+# Node modules (handled by root)
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

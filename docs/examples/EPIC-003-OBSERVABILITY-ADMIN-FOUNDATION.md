@@ -54,14 +54,14 @@ admin dashboard MVP to monitor system health and troubleshoot issues in real-tim
 
 ### Daily Breakdown
 
-| Day | Focus                        | Tasks                   | Hours |
-| --- | ---------------------------- | ----------------------- | ----- |
-| Mon | Health & Logging             | 3.1.1, 3.1.2            | 7h    |
-| Tue | Correlation ID + Error       | 3.1.3, 3.1.4            | 5h    |
-| Wed | Telemetry Stack              | 3.2.1, 3.2.2            | 7h    |
-| Thu | Grafana Dashboard + Alerting | 3.2.3, 3.2.4            | 5h    |
-| Fri | Admin UI + Integration       | 3.3.1, 3.3.2, 3.3.3     | 7h    |
-|     | **Total**                    | **10 tasks**            | 31h   |
+| Day | Focus                        | Tasks               | Hours |
+| --- | ---------------------------- | ------------------- | ----- |
+| Mon | Health & Logging             | 3.1.1, 3.1.2        | 7h    |
+| Tue | Correlation ID + Error       | 3.1.3, 3.1.4        | 5h    |
+| Wed | Telemetry Stack              | 3.2.1, 3.2.2        | 7h    |
+| Thu | Grafana Dashboard + Alerting | 3.2.3, 3.2.4        | 5h    |
+| Fri | Admin UI + Integration       | 3.3.1, 3.3.2, 3.3.3 | 7h    |
+|     | **Total**                    | **10 tasks**        | 31h   |
 
 _(includes 20% buffer, actual implementation ~26h)_
 
@@ -383,7 +383,7 @@ Feature: Local Observability Stack
 
 #### Task 3.2.2: Prometheus metrics for Watt services [4h]
 
-```gherkin
+````gherkin
 Feature: Prometheus Metrics Export
   As a DevOps engineer
   I want standardized metrics from all services
@@ -433,7 +433,7 @@ Feature: Prometheus Metrics Export
     Then metric name should use snake_case
     And metric should include unit suffix (_total, _seconds, _bytes)
     And metric should have descriptive HELP text
-```
+````
 
 **Implementation Notes**:
 
@@ -556,7 +556,7 @@ Feature: Prometheus Alerting
     labels:
       severity: critical
     annotations:
-      summary: "High error rate detected"
+      summary: 'High error rate detected'
   ```
 - Alertmanager config: `alertmanager.yml` (optional webhook)
 
@@ -580,7 +580,7 @@ Admin dashboard provides:
 
 #### Task 3.3.1: Admin service endpoint /admin/status [2h]
 
-```gherkin
+````gherkin
 Feature: Admin Status Endpoint
   As an administrator
   I want a single endpoint to check system health
@@ -658,7 +658,7 @@ Feature: Admin Status Endpoint
         }
       }
       ```
-```
+````
 
 **Implementation Notes**:
 
@@ -819,13 +819,13 @@ Feature: Admin UI Integration with Gateway
 
 ## 🎯 Success Metrics
 
-| Metric                        | Target       | How to Measure                                     |
-| ----------------------------- | ------------ | -------------------------------------------------- |
-| **MTTR (Mean Time to Repair)** | < 30 minutes | Time from alert to resolution (simulated incident) |
-| **Dashboard Load Time**       | < 2 seconds  | Admin UI initial load time                         |
-| **Metrics Scrape Latency**    | < 500ms      | Prometheus scrape duration for /metrics            |
-| **Alert Accuracy**            | > 95%        | True positives / (True positives + False positives) |
-| **Log Query Speed**           | < 5 seconds  | Grep for requestId across all services            |
+| Metric                         | Target       | How to Measure                                      |
+| ------------------------------ | ------------ | --------------------------------------------------- |
+| **MTTR (Mean Time to Repair)** | < 30 minutes | Time from alert to resolution (simulated incident)  |
+| **Dashboard Load Time**        | < 2 seconds  | Admin UI initial load time                          |
+| **Metrics Scrape Latency**     | < 500ms      | Prometheus scrape duration for /metrics             |
+| **Alert Accuracy**             | > 95%        | True positives / (True positives + False positives) |
+| **Log Query Speed**            | < 5 seconds  | Grep for requestId across all services              |
 
 ---
 

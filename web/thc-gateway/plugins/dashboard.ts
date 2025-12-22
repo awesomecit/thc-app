@@ -72,6 +72,22 @@ function getServices(baseUrl: string): Service[] {
         { name: 'Health Live', url: `${baseUrl}/thc-node/health/live` },
       ],
     },
+    {
+      name: 'Observability',
+      prefix: '/observability',
+      description: 'Monitoring & Metrics',
+      endpoints: [
+        {
+          name: 'Grafana Dashboards',
+          url: `http://localhost:${process.env.GRAFANA_PORT ?? '3001'}`,
+        },
+        {
+          name: 'Prometheus Metrics',
+          url: `http://localhost:${process.env.PROMETHEUS_PORT ?? '9090'}`,
+        },
+        { name: 'Gateway Metrics', url: `${baseUrl}/metrics` },
+      ],
+    },
   ];
 }
 

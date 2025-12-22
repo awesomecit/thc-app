@@ -1,0 +1,89 @@
+# Prometheus Alert Rules for THC Platform
+# Defines conditions for triggering alerts
+
+groups:
+  - name: service_health
+    interval: 30s
+    rules:
+      # Alert when service is down
+      - alert: ServiceDown
+        expr: up{job=~"watt-.*"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: '{{ $labels.service }}'
+        annotations:
+          summary: 'Service {{ $labels.service }} is down'
+          description:
+            'Service {{ $labels.service }} on {{ $labels.instance }} has been down for more than 1
+            minute.'
+
+  - name: error_rate
+    interval: 30s
+    rules:
+      # Alert when HTTP error rate > 5% over 5 minutes
+      - alert: HighErrorRate
+        expr: |
+          (
+            sum(rate(http_requests_total{status=~"5.."}[5m])) by (service)
+            /
+            sum(rate(http_requests_total[5m])) by (service)
+          ) * 100 > 5
+        for: 5m
+        labels:
+          severity: warning
+          component: '{{ $labels.service }}'
+        annotations:
+          summary: 'High error rate on {{ $labels.service }}'
+          description:
+            'Service {{ $labels.service }} has {{ $value | humanize }}% error rate over the last 5
+            minutes (threshold: 5%).'
+
+  - name: latency
+    interval: 30s
+    rules:
+      # Alert when p95 latency > 500ms
+      - alert: HighLatency
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (service, le)
+          ) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+          component: '{{ $labels.service }}'
+        annotations:
+          summary: 'High latency on {{ $labels.service }}'
+          description:
+            'Service {{ $labels.service }} has p95 latency of {{ $value | humanize }}s over the last
+            5 minutes (threshold: 0.5s).'
+
+  - name: resource_usage
+    interval: 30s
+    rules:
+      # Alert when memory usage > 80%
+      - alert: HighMemoryUsage
+        expr: |
+          (nodejs_heap_size_used_bytes / nodejs_heap_size_total_bytes) * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+          component: '{{ $labels.service }}'
+        annotations:
+          summary: 'High memory usage on {{ $labels.service }}'
+          description:
+            'Service {{ $labels.service }} is using {{ $value | humanize }}% of heap memory
+            (threshold: 80%).'
+
+      # Alert when event loop lag > 100ms
+      - alert: HighEventLoopLag
+        expr: nodejs_eventloop_lag_seconds > 0.1
+        for: 2m
+        labels:
+          severity: warning
+          component: '{{ $labels.service }}'
+        annotations:
+          summary: 'High event loop lag on {{ $labels.service }}'
+          description:
+            'Service {{ $labels.service }} has event loop lag of {{ $value | humanize }}s
+            (threshold: 0.1s).'

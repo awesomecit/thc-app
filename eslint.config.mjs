@@ -15,6 +15,9 @@ export default tseslint.config(
       '**/coverage/**',
       '**/.husky/**',
       '**/docs/**',
+      '**/packages/auth/test/**',
+      '**/*.test.ts',
+      '**/*.spec.ts',
     ],
   },
 
