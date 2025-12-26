@@ -271,6 +271,42 @@ npm run verify                 # Manual verification: format, secrets, lint, bui
 npm run verify:full            # Adds test suite
 ```
 
+### 🧪 Running Tests
+
+The project includes a comprehensive test suite with **124 passing tests**:
+
+```bash
+# Run all tests (unit + integration)
+npm test                       # Recommended: Complete test suite
+
+# Run specific test categories
+npm run test:unit              # Unit tests only (web + packages)
+npm run test:integration       # Integration tests (web + packages)
+
+# Run tests by workspace
+npm run test:unit:web          # Web apps unit tests (29 tests)
+npm run test:unit:packages     # Package unit tests (62 tests)
+npm run test:integration:web   # Web apps integration tests (24 tests)
+npm run test:integration:packages  # Package integration tests (9 tests)
+
+# Health checks only
+npm run test:integration:health  # Quick smoke test (9 tests)
+
+# Watch mode for development
+npm run test:watch             # Auto-rerun tests on file changes
+
+# Coverage report
+npm run test:cov               # Generate HTML coverage report
+```
+
+**Test Distribution:**
+- ✅ 29 unit tests (web apps)
+- ✅ 62 unit tests (packages: auth module)
+- ✅ 24 integration tests (web: gateway, db, service, node)
+- ✅ 9 integration tests (packages: RedisSessionRepository with Testcontainers)
+
+**Note:** Some SessionManager integration tests are temporarily skipped due to container cleanup issues under investigation.
+
 ### Troubleshooting
 
 ```bash

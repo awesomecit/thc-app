@@ -26,7 +26,12 @@ export class RedisSessionRepository implements SessionRepository {
       return null;
     }
 
-    return JSON.parse(data) as SessionData;
+    try {
+      return JSON.parse(data) as SessionData;
+    } catch {
+      // Return null if JSON parsing fails (malformed data)
+      return null;
+    }
   }
 
   async delete(sessionId: string): Promise<void> {
@@ -42,10 +47,15 @@ export class RedisSessionRepository implements SessionRepository {
 
   async getTTL(sessionId: string): Promise<number> {
     const key = this.buildKey(sessionId);
-    return await this.redis.ttl(key);
+    const ttl = await this.redis.ttl(key);
+    // Redis returns -2 when key doesn't exist, normalize to -1
+    return ttl === -2 ? -1 : ttl;
   }
 
   private buildKey(sessionId: string): string {
     return `${this.keyPrefix}${sessionId}`;
   }
 }
+
+// Alias export for compatibility
+export { RedisSessionRepository as RedisSessionAdapter };

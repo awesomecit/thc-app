@@ -6,6 +6,7 @@
  */
 
 import type { FastifyInstance, FastifyRequest } from 'fastify';
+import fp from 'fastify-plugin';
 import type { Redis } from 'ioredis';
 
 export interface SessionData {
@@ -224,42 +225,45 @@ export class SessionManager {
 /**
  * Fastify plugin for session management
  */
-export function sessionManagerPlugin(
-  fastify: FastifyInstance,
-  opts: {
-    redis: Redis;
-    config?: Partial<SessionConfig>;
-    keycloak: { url: string; clientId: string; clientSecret: string };
-  }
-): void {
-  const manager = new SessionManager(opts.redis, opts.config, opts.keycloak);
-
-  fastify.decorate('sessionManager', manager);
-
-  // Middleware to track activity
-  fastify.addHook('onRequest', async (request: FastifyRequest) => {
-    const sessionWithId = request.session as { id?: string };
-    const sessionId = sessionWithId.id;
-    if (sessionId) {
-      await manager.getSession(sessionId);
+export const sessionManagerPlugin = fp(
+  function (
+    fastify: FastifyInstance,
+    opts: {
+      redis: Redis;
+      config?: Partial<SessionConfig>;
+      keycloak: { url: string; clientId: string; clientSecret: string };
     }
-  });
+  ) {
+    const manager = new SessionManager(opts.redis, opts.config, opts.keycloak);
 
-  // Cleanup job (run every hour)
-  if (process.env.NODE_ENV !== 'test') {
-    setInterval(
-      () => {
-        void (async () => {
-          const cleaned = await manager.cleanupExpiredSessions();
-          if (cleaned > 0) {
-            fastify.log.info({ cleaned }, 'Cleaned up expired sessions');
-          }
-        })();
-      },
-      60 * 60 * 1000
-    ); // 1 hour
-  }
-}
+    fastify.decorate('sessionManager', manager);
+
+    // Middleware to track activity
+    fastify.addHook('onRequest', async (request: FastifyRequest) => {
+      const sessionWithId = request.session as { id?: string };
+      const sessionId = sessionWithId.id;
+      if (sessionId) {
+        await manager.getSession(sessionId);
+      }
+    });
+
+    // Cleanup job (run every hour)
+    if (process.env.NODE_ENV !== 'test') {
+      setInterval(
+        () => {
+          void (async () => {
+            const cleaned = await manager.cleanupExpiredSessions();
+            if (cleaned > 0) {
+              fastify.log.info({ cleaned }, 'Cleaned up expired sessions');
+            }
+          })();
+        },
+        60 * 60 * 1000
+      ); // 1 hour
+    }
+  },
+  { name: 'sessionManager', fastify: '5.x' }
+);
 
 declare module 'fastify' {
   interface FastifyInstance {

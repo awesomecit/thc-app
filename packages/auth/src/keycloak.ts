@@ -13,6 +13,9 @@ import fastifySession from '@fastify/session';
 import { Redis } from 'ioredis';
 import { randomUUID } from 'crypto';
 
+// Internal session type for Redis store
+type SessionStoreData = Record<string, unknown>;
+
 export interface KeycloakPluginOptions {
   keycloakUrl: string;
   realm: string;
@@ -54,22 +57,22 @@ function createSessionStore(
   redis: Redis,
   sessionTTL: number
 ): {
-  set: (sid: string, session: unknown, cb: (err?: Error) => void) => void;
-  get: (sid: string, cb: (err: Error | null, session?: unknown) => void) => void;
+  set: (sid: string, session: SessionStoreData, cb: (err?: Error) => void) => void;
+  get: (sid: string, cb: (err: Error | null, session?: SessionStoreData) => void) => void;
   destroy: (sid: string, cb: (err?: Error) => void) => void;
 } {
   return {
-    set: (sid: string, session: unknown, cb: (err?: Error) => void) => {
+    set: (sid: string, session: SessionStoreData, cb: (err?: Error) => void) => {
       redis
         .setex(`session:${sid}`, sessionTTL, JSON.stringify(session))
         .then(() => cb())
         .catch(cb);
     },
-    get: (sid: string, cb: (err: Error | null, session?: unknown) => void) => {
+    get: (sid: string, cb: (err: Error | null, session?: SessionStoreData) => void) => {
       redis
         .get(`session:${sid}`)
         .then((data: string | null) => {
-          cb(null, data ? JSON.parse(data) : null);
+          cb(null, data ? (JSON.parse(data) as SessionStoreData) : undefined);
         })
         .catch(cb);
     },
@@ -114,9 +117,9 @@ async function setupRedisStore(
       httpOnly: true,
       maxAge: sessionTTL * 1000,
     },
-    store: createSessionStore(redis, sessionTTL),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+    store: createSessionStore(redis, sessionTTL) as any,
   });
-
   return redis;
 }
 
