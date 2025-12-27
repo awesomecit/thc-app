@@ -18,6 +18,9 @@ export default tseslint.config(
       '**/packages/auth/test/**',
       '**/*.test.ts',
       '**/*.spec.ts',
+      // Git submodules
+      'web/ticops-field-mapper/**',
+      'web/ticops-frontend/**',
     ],
   },
 
