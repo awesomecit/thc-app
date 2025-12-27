@@ -16,13 +16,28 @@ export interface JwtPluginOptions {
 }
 
 const jwtPlugin: FastifyPluginAsync<JwtPluginOptions> = async (fastify, opts) => {
+  // CRITICAL: Validate public key before registering fastify-jwt
+  if (!opts.jwtPublicKey) {
+    fastify.log.error(
+      'JWT plugin requires jwtPublicKey option. Skipping JWT registration - authentication will not work!'
+    );
+    // Register empty authenticate decorator that always rejects
+    fastify.decorate('authenticate', async (_request: FastifyRequest, reply: FastifyReply) => {
+      reply.code(503).send({
+        error: 'Service Unavailable',
+        message: 'JWT validation not configured - missing public key',
+      });
+    });
+    return;
+  }
+
   // Build issuer URL from Keycloak config
   const issuer = `${opts.keycloakUrl}/realms/${opts.realm}`;
 
   // Register @fastify/jwt in verify-only mode
   await fastify.register(jwt, {
     secret: {
-      public: opts.jwtPublicKey ?? '',
+      public: opts.jwtPublicKey,
     },
     verify: {
       algorithms: ['RS256'],

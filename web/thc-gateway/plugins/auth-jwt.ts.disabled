@@ -9,15 +9,19 @@ import type { FastifyPluginAsync } from 'fastify';
 import authPlugin from '@thc/auth';
 
 const authJwtPlugin: FastifyPluginAsync = async (app) => {
+  const jwtPublicKey = process.env.PLT_KEYCLOAK_PUBLIC_KEY;
+
+  // Early exit se manca chiave pubblica - critico per evitare crash
+  if (!jwtPublicKey) {
+    app.log.warn(
+      '⚠️  PLT_KEYCLOAK_PUBLIC_KEY not set - JWT validation disabled. Set this env var to enable token validation.'
+    );
+    return;
+  }
+
   const keycloakUrl = process.env.PLT_KEYCLOAK_URL ?? 'http://localhost:8081';
   const realm = process.env.PLT_KEYCLOAK_REALM ?? 'ticops';
   const clientId = process.env.PLT_KEYCLOAK_CLIENT_ID ?? 'thc-gateway';
-  const jwtPublicKey = process.env.PLT_KEYCLOAK_PUBLIC_KEY;
-
-  if (!jwtPublicKey) {
-    app.log.warn('PLT_KEYCLOAK_PUBLIC_KEY not set - skipping JWT validation plugin');
-    return; // Skip plugin se manca la chiave pubblica
-  }
 
   await app.register(authPlugin, {
     keycloakUrl,

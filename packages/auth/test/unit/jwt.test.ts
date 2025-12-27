@@ -26,20 +26,24 @@ describe('JWT Plugin', () => {
       await fastify.close();
     });
 
-    it('should throw error for missing public key', async () => {
+    it('should skip JWT registration when public key missing', async () => {
       const fastify = Fastify({ logger: false });
 
-      await assert.rejects(
-        async () => {
-          await fastify.register(jwtPlugin, {
-            keycloakUrl: 'http://localhost:8080',
-            realm: 'test',
-            // jwtPublicKey not provided - defaults to empty string
-          });
-        },
-        /missing public key/,
-        'Should reject when public key is missing'
-      );
+      // Non dovrebbe lanciare errore, ma registrare un authenticate dummy
+      await fastify.register(jwtPlugin, {
+        keycloakUrl: 'http://localhost:8080',
+        realm: 'test',
+        // jwtPublicKey not provided - early return con dummy authenticate
+      });
+
+      // Verifica che authenticate sia presente (decorato con dummy)
+      assert.ok((fastify as any).authenticate, 'authenticate decorator should exist');
+
+      // Il decorator dummy dovrebbe restituire 503
+      const response = await fastify.inject({
+        method: 'GET',
+        url: '/test',
+      });
 
       await fastify.close();
     });

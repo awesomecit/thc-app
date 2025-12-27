@@ -88,6 +88,8 @@ before(async () => {
 
   // Override environment variables for test
   config.server ||= {};
+  config.server.hostname = '127.0.0.1';
+  config.server.port = 0; // Random port per evitare conflitti
   config.server.logger ||= {};
   config.server.logger.level = 'info';
   config.watch = false;
