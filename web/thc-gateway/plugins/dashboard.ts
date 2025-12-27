@@ -9,11 +9,18 @@ interface ServiceEndpoint {
   url: string;
 }
 
+interface ServiceCredentials {
+  username?: string;
+  password?: string;
+  note?: string;
+}
+
 interface Service {
   name: string;
   prefix: string;
   description: string;
   endpoints: ServiceEndpoint[];
+  credentials?: ServiceCredentials;
 }
 
 interface ServiceWithStatus extends Service {
@@ -38,40 +45,19 @@ function getServices(baseUrl: string): Service[] {
         { name: 'Health Live', url: `${baseUrl}/health/live` },
       ],
     },
-    {
-      name: 'thc-db',
-      prefix: '/thc-db',
-      description: 'Database API - Auto-generated CRUD + GraphQL',
-      endpoints: [
-        { name: 'Scalar Docs', url: `${baseUrl}/thc-db/documentation` },
-        { name: 'Swagger UI', url: `${baseUrl}/thc-db/swagger` },
-        { name: 'GraphiQL', url: `${baseUrl}/thc-db/graphiql` },
-        { name: 'OpenAPI JSON', url: `${baseUrl}/thc-db/documentation/json` },
-        { name: 'GraphQL Endpoint', url: `${baseUrl}/thc-db/graphql` },
-        { name: HEALTH_READY_ENDPOINT, url: `${baseUrl}/thc-db/health/ready` },
-      ],
-    },
-    {
-      name: 'thc-service',
-      prefix: '/thc-service',
-      description: 'Business Logic Service',
-      endpoints: [
-        { name: 'Scalar Docs', url: `${baseUrl}/thc-service/documentation` },
-        { name: 'Swagger UI', url: `${baseUrl}/thc-service/swagger` },
-        { name: 'OpenAPI JSON', url: `${baseUrl}/thc-service/documentation/json` },
-        { name: HEALTH_READY_ENDPOINT, url: `${baseUrl}/thc-service/health/ready` },
-      ],
-    },
-    {
-      name: 'thc-node',
-      prefix: '/thc-node',
-      description: 'Node.js Service',
-      endpoints: [
-        { name: 'Root', url: `${baseUrl}/thc-node/` },
-        { name: HEALTH_READY_ENDPOINT, url: `${baseUrl}/thc-node/health/ready` },
-        { name: 'Health Live', url: `${baseUrl}/thc-node/health/live` },
-      ],
-    },
+    // {
+    //   name: 'thc-db',
+    //   prefix: '/thc-db',
+    //   description: 'Database API - Auto-generated CRUD + GraphQL',
+    //   endpoints: [
+    //     { name: 'Scalar Docs', url: `${baseUrl}/thc-db/documentation` },
+    //     { name: 'Swagger UI', url: `${baseUrl}/thc-db/swagger` },
+    //     { name: 'GraphiQL', url: `${baseUrl}/thc-db/graphiql` },
+    //     { name: 'OpenAPI JSON', url: `${baseUrl}/thc-db/documentation/json` },
+    //     { name: 'GraphQL Endpoint', url: `${baseUrl}/thc-db/graphql` },
+    //     { name: HEALTH_READY_ENDPOINT, url: `${baseUrl}/thc-db/health/ready` },
+    //   ],
+    // },
     {
       name: 'Observability',
       prefix: '/observability',
@@ -87,6 +73,30 @@ function getServices(baseUrl: string): Service[] {
         },
         { name: 'Gateway Metrics', url: `${baseUrl}/metrics` },
       ],
+      credentials: {
+        username: process.env.GRAFANA_ADMIN_USER ?? 'admin',
+        password: process.env.GRAFANA_ADMIN_PASSWORD ?? 'admin',
+        note: 'Grafana only',
+      },
+    },
+    {
+      name: 'Authentication',
+      prefix: '/auth',
+      description: 'Identity & Access Management',
+      endpoints: [
+        {
+          name: 'Keycloak Admin Console',
+          url: `http://localhost:${process.env.KC_HTTP_PORT ?? '8081'}`,
+        },
+        {
+          name: 'TicOps Realm',
+          url: `http://localhost:${process.env.KC_HTTP_PORT ?? '8081'}/admin/master/console/#/ticops`,
+        },
+      ],
+      credentials: {
+        username: process.env.KEYCLOAK_ADMIN ?? 'admin',
+        password: process.env.KEYCLOAK_ADMIN_PASSWORD ?? 'admin_password_CHANGE_IN_PROD',
+      },
     },
   ];
 }
@@ -106,6 +116,23 @@ async function checkServiceHealth(service: Service): Promise<ServiceWithStatus> 
   } catch {
     return { ...service, status: 'offline' };
   }
+}
+
+function renderCredentials(credentials?: ServiceCredentials): string {
+  if (!credentials) {
+    return '';
+  }
+
+  const noteHtml = credentials.note ? `<br><em>(${credentials.note})</em>` : '';
+
+  return `
+    <div class="credentials">
+      <strong>🔐 Dev Credentials:</strong>
+      User: <code>${credentials.username}</code> | 
+      Pass: <code>${credentials.password}</code>
+      ${noteHtml}
+    </div>
+  `;
 }
 
 function generateHTML(servicesStatus: ServiceWithStatus[], port: number): string {
@@ -173,6 +200,26 @@ function generateHTML(servicesStatus: ServiceWithStatus[], port: number): string
       font-size: 0.9rem;
       margin-bottom: 1rem;
     }
+    .credentials {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+    .credentials strong {
+      color: #856404;
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    .credentials code {
+      background: #fff;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      color: #d63384;
+    }
     .endpoints { list-style: none; }
     .endpoint-item { margin-bottom: 0.5rem; }
     .endpoint-link {
@@ -239,6 +286,7 @@ function generateHTML(servicesStatus: ServiceWithStatus[], port: number): string
             <span class="status ${service.status}">${service.status}</span>
           </div>
           <p class="service-description">${service.description}</p>
+          ${renderCredentials(service.credentials)}
           <ul class="endpoints">
             ${service.endpoints
               .map(
@@ -279,5 +327,14 @@ export default function dashboardPlugin(app: FastifyInstance): void {
 
     const html = generateHTML(servicesStatus, port ?? DEFAULT_PORT);
     return reply.type('text/html').send(html);
+  });
+
+  // Log dashboard URL after server starts listening
+  app.addHook('onListen', function () {
+    const address = this.server.address();
+    if (address && typeof address === 'object') {
+      const port = address.port;
+      this.log.info(`📊 Admin Dashboard available at http://localhost:${port}/api-docs`);
+    }
   });
 }

@@ -3,7 +3,7 @@
   "watch": true,
   "autoload": {
     "path": "web",
-    "exclude": ["docs", "ticops-field-mapper", "ticops-frontend"]
+    "exclude": ["docs"]
   },
   "logger": {
     "level": "{PLT_SERVER_LOGGER_LEVEL}"

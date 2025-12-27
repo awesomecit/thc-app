@@ -5,20 +5,7 @@
     "paths": ["plugins"]
   },
   "gateway": {
-    "applications": [
-      {
-        "id": "thc-db",
-        "proxy": {
-          "prefix": "/api"
-        }
-      },
-      {
-        "id": "thc-service"
-      },
-      {
-        "id": "thc-node"
-      }
-    ],
+    "applications": [],
     "refreshTimeout": 1000
   }
 }
