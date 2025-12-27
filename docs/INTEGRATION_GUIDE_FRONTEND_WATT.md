@@ -2,7 +2,10 @@
 
 ## Contesto del Progetto
 
-Questo documento guida l'integrazione dell'applicazione frontend **tactical-hub** (Vue 3 + Vite) nel progetto **THC (TicOps Health Check)** basato su Platformatic Watt. L'obiettivo è che Watt orchestri il frontend insieme ai servizi backend esistenti, gestendo automaticamente routing, build e comunicazione inter-service.
+Questo documento guida l'integrazione dell'applicazione frontend **tactical-hub** (Vue 3 + Vite) nel
+progetto **THC (TicOps Health Check)** basato su Platformatic Watt. L'obiettivo è che Watt orchestri
+il frontend insieme ai servizi backend esistenti, gestendo automaticamente routing, build e
+comunicazione inter-service.
 
 ### Architettura Attuale THC
 
@@ -38,17 +41,21 @@ thc-project/
 
 ## Best Practice Ufficiali Platformatic (Dicembre 2025)
 
-Queste best practice derivano dalla documentazione ufficiale Platformatic e dal blog di rilascio di Watt 3.x.
+Queste best practice derivano dalla documentazione ufficiale Platformatic e dal blog di rilascio di
+Watt 3.x.
 
 ### 1. Usare @platformatic/vite per SPA Standard
 
-Per applicazioni Vue/React/Svelte basate su Vite, il package `@platformatic/vite` è la scelta raccomandata. Offre integrazione zero-config con:
+Per applicazioni Vue/React/Svelte basate su Vite, il package `@platformatic/vite` è la scelta
+raccomandata. Offre integrazione zero-config con:
+
 - **Development**: Vite dev server in worker thread con HMR completo
 - **Production**: Fastify server ottimizzato per asset statici
 
 ### 2. Schema JSON Corretto per Watt 3.x
 
 Gli schema URL sono cambiati in Watt 3.x. Usa sempre:
+
 - `@platformatic/vite/3.0.0.json` per Vite apps
 - `@platformatic/gateway/3.0.0.json` per il gateway (rinominato da "composer")
 - `@platformatic/runtime/3.0.0.json` per il root watt.json
@@ -61,14 +68,15 @@ A causa di CVE-2025-24010, tutte le app Vite devono configurare gli host consent
 // vite.config.ts - OBBLIGATORIO
 export default defineConfig({
   server: {
-    allowedHosts: [".plt.local"]
-  }
-})
+    allowedHosts: ['.plt.local'],
+  },
+});
 ```
 
 ### 4. Comunicazione Inter-Service
 
 Le applicazioni comunicano internamente via mesh network `.plt.local`:
+
 - `http://thc-db.plt.local` → database service
 - `http://thc-service.plt.local` → business logic
 - Questi hostname risolvono SOLO dentro Watt runtime
@@ -76,6 +84,7 @@ Le applicazioni comunicano internamente via mesh network `.plt.local`:
 ### 5. Gateway come Unico Entrypoint
 
 Il Gateway è l'unico punto di accesso pubblico. Configura:
+
 - Route specifiche prima (`/api/*`)
 - Catch-all frontend alla fine (`/`)
 
@@ -113,6 +122,7 @@ Crea il file `web/thc-frontend/watt.json`:
 ```
 
 **Note importanti:**
+
 - `basePath: "/"` indica che il frontend sarà servito alla root
 - Non specificare porte: Watt le gestisce automaticamente
 - Lo schema `@platformatic/vite` abilita l'integrazione automatica
@@ -122,24 +132,24 @@ Crea il file `web/thc-frontend/watt.json`:
 Modifica `web/thc-frontend/vite.config.ts`:
 
 ```typescript
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import path from 'path'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import path from 'path';
 
 export default defineConfig({
   plugins: [vue()],
-  
+
   // OBBLIGATORIO: Sicurezza per mesh network Watt
   server: {
-    allowedHosts: [".plt.local"]
+    allowedHosts: ['.plt.local'],
   },
-  
+
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src')
-    }
+      '@': path.resolve(__dirname, './src'),
+    },
   },
-  
+
   // Build ottimizzato per produzione
   build: {
     outDir: 'dist',
@@ -147,61 +157,59 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['vue', 'vue-router', 'pinia']
-        }
-      }
-    }
-  }
-})
+          vendor: ['vue', 'vue-router', 'pinia'],
+        },
+      },
+    },
+  },
+});
 ```
 
 ### PASSO 4: Configurare le Chiamate API nel Frontend
 
-Il frontend deve chiamare le API attraverso il gateway. Crea o aggiorna il file di configurazione API:
+Il frontend deve chiamare le API attraverso il gateway. Crea o aggiorna il file di configurazione
+API:
 
 ```typescript
 // web/thc-frontend/src/config/api.ts
 
 // In produzione, le chiamate passano attraverso il gateway Watt
 // In development standalone, puoi usare il proxy di Vite
-const API_BASE = import.meta.env.VITE_API_BASE || '/api'
+const API_BASE = import.meta.env.VITE_API_BASE || '/api';
 
 export const apiConfig = {
   baseUrl: API_BASE,
-  
+
   endpoints: {
     // Platformatic DB endpoints
     db: {
       base: `${API_BASE}/db`,
-      health: `${API_BASE}/db/health`
+      health: `${API_BASE}/db/health`,
     },
-    
-    // Business logic service endpoints  
+
+    // Business logic service endpoints
     service: {
       base: `${API_BASE}`,
-      operations: `${API_BASE}/operations`
-    }
-  }
-}
+      operations: `${API_BASE}/operations`,
+    },
+  },
+};
 
 // Helper per fetch con error handling
-export async function apiFetch<T>(
-  endpoint: string, 
-  options?: RequestInit
-): Promise<T> {
+export async function apiFetch<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const response = await fetch(endpoint, {
     headers: {
       'Content-Type': 'application/json',
-      ...options?.headers
+      ...options?.headers,
     },
-    ...options
-  })
-  
+    ...options,
+  });
+
   if (!response.ok) {
-    throw new Error(`API Error: ${response.status} ${response.statusText}`)
+    throw new Error(`API Error: ${response.status} ${response.statusText}`);
   }
-  
-  return response.json()
+
+  return response.json();
 }
 ```
 
@@ -240,24 +248,26 @@ Modifica `web/thc-gateway/platformatic.json` per includere il routing frontend:
 ```
 
 **IMPORTANTE:** L'ordine delle applicazioni conta!
+
 1. Route più specifiche prima (`/api/db`, `/api`)
 2. Catch-all frontend alla fine (`/`)
 
 ### PASSO 6: Verificare il Root watt.json
 
-Il root `watt.json` dovrebbe già usare `autoload`, quindi thc-frontend sarà scoperto automaticamente. Verifica che sia così:
+Il root `watt.json` dovrebbe già usare `autoload`, quindi thc-frontend sarà scoperto
+automaticamente. Verifica che sia così:
 
 ```json
 {
   "$schema": "https://schemas.platformatic.dev/@platformatic/watt/3.27.0.json",
   "entrypoint": "thc-gateway",
-  "autoload": { 
-    "path": "web", 
-    "exclude": ["docs"] 
+  "autoload": {
+    "path": "web",
+    "exclude": ["docs"]
   },
-  "server": { 
-    "hostname": "0.0.0.0", 
-    "port": "{PLT_SERVER_PORT}" 
+  "server": {
+    "hostname": "0.0.0.0",
+    "port": "{PLT_SERVER_PORT}"
   }
 }
 ```
@@ -325,33 +335,33 @@ Se usi Vue Router, assicurati che sia in history mode per funzionare correttamen
 
 ```typescript
 // web/thc-frontend/src/router/index.ts
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
   // History mode: URL puliti senza hash
   history: createWebHistory(import.meta.env.BASE_URL),
-  
+
   routes: [
     {
       path: '/',
       name: 'home',
-      component: () => import('@/views/HomeView.vue')
+      component: () => import('@/views/HomeView.vue'),
     },
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: () => import('@/views/DashboardView.vue')
+      component: () => import('@/views/DashboardView.vue'),
     },
     // Catch-all per 404
     {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
-      component: () => import('@/views/NotFoundView.vue')
-    }
-  ]
-})
+      component: () => import('@/views/NotFoundView.vue'),
+    },
+  ],
+});
 
-export default router
+export default router;
 ```
 
 ---
@@ -368,6 +378,7 @@ wattpm dev
 ```
 
 Verifica:
+
 - [ ] Il gateway risponde su `http://localhost:3042`
 - [ ] Il frontend è accessibile su `http://localhost:3042/`
 - [ ] Le API sono accessibili su `http://localhost:3042/api/*`
@@ -384,6 +395,7 @@ wattpm start
 ```
 
 Verifica:
+
 - [ ] Build completa senza errori
 - [ ] Frontend servito correttamente
 - [ ] Asset statici (CSS, JS, immagini) caricati
@@ -410,9 +422,10 @@ Dal frontend, verifica che le chiamate fetch funzionino correttamente.
 **Causa**: Manca la configurazione `allowedHosts` in vite.config.ts
 
 **Soluzione**:
+
 ```typescript
 server: {
-  allowedHosts: [".plt.local"]
+  allowedHosts: ['.plt.local'];
 }
 ```
 
@@ -421,6 +434,7 @@ server: {
 **Causa**: Il server non gestisce correttamente il fallback SPA
 
 **Soluzione**: Platformatic Vite gestisce automaticamente il fallback. Se persiste, verifica che:
+
 1. Vue Router usi `createWebHistory()` (non hash mode)
 2. Il `basePath` nel watt.json sia corretto
 
@@ -429,25 +443,29 @@ server: {
 **Causa**: Chiamate dirette ai servizi invece che attraverso il gateway
 
 **Soluzione**: Tutte le chiamate API devono passare dal gateway:
+
 ```typescript
 // SBAGLIATO
-fetch('http://thc-service.plt.local/operations')
+fetch('http://thc-service.plt.local/operations');
 
 // CORRETTO (dal browser)
-fetch('/api/operations')
+fetch('/api/operations');
 ```
 
 ### Errore: Applicazione Non Trovata
 
 **Causa**: L'ID nel gateway non corrisponde al nome della directory
 
-**Soluzione**: L'ID dell'applicazione deriva dal nome della cartella. Se la cartella è `thc-frontend`, l'ID sarà `thc-frontend`. Verifica la corrispondenza nel `platformatic.json` del gateway.
+**Soluzione**: L'ID dell'applicazione deriva dal nome della cartella. Se la cartella è
+`thc-frontend`, l'ID sarà `thc-frontend`. Verifica la corrispondenza nel `platformatic.json` del
+gateway.
 
 ### Errore: Porta Già in Uso
 
 **Causa**: Altra istanza di Watt in esecuzione
 
 **Soluzione**:
+
 ```bash
 # Trova e termina il processo
 lsof -i :3042

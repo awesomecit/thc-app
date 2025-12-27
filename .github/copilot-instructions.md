@@ -1,522 +1,518 @@
-# AI Agent Instructions for THC-App Project
+# GitHub Copilot Instructions - TicOps Health Check (THC)
 
-## Project Overview
-
-This is a **documentation repository** for building healthcare applications with Platformatic Watt.
-It contains comprehensive guides, architectural principles, and workflow documentation—**not a
-runnable codebase**. The content is contextualised for healthcare/clinical systems but the
-principles apply broadly to enterprise applications.
-
-## Core Philosophy: The "Regola Zero" (Rule Zero)
-
-**Before producing ANYTHING** (file, function, interface, component), stop and ask:
-
-1. **Do I really need this?** (Not "might need", but "solves a real problem NOW")
-2. **Why do I need this?** (Explain in one sentence)
-3. **What are the trade-offs?** (Pros AND cons)
-4. **What alternatives exist?** (Maybe it already exists, maybe simpler is better)
-
-This filter applies to every decision—before accepting AI suggestions, before creating abstractions,
-before adding dependencies.
-
-## Documentation Structure
-
-- `01-guida-completa-platformatic-watt.md` - Complete Watt guide: architecture, NestJS integration,
-  Platformatic DB, configuration patterns
-- `02-principi-architetturali-esagonale-solid.md` - Hexagonal architecture, SOLID/DRY/KISS/YAGNI,
-  Clean Architecture, Extreme Programming with timeboxing
-- `03-cloud-deployment-docker-k8s.md` - Deployment: multi-stage Dockerfile, Docker Compose,
-  Kubernetes manifests, health checks, PaaS platforms, CI/CD pipelines
-- `04-sviluppo-ai-assisted-copilot-claude.md` - AI-assisted development philosophy, effective
-  Copilot usage, anti-patterns
-- `05-bdd-tdd-acceptance-criteria-workflow.md` - Complete workflow from Acceptance Criteria to
-  deployable code via BDD (Gherkin) + TDD
-- `06-podcast-scalette-4-episodi.md` - Podcast outlines for junior developers
-- `07-riflessione-etica-ai-droga-digitale.md` - Critical analysis of AI in development
-- `08-platformatic-modular-monolith-quick-reference.md` - Quick reference for modular monolith: DB
-  applications, gateway composition, migrations, seeding
-- `09-secrets-management-guide.md` - Secrets management: detection, .env handling, pre-commit hooks
-- `10-observability-design.md` - Observability: structured logging, metrics, tracing, health checks
-- `11-automatic-versioning-release-workflow.md` - Semantic versioning: conventional commits,
-  changelog, git tags, Docker image publishing
-- `12-http-caching-watt-guide.md` - HTTP caching with Watt: client-side cache, tag-based
-  invalidation, TTL strategies, service mesh integration
-- `13-platformatic-db-crud-generation-guide.md` - Platformatic DB CRUD: SQL migrations as source of
-  truth, OpenAPI/GraphQL auto-generation, entity hooks, plugins, routes
-- `DEVELOPMENT_PRATICAL_GUIDE.md` - Practical implementation guide: Git workflow, quality gates,
-  testing strategy, setup checklists (based on tech-citizen-sw-gateway)
-
-## Platformatic Watt Architecture Pattern
-
-### Multi-Application Orchestration
-
-Watt orchestrates multiple applications in a single server process:
-
-```
-watt-project/
-├── watt.json              # Root orchestration config
-├── .env                   # Shared environment variables
-└── web/
-    ├── gateway/           # Routes requests to applications
-    │   └── platformatic.json
-    ├── api-core/          # NestJS backend (business logic)
-    │   ├── watt.json
-    │   └── src/
-    └── frontend/          # Next.js or other frontend
-        └── watt.json
-```
-
-### Key Configuration Files
-
-- **`watt.json` (root)**: Defines all applications, server port, global config
-- **`platformatic.json` (gateway)**: Application routing with `proxy.prefix` mappings
-- **`watt.json` (per-app)**: App-specific config, e.g., `basePath` for APIs
-- **Schema validation**: All configs support JSON Schema from `https://schemas.platformatic.dev/`
-
-### NestJS Integration Pattern
-
-NestJS apps in Watt must export a `create()` function (not `bootstrap()`):
-
-```typescript
-export async function create() {
-  const app = await NestFactory.create(AppModule, { logger: ['error', 'warn'] });
-  app.setGlobalPrefix('v1');
-  app.enableCors();
-  await app.init();
-  return app.getHttpAdapter().getInstance(); // Return HTTP instance, don't call listen()
-}
-```
-
-### Inter-Service Communication
-
-Services use internal DNS: `http://<service-id>.plt.local` where `<service-id>` matches the
-application ID in gateway config.
-
-## Architectural Principles
-
-### Hexagonal Architecture (Ports & Adapters)
-
-- **Domain (core)**: Business logic, entities, use cases—no external dependencies
-- **Ports**: Interfaces defined by domain (e.g., `PatientRepository` interface)
-- **Adapters**: Implementations of ports (e.g., `PostgresPatientRepository`, `HL7Adapter`)
-- Each Watt application can represent a bounded context or adapter
-
-### Design Principles as Tensions
-
-- **SOLID**: Not rigid rules but tensions to manage. SRP = one reason to change (per stakeholder).
-  OCP = extend via new adapters without modifying domain.
-- **DRY**: Avoid duplication of _knowledge_, not code. Similar code serving different purposes
-  should stay separate.
-- **KISS**: Complexity must earn its place. Every abstraction must solve a real problem better than
-  simpler alternatives.
-- **YAGNI**: Implement when needed, not when foreseen. Doesn't apply to refactoring/clean code—only
-  to features.
-
-### Vertical Slicing with Timebox
-
-Work in small, deployable increments (hours, not days):
-
-- ❌ **Horizontal slicing**: Sprint 1 = all DB schemas, Sprint 2 = all repos, Sprint 3 = all APIs
-- ✅ **Vertical slicing**: Timebox 1 = complete "create patient" endpoint (schema + repo + use
-  case + controller), immediately deployable
-
-## Git Workflow: Trunk-Based Development
-
-### Core Rules
-
-1. **main is always deployable** (protected branch, CI must pass)
-2. **Feature branches live < 3 days** (delete after merge)
-3. **Commit early, push often** (integrate continuously)
-4. **No develop branch** (YAGNI - not needed for 1-2 developers)
-
-### Branch Naming Convention
-
-```bash
-feat/short-description    # New features
-fix/issue-description     # Bug fixes
-chore/task-description    # Tooling, dependencies
-docs/topic                # Documentation
-refactor/description      # Code refactoring
-test/description          # Add/fix tests
-```
-
-### Daily Workflow
-
-```bash
-# Morning: sync with main
-git checkout main && git pull
-
-# New feature
-git checkout -b feat/health-metrics
-git add -A && git commit -m "feat(metrics): add Prometheus endpoint"
-git push -u origin feat/health-metrics
-
-# Create PR and merge (if CI passes)
-gh pr create --fill
-gh pr merge --squash --delete-branch
-```
-
-## Quality Gates & Automation Stack
-
-### Pre-commit Checks (via Husky)
-
-1. **lint-staged**: ESLint --fix on staged .ts/.js files
-2. **Prettier --write**: Format all staged files
-3. **Secret scanning**: Prevent credential leaks (check-secrets.cjs)
-4. **Commitlint**: Validate commit message format
-
-### Commit Message Format (Conventional Commits)
-
-```
-<type>(<scope>): <subject>
-
-[optional body]
-
-[optional footer]
-```
-
-**Types and Version Bumps:**
-
-- `fix:` → PATCH (1.0.0 → 1.0.1)
-- `feat:` → MINOR (1.0.0 → 1.1.0)
-- `feat!:` or `BREAKING CHANGE:` → MAJOR (1.0.0 → 2.0.0)
-- `docs:`, `style:`, `refactor:`, `test:`, `chore:` → No bump
-
-**Examples:**
-
-```bash
-feat(gateway): add circuit breaker for patient-api
-fix(cache): prevent race condition in Redis connection
-docs(adr): add decision record for event schema
-feat(auth)!: change token format to JWT
-
-BREAKING CHANGE: Token format changed to JWT.
-```
-
-### Code Quality Tools
-
-- **ESLint** with SonarJS rules: Cognitive complexity < 10, Cyclomatic < 10
-- **Prettier**: Auto-format on save
-- **Coverage threshold**: 70% minimum (lines, functions, branches)
-
-## BDD + TDD Workflow
-
-### From Acceptance Criteria to Code
-
-```
-User Story → Acceptance Criteria (Given-When-Then)
-           ↓
-Feature File (.feature Gherkin)
-           ↓
-Step Definitions (TypeScript - connects to app)
-           ↓
-TDD Unit Tests (Red → Green → Refactor)
-           ↓
-Implementation → cucumber.json report for client
-```
-
-### Test Organization & Strategy (Pyramid)
-
-```
-┌─────────────────────────────────────────────────────────┐
-│  E2E/BDD (Cucumber/Gherkin) - ~10% - features/         │
-│  ├── Full stack scenarios                              │
-│  ├── Docker Compose stack required                     │
-│  └── Slow but validates real user flows                │
-└─────────────────────────────────────────────────────────┘
-                      │
-                      ▼
-┌─────────────────────────────────────────────────────────┐
-│  Integration Tests (Jest/Tap) - ~20%                   │
-│  ├── Test adapters/infrastructure                      │
-│  ├── Testcontainers (real Keycloak, Redis, Postgres)  │
-│  └── **/*.integration.spec.ts                          │
-└─────────────────────────────────────────────────────────┘
-                      │
-                      ▼
-┌─────────────────────────────────────────────────────────┐
-│  Unit Tests (Jest/Tap) - ~70%                          │
-│  ├── Test domain logic + use cases                     │
-│  ├── Mock ports (in-memory fakes)                      │
-│  ├── Fast (<30s for full suite)                        │
-│  └── **/*.spec.ts or **/*.test.ts                      │
-└─────────────────────────────────────────────────────────┘
-```
-
-**Directory Structure:**
-
-```
-project/
-├── features/                    # E2E BDD tests (global)
-│   ├── firma-digitale/
-│   │   └── *.feature           # Gherkin scenarios
-│   ├── step_definitions/
-│   │   └── *.steps.ts
-│   ├── support/
-│   │   ├── world.ts            # Shared context
-│   │   └── hooks.ts            # Before/After
-│   └── cucumber.json           # Client-facing report
-├── packages/auth/               # Example package
-│   ├── src/
-│   │   ├── domain/             # Business logic
-│   │   ├── application/        # Use cases + Ports
-│   │   └── infrastructure/     # Adapters
-│   └── test/
-│       ├── unit/               # Domain + use case tests
-│       └── integration/        # Adapter tests
-```
-
-**Test Commands:**
-
-```bash
-npm run test:unit              # Fast, no Docker (~182 tests in ~7s)
-npm run test:integration       # With Testcontainers (~73 tests in ~6s)
-npm run test:e2e               # Full stack with Docker Compose
-npm run test:cov               # Coverage report (HTML)
-npm test                       # Full suite: unit → integration → e2e
-```
-
-### Cucumber Tags for Test Filtering
-
-```bash
-npx cucumber-js --tags "@smoke"           # Smoke tests only (CI)
-npx cucumber-js --tags "@security"        # Security tests
-npx cucumber-js --tags "not @slow"        # Exclude slow tests
-```
-
-### TDD Cycle (Red-Green-Refactor)
-
-1. 🔴 **RED**: Write failing test first
-2. 🟢 **GREEN**: Write minimal code to pass
-3. 🔵 **REFACTOR**: Improve while keeping tests green
-4. Repeat for each small increment
-
-## Deployment Patterns
-
-### Docker Multi-Stage Build
-
-1. **deps stage**: Install dependencies only (cache optimization)
-2. **builder stage**: Compile TypeScript, build assets
-3. **runner stage**: Minimal production image, non-root user, health checks
-
-### Kubernetes Health Checks
-
-- **Liveness** (`/health/live`): Is the app running? (No external dependency checks)
-- **Readiness** (`/health/ready`): Can it receive traffic? (Check DB, cache, critical services)
-- **Startup** probe: For slow-starting apps (prevents premature liveness failures)
-
-### CI/CD with GitHub Actions
-
-Typical pipeline: Test → Build Docker image → Deploy to staging → (manual approval) → Deploy to
-production
-
-- Use `npx cucumber-js --tags "@smoke"` for fast CI smoke tests
-- Health check verification after deploy
-- Rollback capability essential
-
-## AI-Assisted Development Guidelines
-
-### AI as Amplifier, Not Substitute
-
-- AI amplifies your understanding—good understanding → faster correct code; poor understanding →
-  faster wrong code
-- **Paradox of productivity**: Speed enables producing more code than necessary. Apply YAGNI
-  rigorously.
-- Always pass AI suggestions through Regola Zero filter
-
-### Effective Copilot Usage
-
-- **Contextual comments**: Describe what you want with examples before writing code
-- **Meaningful names**: `calculatePatientRiskScore(medicalHistory)` yields better suggestions than
-  `processData(d)`
-- **Open reference files**: Copilot considers open files—keep interfaces/types visible
-- Copilot excels at: boilerplate, DTOs, common patterns, test setup
-- Copilot struggles with: domain-specific logic, complex business rules, architectural decisions
-
-### Code Review Checklist for AI-Generated Code
-
-1. Do I understand every line?
-2. Is this the simplest solution?
-3. Are there hidden dependencies or assumptions?
-4. Does it handle errors appropriately for THIS context?
-5. Would I write this code without AI assistance?
-
-## Common Patterns
-
-### Environment Variables
-
-Use `{VARIABLE_NAME}` notation in JSON configs:
-
-```json
-{
-  "server": { "port": "{PLT_SERVER_PORT}" },
-  "db": { "connectionString": "{DATABASE_URL}" }
-}
-```
-
-Root `.env` file is shared across all Watt applications.
-
-### Code Quality Limits
-
-Apply these limits to maintain readable, maintainable code:
-
-- **Cognitive Complexity**: < 10 (SonarJS rule)
-- **Cyclomatic Complexity**: < 10 (ESLint rule)
-- **Max lines per function**: ~50 (warn level)
-- **Coverage threshold**: 70% (lines, functions, branches, statements)
-
-### Package.json Essential Scripts
-
-````json
-{
-  "scripts": {
-    "dev": "npx wattpm dev",
-    "build": "tsc",
-    "start": "node dist/index.js",
-
-    "test": "npm run test:unit && npm run test:integration",
-    "test:unit": "jest --config jest.config.cjs",
-    "test:integration": "jest --config jest.integration.config.cjs",
-    "test:e2e": "cucumber-js",
-    "test:cov": "jest --coverage",
-    "test:watch": "jest --watch",
-
-    "lint": "eslint . --fix",
-    "lint:check": "eslint .",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-
-    "verify": "npm run format:check && npm run lint:check && npm test && npm run build",
-
-    "release:suggest": "node scripts/auto-release.js --dry-run",
-    "release": "node scripts/auto-release.js",
-
-    "prepare": "husky"
-  }
-}
-
-## When Modifying This Documentation
-
-1. **Preserve the Regola Zero philosophy** - it's the foundation of all guidance
-2. **Keep examples concrete** - reference actual files and patterns from the docs
-3. **Maintain the healthcare context** where present (can be abstracted but don't lose specificity)
-4. **Update cross-references** when moving content between files
-5. **Verify consistency** across architectural principles (hexagonal, SOLID, Clean Architecture all reinforce each other)
-
-## Project Setup Checklist (New Repository)
-
-### Initial Setup
-```bash
-# 1. Initialize project
-npm init -y
-git init
-echo "22" > .nvmrc
-echo "engine-strict=true" > .npmrc
-
-# 2. Install dev dependencies
-npm install -D typescript @types/node \
-  eslint @eslint/js typescript-eslint eslint-plugin-sonarjs \
-  eslint-config-prettier prettier \
-  husky lint-staged @commitlint/cli @commitlint/config-conventional \
-  jest @types/jest ts-jest \
-  testcontainers @cucumber/cucumber
-
-# 3. Initialize tooling
-npx tsc --init
-npx husky init
-````
-
-### Required Config Files
-
-- `eslint.config.mjs` - ESLint with SonarJS rules
-- `commitlint.config.cjs` - Conventional Commits validation
-- `.prettierrc` - Code formatting rules
-- `jest.config.cjs` - Unit test configuration
-- `jest.integration.config.cjs` - Integration test config
-- `cucumber.js` - BDD test configuration
-- `.husky/pre-commit` - Lint + format + secret scan
-- `.husky/commit-msg` - Commitlint validation
-- `.env.example` - Environment variables template
-
-### Directory Structure
-
-```
-project/
-├── .github/
-│   ├── copilot-instructions.md
-│   └── workflows/
-├── .husky/
-├── docs/
-│   └── architecture/decisions/    # ADRs
-├── packages/                       # Monorepo packages
-│   └── [package-name]/
-│       ├── src/
-│       │   ├── domain/
-│       │   ├── application/
-│       │   └── infrastructure/
-│       └── test/
-│           ├── unit/
-│           └── integration/
-├── features/                       # E2E BDD tests
-│   ├── **/*.feature
-│   ├── step_definitions/
-│   └── support/
-├── scripts/
-│   ├── check-secrets.cjs
-│   └── auto-release.js
-└── [config files]
-```
-
-## Quick Reference Commands
-
-```bash
-# Development
-npx wattpm dev                    # Start Watt in dev mode with hot-reload
-npm run dev                       # Alternative: tsx watch
-npm run test:watch                # Run tests in watch mode
-
-# Testing patterns
-npm run test:unit                 # Fast unit tests (~7s)
-npm run test:integration          # Integration tests with Testcontainers (~6s)
-npx cucumber-js --tags "@smoke"   # BDD smoke tests for CI
-npm run test:cov                  # Coverage report (HTML)
-npm test                          # Full suite: unit → integration → e2e
-
-# Quality checks
-npm run lint                      # Fix linting issues
-npm run format                    # Format all files
-npm run verify                    # Full verification before push
-
-# Git workflow
-git checkout -b feat/my-feature   # Create feature branch
-git add -A && git commit -m "feat(scope): description"
-gh pr create --fill               # Create PR
-gh pr merge --squash --delete-branch
-
-# Release
-npm run release:suggest           # Preview next version
-npm run release                   # Auto-release with semver
-
-# Docker
-docker build -t watt-app .        # Build multi-stage image
-docker compose up                 # Local development with services
-```
-
-## Success Metrics
-
-| Metric                   | Target       | Purpose                |
-| ------------------------ | ------------ | ---------------------- |
-| **Lead time**            | < 1 day      | Commit → Production    |
-| **Deployment frequency** | Multiple/day | Continuous delivery    |
-| **MTTR**                 | < 1 hour     | Recovery speed         |
-| **Change failure rate**  | < 15%        | Deployment reliability |
-| **Test coverage**        | > 70%        | Code quality           |
-| **Cognitive complexity** | < 10         | Maintainability        |
-| **Build time**           | < 5 min      | Fast feedback          |
-| **Unit test time**       | < 30s        | Developer experience   |
+> Documento di riferimento per GitHub Copilot e agenti AI per lo sviluppo del backend THC. Versione:
+> 1.0 | Stack: Platformatic Watt + Prisma + Fastify
 
 ---
 
-**Remember**: The best code is often the code you don't write. Question every abstraction, every
-layer, every line. Make the computer do the repetitive work (via AI or automation), but keep the
-critical thinking for yourself.
+## Contesto Progetto
+
+TicOps è una piattaforma multi-tenant per la gestione di competizioni airsoft tactical. Il backend
+utilizza **Platformatic Watt** come runtime che orchestra più servizi, con **Prisma** come ORM per
+la gestione dello schema e delle migrazioni, e **Platformatic DB** per la generazione automatica di
+API REST/GraphQL.
+
+### Architettura Multi-Organizzazione
+
+Il sistema implementa una gerarchia a tre livelli con isolamento dati:
+
+```
+Federation (Federazione Nazionale)
+├── Organization (Franchising/Provincia)
+│   ├── Division (Settore/Area)
+│   │   ├── Users
+│   │   ├── Teams
+│   │   ├── Fields
+│   │   ├── Matches
+│   │   └── ...altre entità
+```
+
+Ogni entità di business contiene campi denormalizzati (`divisionId`, `organizationId`,
+`federationId`) per query veloci e Row Level Security.
+
+---
+
+## Stack Tecnologico
+
+| Layer            | Tecnologia            | Uso                                         |
+| ---------------- | --------------------- | ------------------------------------------- |
+| Runtime          | Platformatic Watt 3.x | Orchestrazione servizi                      |
+| Database Service | Platformatic DB       | Auto-generazione API REST/GraphQL           |
+| ORM              | Prisma                | Schema management, migrazioni, query custom |
+| Framework        | Fastify               | Plugin custom, middleware                   |
+| Database         | PostgreSQL 15+        | Storage primario                            |
+| Cache            | Redis                 | Sessioni, rate limiting                     |
+| Auth             | Keycloak / JWT        | Autenticazione OIDC                         |
+
+---
+
+## Convenzioni Prisma per Platformatic
+
+### Naming Convention Obbligatorie
+
+Platformatic DB si aspetta nomi in **snake_case pluralizzato**. Prisma usa **PascalCase** per i
+modelli. Utilizza sempre `@@map()` e `@map()` per allineare le convenzioni:
+
+```prisma
+// ✅ CORRETTO: Mapping esplicito per compatibilità Platformatic
+model TeamMember {
+  id        Int      @id @default(autoincrement())
+
+  // Campo nel codice Prisma: camelCase
+  // Colonna nel DB: snake_case
+  teamId    Int      @map("team_id")
+  userId    Int      @map("user_id")
+  joinedAt  DateTime @default(now()) @map("joined_at")
+
+  team      Team     @relation(fields: [teamId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  // Tabella nel DB: snake_case plurale
+  @@map("team_members")
+}
+
+// ❌ ERRATO: Senza mapping, Platformatic genererà endpoint inconsistenti
+model TeamMember {
+  id       Int  @id @default(autoincrement())
+  teamId   Int  // Diventa "teamId" nel DB, non "team_id"
+}
+```
+
+### Campi Standard per Tutte le Entità
+
+Ogni entità di business deve includere questi campi:
+
+```prisma
+model EntityName {
+  // Primary Key
+  id        String   @id @default(uuid()) @db.Uuid
+
+  // Multi-org hierarchy (denormalizzato per query veloci)
+  divisionId     String  @map("division_id") @db.Uuid
+  organizationId String  @map("organization_id") @db.Uuid
+  federationId   String  @map("federation_id") @db.Uuid
+
+  // Audit fields
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  createdBy String?   @map("created_by") @db.Uuid
+  updatedBy String?   @map("updated_by") @db.Uuid
+
+  // Soft delete
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by") @db.Uuid
+
+  // Relazioni
+  division     Division     @relation(fields: [divisionId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
+  federation   Federation   @relation(fields: [federationId], references: [id])
+
+  // Indici per performance
+  @@index([divisionId])
+  @@index([organizationId])
+  @@index([deletedAt])
+
+  @@map("entity_names")
+}
+```
+
+### Gestione Soft Delete
+
+Non usare `DELETE` fisico. Implementa soft delete con filtro automatico:
+
+```prisma
+// Nel modello
+deletedAt DateTime? @map("deleted_at")
+
+// Negli indici - per escludere i record eliminati dalle query
+@@index([deletedAt])
+```
+
+Nel plugin Fastify, aggiungi il filtro automatico:
+
+```typescript
+// Plugin per filtro soft delete automatico
+app.addHook('preHandler', async (request, reply) => {
+  // Aggiungi filtro where: { deletedAt: null } a tutte le query
+  request.prismaFilter = { deletedAt: null };
+});
+```
+
+### Tabella Versions (Ignorare)
+
+Platformatic usa Postgrator per le migrazioni, che crea una tabella `versions`. Marcala con
+`@@ignore`:
+
+```prisma
+model versions {
+  version BigInt    @id
+  name    String?
+  md5     String?
+  run_at  DateTime? @db.Timestamptz(6)
+
+  @@ignore // Non generare client Prisma per questa tabella di sistema
+}
+```
+
+---
+
+## Workflow di Sviluppo
+
+### Flusso per Nuove Entità
+
+```bash
+# 1. Modifica schema.prisma (fonte di verità)
+# 2. Genera migrazione SQL compatibile con Postgrator
+npx db-diff
+
+# 3. Applica migrazione con Platformatic CLI
+npx platformatic db migrations apply
+
+# 4. Sincronizza schema Prisma con DB (cattura eventuali modifiche esterne)
+npx prisma db pull
+
+# 5. Genera Prisma Client aggiornato
+npx prisma generate
+
+# 6. Avvia servizio
+npx platformatic db start
+```
+
+### Flusso per Modifiche Schema
+
+```bash
+# 1. Modifica schema.prisma
+# 2. Genera migrazione (up + down)
+npx db-diff --migrations-dir ./migrations
+
+# 3. Verifica la migrazione generata prima di applicare
+cat migrations/TIMESTAMP_migration_name.do.sql
+cat migrations/TIMESTAMP_migration_name.undo.sql
+
+# 4. Applica
+npx platformatic db migrations apply
+
+# 5. Rigenera client
+npx prisma generate
+```
+
+---
+
+## Pattern per Plugin Fastify
+
+### Struttura Plugin con Prisma
+
+```typescript
+// plugins/custom-logic.ts
+import type { FastifyInstance } from 'fastify';
+import prismaPlugin from '@sabinthedev/fastify-prisma';
+
+export default async function (app: FastifyInstance) {
+  // Registra Prisma (gestisce connessioni automaticamente)
+  await app.register(prismaPlugin);
+
+  // Endpoint custom che usa Prisma per logica non coperta da auto-gen
+  app.post('/matches/:id/start', {
+    preHandler: [app.authenticate], // Assumendo middleware auth registrato
+    handler: async (request, reply) => {
+      const { id } = request.params as { id: string };
+      const userId = request.user.id;
+
+      // Transazione atomica su più tabelle
+      const result = await app.prisma.$transaction(async (tx) => {
+        // 1. Verifica permessi
+        const match = await tx.match.findUnique({
+          where: { id, deletedAt: null },
+          include: { organizer: true },
+        });
+
+        if (!match) throw new Error('Match not found');
+        if (match.organizerId !== userId) throw new Error('Unauthorized');
+
+        // 2. Aggiorna stato match
+        const updatedMatch = await tx.match.update({
+          where: { id },
+          data: {
+            status: 'IN_PROGRESS',
+            startedAt: new Date(),
+            updatedBy: userId,
+          },
+        });
+
+        // 3. Crea evento audit
+        await tx.auditLog.create({
+          data: {
+            entityType: 'MATCH',
+            entityId: id,
+            action: 'STARTED',
+            performedBy: userId,
+            metadata: { previousStatus: match.status },
+          },
+        });
+
+        return updatedMatch;
+      });
+
+      return reply.send(result);
+    },
+  });
+}
+```
+
+### Row Level Security nel Plugin
+
+```typescript
+// lib/rls-filter.ts
+import type { FastifyRequest } from 'fastify';
+
+export function buildRlsFilter(request: FastifyRequest) {
+  const user = request.user;
+
+  // Federation Admin: vede tutto nella federazione
+  if (user.role === 'federation_admin') {
+    return { federationId: user.federationId, deletedAt: null };
+  }
+
+  // Org Admin: vede tutto nell'organizzazione
+  if (user.role === 'org_admin') {
+    return { organizationId: user.organizationId, deletedAt: null };
+  }
+
+  // Division Manager: vede solo la sua divisione
+  if (user.role === 'division_manager') {
+    return { divisionId: user.divisionId, deletedAt: null };
+  }
+
+  // Default: solo propri dati
+  return { divisionId: user.divisionId, deletedAt: null };
+}
+```
+
+---
+
+## Indici e Ottimizzazione
+
+### Indici Consigliati per Pattern di Query THC
+
+```prisma
+model Match {
+  // ... campi ...
+
+  // Indice composto per query dashboard
+  // "Mostra tutte le partite della mia divisione, ordinate per data"
+  @@index([divisionId, scheduledAt(sort: Desc)])
+
+  // Indice per ricerca partite aperte
+  @@index([status, divisionId])
+
+  // Indice per calendario
+  @@index([scheduledAt, status])
+
+  // Indice per soft delete (esclusione record eliminati)
+  @@index([deletedAt])
+
+  // Indice unique per constraint business
+  @@unique([fieldId, scheduledAt]) // No due partite stesso campo/ora
+}
+
+model User {
+  // Indice unique per login
+  @@unique([email])
+
+  // Indice per ricerca per username
+  @@index([username])
+
+  // Indice composto per query "utenti della mia divisione"
+  @@index([divisionId, status])
+
+  // Indice per ricerca per ruolo
+  @@index([role, divisionId])
+}
+
+model Team {
+  // Tag univoco per identificazione rapida
+  @@unique([tag])
+
+  // Ricerca team per divisione
+  @@index([divisionId, status])
+
+  // Ricerca team in reclutamento
+  @@index([isRecruiting, divisionId])
+}
+```
+
+### Query Ottimizzate con Prisma
+
+```typescript
+// ❌ EVITA: N+1 query
+const matches = await prisma.match.findMany();
+for (const match of matches) {
+  const field = await prisma.field.findUnique({ where: { id: match.fieldId } });
+}
+
+// ✅ PREFERISCI: Eager loading
+const matches = await prisma.match.findMany({
+  include: {
+    field: true,
+    teams: { include: { members: true } },
+    referee: { select: { id: true, name: true } },
+  },
+  where: {
+    divisionId: user.divisionId,
+    deletedAt: null,
+    scheduledAt: { gte: new Date() },
+  },
+  orderBy: { scheduledAt: 'asc' },
+  take: 20,
+});
+
+// ✅ Per aggregazioni complesse, usa raw query
+const stats = await prisma.$queryRaw`
+  SELECT 
+    t.id,
+    t.name,
+    COUNT(DISTINCT mt.match_id) as total_matches,
+    SUM(CASE WHEN m.winner_team_id = t.id THEN 1 ELSE 0 END) as wins
+  FROM teams t
+  LEFT JOIN match_teams mt ON mt.team_id = t.id
+  LEFT JOIN matches m ON m.id = mt.match_id
+  WHERE t.division_id = ${divisionId}::uuid
+    AND t.deleted_at IS NULL
+  GROUP BY t.id
+  ORDER BY wins DESC
+  LIMIT 10
+`;
+```
+
+---
+
+## Validazioni e Constraint
+
+### Constraint a Livello Database
+
+```prisma
+model User {
+  email    String  @unique
+  username String  @unique
+  elo      Int     @default(1000)
+
+  // CHECK constraint via raw SQL nella migrazione
+  // ALTER TABLE users ADD CONSTRAINT elo_range CHECK (elo >= 0 AND elo <= 5000);
+}
+
+model Match {
+  maxPlayers Int @map("max_players")
+  minPlayers Int @map("min_players")
+
+  // Constraint: min <= max (da aggiungere in migrazione)
+  // ALTER TABLE matches ADD CONSTRAINT players_range CHECK (min_players <= max_players);
+}
+```
+
+### Enum per Stati
+
+```prisma
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  BANNED
+}
+
+enum MatchStatus {
+  DRAFT
+  SCHEDULED
+  CHECK_IN
+  IN_PROGRESS
+  PAUSED
+  COMPLETED
+  CANCELLED
+}
+
+enum TeamMemberRole {
+  LEADER
+  OFFICER
+  MEMBER
+  RECRUIT
+}
+```
+
+---
+
+## Struttura Directory Consigliata
+
+```
+thc-project/
+├── web/
+│   ├── thc-db/
+│   │   ├── platformatic.json
+│   │   ├── migrations/
+│   │   │   ├── 001_initial.do.sql
+│   │   │   ├── 001_initial.undo.sql
+│   │   │   └── ...
+│   │   └── plugins/
+│   │       ├── custom-endpoints.ts
+│   │       └── rls-middleware.ts
+│   ├── thc-service/
+│   │   └── ... business logic ...
+│   └── thc-gateway/
+│       └── platformatic.json
+├── prisma/
+│   └── schema.prisma          # Fonte di verità per lo schema
+├── packages/
+│   └── auth/
+│       └── ...                # Modulo autenticazione
+├── watt.json                  # Orchestrazione runtime
+└── .env
+```
+
+---
+
+## Comandi Utili
+
+```bash
+# Visualizza schema corrente
+npx prisma studio
+
+# Formatta schema
+npx prisma format
+
+# Valida schema
+npx prisma validate
+
+# Reset database (ATTENZIONE: cancella tutti i dati)
+npx prisma migrate reset
+
+# Genera solo le migrazioni senza applicare
+npx db-diff --dry-run
+
+# Visualizza differenze tra schema e DB
+npx prisma db pull --print
+```
+
+---
+
+## Checklist Pre-Commit
+
+Prima di committare modifiche allo schema:
+
+- [ ] `@@map()` presente su tutti i modelli (snake_case plurale)
+- [ ] `@map()` presente su tutti i campi con più parole (snake_case)
+- [ ] Campi audit presenti (`createdAt`, `updatedAt`, `createdBy`, `updatedBy`)
+- [ ] Soft delete presente (`deletedAt`, `deletedBy`)
+- [ ] Campi multi-org presenti (`divisionId`, `organizationId`, `federationId`)
+- [ ] Indici definiti per campi usati in WHERE e ORDER BY
+- [ ] Unique constraint su campi business-critical
+- [ ] Relazioni esplicite con `@relation()`
+- [ ] Migrazione generata e testata localmente
+- [ ] `versions` table marcata con `@@ignore`
+
+---
+
+## Riferimenti
+
+- [Prisma Documentation](https://www.prisma.io/docs)
+- [Platformatic DB Docs](https://docs.platformatic.dev/docs/db/overview)
+- [Integrate Prisma with Platformatic](https://docs.platformatic.dev/docs/guides/prisma)
+- [TicOps Multi-Org Architecture](./docs/MULTI_ORG_ARCHITECTURE.md)
+- [TicOps Complete Roadmap](./docs/TICOPS_COMPLETE_ROADMAP.md)

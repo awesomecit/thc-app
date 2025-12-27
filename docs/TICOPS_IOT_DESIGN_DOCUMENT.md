@@ -9,9 +9,15 @@
 
 ## Executive Summary
 
-Questo documento definisce l'architettura completa dell'ecosistema IoT di TicOps, progettato per operare in ambienti outdoor con connettività limitata o assente. Il sistema utilizza una combinazione di tecnologie LoRa (Long Range) per la comunicazione a lungo raggio, BLE (Bluetooth Low Energy) per il positioning indoor, e un'architettura offline-first che garantisce il funzionamento completo della partita anche senza connessione Internet.
+Questo documento definisce l'architettura completa dell'ecosistema IoT di TicOps, progettato per
+operare in ambienti outdoor con connettività limitata o assente. Il sistema utilizza una
+combinazione di tecnologie LoRa (Long Range) per la comunicazione a lungo raggio, BLE (Bluetooth Low
+Energy) per il positioning indoor, e un'architettura offline-first che garantisce il funzionamento
+completo della partita anche senza connessione Internet.
 
-Il cuore del sistema è il **Match Tablet**, un dispositivo dedicato che funge da hub centrale per ogni partita, gestendo tutti i dispositivi sul campo e sincronizzando i dati con il cloud quando la connettività è disponibile.
+Il cuore del sistema è il **Match Tablet**, un dispositivo dedicato che funge da hub centrale per
+ogni partita, gestendo tutti i dispositivi sul campo e sincronizzando i dati con il cloud quando la
+connettività è disponibile.
 
 ---
 
@@ -75,22 +81,22 @@ graph TB
     subgraph "CLOUD LAYER"
         CLOUD[TicOps Cloud<br/>Supabase + API]
     end
-    
+
     subgraph "BACKHAUL LAYER"
         LTE[4G/LTE Modem]
         WIFI[WiFi AP]
         SAT[Starlink - Optional]
     end
-    
+
     subgraph "GATEWAY LAYER"
         TABLET[Match Tablet<br/>Primary Hub]
         LORA_GW[LoRa Gateway<br/>Field Coverage]
     end
-    
+
     subgraph "MESH LAYER"
         BLE_MESH[BLE Beacon Mesh]
     end
-    
+
     subgraph "DEVICE LAYER"
         TRACKER1[Player Tracker 1]
         TRACKER2[Player Tracker 2]
@@ -98,24 +104,24 @@ graph TB
         TARGET1[Smart Target]
         REFEREE[Referee Device]
     end
-    
+
     CLOUD <-->|HTTPS/WSS| LTE
     CLOUD <-->|HTTPS/WSS| WIFI
     CLOUD <-->|HTTPS/WSS| SAT
-    
+
     LTE --> TABLET
     WIFI --> TABLET
     SAT --> TABLET
-    
+
     TABLET <-->|USB/WiFi| LORA_GW
     TABLET <-->|BLE| BLE_MESH
-    
+
     LORA_GW <-->|LoRa 868MHz| TRACKER1
     LORA_GW <-->|LoRa 868MHz| TRACKER2
     LORA_GW <-->|LoRa 868MHz| TRACKERN
     LORA_GW <-->|LoRa 868MHz| TARGET1
     LORA_GW <-->|LoRa 868MHz| REFEREE
-    
+
     BLE_MESH <-->|BLE 5.0| TRACKER1
     BLE_MESH <-->|BLE 5.0| TRACKER2
 ```
@@ -124,7 +130,9 @@ graph TB
 
 ## 2. Match Tablet - Hub Centrale di Partita
 
-Il Match Tablet è il dispositivo centrale che gestisce ogni partita. È progettato per funzionare completamente offline, memorizzando tutti i dati localmente e sincronizzandoli con il cloud quando la connettività è disponibile.
+Il Match Tablet è il dispositivo centrale che gestisce ogni partita. È progettato per funzionare
+completamente offline, memorizzando tutti i dati localmente e sincronizzandoli con il cloud quando
+la connettività è disponibile.
 
 ### 2.1 Specifiche Hardware
 
@@ -182,55 +190,55 @@ graph TB
         SCORE[Scoreboard]
         ADMIN[Admin Panel]
     end
-    
+
     subgraph "APPLICATION LAYER"
         MATCH_SVC[Match Service]
         PLAYER_SVC[Player Tracking Service]
         EVENT_SVC[Event Processing Service]
         SYNC_SVC[Cloud Sync Service]
     end
-    
+
     subgraph "DOMAIN LAYER"
         MATCH_MGR[Match Manager]
         PLAYER_MGR[Player Manager]
         SCORE_MGR[Score Manager]
         RULE_ENGINE[Rules Engine]
     end
-    
+
     subgraph "DATA LAYER"
         LOCAL_DB[(SQLite<br/>Offline Store)]
         QUEUE[(Event Queue<br/>Pending Sync)]
         CACHE[(LRU Cache)]
     end
-    
+
     subgraph "HARDWARE ABSTRACTION"
         LORA_HAL[LoRa HAL]
         BLE_HAL[BLE HAL]
         GPS_HAL[GPS HAL]
         NETWORK_HAL[Network HAL]
     end
-    
+
     subgraph "EXTERNAL"
         LORA_GW[LoRa Gateway]
         BLE_DEV[BLE Devices]
         CLOUD[TicOps Cloud]
     end
-    
+
     UI --> MATCH_SVC
     MAP --> PLAYER_SVC
     SCORE --> MATCH_SVC
     ADMIN --> SYNC_SVC
-    
+
     MATCH_SVC --> MATCH_MGR
     PLAYER_SVC --> PLAYER_MGR
     EVENT_SVC --> SCORE_MGR
     EVENT_SVC --> RULE_ENGINE
-    
+
     MATCH_MGR --> LOCAL_DB
     PLAYER_MGR --> LOCAL_DB
     SCORE_MGR --> LOCAL_DB
     SYNC_SVC --> QUEUE
-    
+
     LORA_HAL --> LORA_GW
     BLE_HAL --> BLE_DEV
     NETWORK_HAL --> CLOUD
@@ -241,13 +249,13 @@ graph TB
 ```mermaid
 stateDiagram-v2
     [*] --> Startup
-    
+
     Startup --> Initialization: Boot complete
     Initialization --> DeviceDiscovery: System ready
-    
+
     DeviceDiscovery --> Offline: No internet
     DeviceDiscovery --> Online: Internet available
-    
+
     state Online {
         [*] --> CloudSync
         CloudSync --> Ready: Sync complete
@@ -255,22 +263,22 @@ stateDiagram-v2
         MatchActive --> Ready: End match
         Ready --> CloudSync: Manual sync
     }
-    
+
     state Offline {
         [*] --> OfflineReady
         OfflineReady --> OfflineMatch: Start match
         OfflineMatch --> OfflineReady: End match
         OfflineReady --> PendingSync: Queue events
     }
-    
+
     Online --> Offline: Connection lost
     Offline --> Online: Connection restored
-    
+
     PendingSync --> CloudSync: Connection restored
-    
+
     MatchActive --> OfflineMatch: Connection lost
     OfflineMatch --> MatchActive: Connection restored
-    
+
     note right of Offline
         Tutte le funzionalità
         disponibili offline.
@@ -283,7 +291,9 @@ stateDiagram-v2
 
 ## 3. LoRa Communication System
 
-LoRa (Long Range) è scelto come tecnologia primaria di comunicazione per la sua capacità di coprire grandi distanze (fino a 5km in campo aperto) con basso consumo energetico, ideale per campi outdoor senza infrastruttura.
+LoRa (Long Range) è scelto come tecnologia primaria di comunicazione per la sua capacità di coprire
+grandi distanze (fino a 5km in campo aperto) con basso consumo energetico, ideale per campi outdoor
+senza infrastruttura.
 
 ### 3.1 Architettura LoRa
 
@@ -377,32 +387,32 @@ graph TB
     subgraph "APPLICATION LAYER"
         APP[TicOps Protocol<br/>JSON-based messages]
     end
-    
+
     subgraph "PRESENTATION LAYER"
         ENCRYPT[AES-128 Encryption]
         COMPRESS[Payload Compression]
     end
-    
+
     subgraph "TRANSPORT LAYER"
         FRAG[Fragmentation<br/>for large payloads]
         ACK[ACK/NACK<br/>Confirmed messages]
     end
-    
+
     subgraph "NETWORK LAYER"
         ADDR[Device Addressing<br/>24-bit DevAddr]
         ROUTE[Message Routing]
     end
-    
+
     subgraph "MAC LAYER"
         LORAWAN[LoRaWAN-like MAC<br/>Simplified]
         DUTY[Duty Cycle<br/>Management]
     end
-    
+
     subgraph "PHY LAYER"
         LORA[LoRa Modulation<br/>CSS]
         RADIO[SX1262 Radio]
     end
-    
+
     APP --> ENCRYPT
     ENCRYPT --> COMPRESS
     COMPRESS --> FRAG
@@ -460,7 +470,8 @@ graph TB
 
 ## 4. Player Tracker Device
 
-Il Player Tracker è il dispositivo indossabile da ogni giocatore, responsabile del tracking posizione e della rilevazione eventi di gioco.
+Il Player Tracker è il dispositivo indossabile da ogni giocatore, responsabile del tracking
+posizione e della rilevazione eventi di gioco.
 
 ### 4.1 Specifiche Hardware
 
@@ -539,23 +550,23 @@ Il Player Tracker è il dispositivo indossabile da ogni giocatore, responsabile 
 ```mermaid
 stateDiagram-v2
     [*] --> PowerOn
-    
+
     PowerOn --> Initialization: Boot
     Initialization --> Pairing: First use / Reset
     Initialization --> Searching: Already paired
-    
+
     Pairing --> Searching: NFC tap / BLE pair
-    
+
     state Searching {
         [*] --> ScanLoRa
         ScanLoRa --> JoinRequest: Gateway found
         JoinRequest --> ScanLoRa: Join failed
         JoinRequest --> Connected: Join accepted
     }
-    
+
     Searching --> LowPower: Timeout 5min
     LowPower --> Searching: Button press
-    
+
     state Connected {
         [*] --> Standby
         Standby --> Active: Match started
@@ -564,9 +575,9 @@ stateDiagram-v2
         Respawn --> Active: Timer complete
         Active --> Standby: Match ended
     }
-    
+
     Connected --> Searching: Connection lost
-    
+
     state Active {
         [*] --> Tracking
         Tracking --> Tracking: Position TX every 2s
@@ -574,13 +585,13 @@ stateDiagram-v2
         HitDetected --> Tracking: Not confirmed
         HitDetected --> SendKill: Button confirm
     }
-    
+
     note right of Connected
         GPS active,
         LoRa connected,
         Full functionality
     end note
-    
+
     note right of LowPower
         GPS off,
         LoRa listen only,
@@ -598,15 +609,15 @@ sequenceDiagram
     participant LORA as LoRa Radio
     participant GW as LoRa Gateway
     participant TABLET as Match Tablet
-    
+
     loop Every 2 seconds
         GPS->>MCU: NMEA sentence (lat, lon, alt, hdop)
         IMU->>MCU: Acceleration, gyro data
-        
+
         MCU->>MCU: Sensor fusion (Kalman filter)
         MCU->>MCU: Calculate speed, heading
         MCU->>MCU: Detect movement state
-        
+
         alt Position changed significantly
             MCU->>MCU: Encode payload (12 bytes)
             MCU->>LORA: TX position packet
@@ -617,7 +628,7 @@ sequenceDiagram
             MCU->>MCU: Skip TX (save battery)
         end
     end
-    
+
     Note over GPS,TABLET: Battery optimization:<br/>Skip TX if delta < 2m
 ```
 
@@ -670,51 +681,51 @@ Gli Smart Target sono obiettivi IoT per modalità di gioco come Capture The Flag
 ```mermaid
 stateDiagram-v2
     [*] --> Neutral
-    
+
     Neutral --> AlphaContesting: Alpha player enters
     Neutral --> BravoContesting: Bravo player enters
-    
+
     state AlphaContesting {
         [*] --> AlphaCapturing
         AlphaCapturing --> AlphaCapturing: Progress +1/sec
         AlphaCapturing --> [*]: Bravo enters (contested)
     }
-    
+
     state BravoContesting {
         [*] --> BravoCapturing
         BravoCapturing --> BravoCapturing: Progress +1/sec
         BravoCapturing --> [*]: Alpha enters (contested)
     }
-    
+
     AlphaContesting --> AlphaCaptured: Progress = 100%
     BravoContesting --> BravoCaptured: Progress = 100%
-    
+
     AlphaContesting --> Neutral: Alpha leaves
     BravoContesting --> Neutral: Bravo leaves
-    
+
     state AlphaCaptured {
         [*] --> AlphaHolding
         AlphaHolding --> AlphaHolding: +1 point/10sec
     }
-    
+
     state BravoCaptured {
         [*] --> BravoHolding
         BravoHolding --> BravoHolding: +1 point/10sec
     }
-    
+
     AlphaCaptured --> BravoContesting: Bravo enters
     BravoCaptured --> AlphaContesting: Alpha enters
-    
+
     note right of Neutral
         LED: White pulsing
         Sound: Ambient hum
     end note
-    
+
     note right of AlphaCaptured
         LED: Solid Blue
         Sound: Alpha jingle
     end note
-    
+
     note right of BravoCaptured
         LED: Solid Red
         Sound: Bravo jingle
@@ -725,7 +736,8 @@ stateDiagram-v2
 
 ## 6. BLE Beacon Mesh Network
 
-I beacon BLE forniscono positioning indoor e aumentano la precisione GPS in aree con copertura satellite limitata.
+I beacon BLE forniscono positioning indoor e aumentano la precisione GPS in aree con copertura
+satellite limitata.
 
 ### 6.1 Beacon Placement Strategy
 
@@ -780,30 +792,30 @@ graph TB
         GPS[GPS Fix<br/>if available]
         IMU[IMU Data]
     end
-    
+
     subgraph "PROCESSING"
         RSSI_FILTER[RSSI Kalman Filter<br/>Smooth signal]
         DISTANCE[Distance Estimation<br/>Path Loss Model]
         TRILAT[Trilateration<br/>Least Squares]
         FUSION[Sensor Fusion<br/>EKF]
     end
-    
+
     subgraph "OUTPUT"
         POSITION[Fused Position<br/>x, y, z, accuracy]
     end
-    
+
     BLE1 --> RSSI_FILTER
     BLE2 --> RSSI_FILTER
     BLE3 --> RSSI_FILTER
     BLEN --> RSSI_FILTER
-    
+
     RSSI_FILTER --> DISTANCE
     DISTANCE --> TRILAT
-    
+
     TRILAT --> FUSION
     GPS --> FUSION
     IMU --> FUSION
-    
+
     FUSION --> POSITION
 ```
 
@@ -811,7 +823,8 @@ graph TB
 
 ## 7. Offline-First Architecture
 
-L'architettura offline-first garantisce che il sistema funzioni completamente senza connessione Internet, sincronizzando i dati quando la connettività diventa disponibile.
+L'architettura offline-first garantisce che il sistema funzioni completamente senza connessione
+Internet, sincronizzando i dati quando la connettività diventa disponibile.
 
 ### 7.1 Data Sync Strategy
 
@@ -822,32 +835,32 @@ graph TB
         EVENT_QUEUE[(Event Queue)]
         CONFLICT_LOG[(Conflict Log)]
     end
-    
+
     subgraph "SYNC ENGINE"
         SYNC_MGR[Sync Manager]
         CONFLICT_RESOLVER[Conflict Resolver]
         DELTA_CALC[Delta Calculator]
         RETRY_HANDLER[Retry Handler]
     end
-    
+
     subgraph "CLOUD"
         CLOUD_API[TicOps API]
         CLOUD_DB[(PostgreSQL)]
         CLOUD_WS[WebSocket]
     end
-    
+
     LOCAL_DB --> DELTA_CALC
     EVENT_QUEUE --> SYNC_MGR
-    
+
     SYNC_MGR --> CLOUD_API
     CLOUD_API --> CLOUD_DB
-    
+
     CLOUD_API --> CONFLICT_RESOLVER
     CONFLICT_RESOLVER --> CONFLICT_LOG
     CONFLICT_RESOLVER --> LOCAL_DB
-    
+
     CLOUD_WS --> SYNC_MGR
-    
+
     SYNC_MGR --> RETRY_HANDLER
     RETRY_HANDLER --> EVENT_QUEUE
 ```
@@ -898,27 +911,27 @@ sequenceDiagram
     participant TABLET as Match Tablet
     participant QUEUE as Sync Queue
     participant CLOUD as TicOps Cloud
-    
+
     Note over DEVICE,CLOUD: ONLINE SCENARIO
-    
+
     DEVICE->>TABLET: Position update (LoRa)
     TABLET->>TABLET: Store in local DB
     TABLET->>CLOUD: Real-time sync (WebSocket)
     CLOUD-->>TABLET: ACK
-    
+
     Note over DEVICE,CLOUD: OFFLINE SCENARIO
-    
+
     DEVICE->>TABLET: Position update (LoRa)
     TABLET->>TABLET: Store in local DB
     TABLET->>QUEUE: Queue for sync
     QUEUE-->>TABLET: Queued (ID: 12345)
-    
+
     Note over TABLET: Connection lost...
     Note over TABLET: ... time passes ...
     Note over TABLET: Connection restored
-    
+
     TABLET->>TABLET: Check pending queue
-    
+
     loop For each queued event
         TABLET->>CLOUD: Sync event
         alt Success
@@ -1033,7 +1046,8 @@ sequenceDiagram
 
 ## 8. End-to-End Match Flow
 
-Questo diagramma mostra il flusso completo di una partita, dall'inizio alla fine, includendo tutti i dispositivi e i sistemi coinvolti.
+Questo diagramma mostra il flusso completo di una partita, dall'inizio alla fine, includendo tutti i
+dispositivi e i sistemi coinvolti.
 
 ### 8.1 Pre-Match Setup
 
@@ -1045,39 +1059,39 @@ sequenceDiagram
     participant TRACKERS as Player Trackers
     participant TARGETS as Smart Targets
     participant CLOUD as TicOps Cloud
-    
+
     Note over FM,CLOUD: PRE-MATCH SETUP PHASE
-    
+
     FM->>TABLET: Power on tablet
     TABLET->>TABLET: Boot Android, launch TicOps app
     TABLET->>LORA_GW: Initialize LoRa gateway (USB)
     LORA_GW-->>TABLET: Gateway ready
-    
+
     FM->>TABLET: Create new match (or load from cloud)
-    
+
     alt Online
         TABLET->>CLOUD: Fetch match details, roster
         CLOUD-->>TABLET: Match data
     else Offline
         TABLET->>TABLET: Use cached/manual data
     end
-    
+
     FM->>TRACKERS: Power on trackers
     TRACKERS->>LORA_GW: Join request
     LORA_GW->>TABLET: Device joined (ID: xxx)
     TABLET-->>FM: Device connected (UI update)
-    
+
     FM->>TABLET: Assign tracker to player (NFC tap)
     TABLET->>TABLET: Map tracker ID to player
     TABLET->>TRACKERS: Assign team (LED color)
     TRACKERS-->>TRACKERS: LED = team color
-    
+
     FM->>TARGETS: Power on objectives
     TARGETS->>LORA_GW: Join request
     LORA_GW->>TABLET: Objective joined
     TABLET->>TARGETS: Configure mode (CTF/DOM)
     TARGETS-->>TARGETS: Initialize game mode
-    
+
     FM->>TABLET: Verify all devices ready
     TABLET-->>FM: Ready check complete ✓
 ```
@@ -1094,41 +1108,41 @@ sequenceDiagram
     participant REFEREE as Referee Device
     participant SPEAKERS as Field Speakers
     participant SPECTATOR as Spectator Screen
-    
+
     Note over PLAYERS,SPECTATOR: MATCH EXECUTION PHASE
-    
+
     TABLET->>SPEAKERS: Countdown audio (3, 2, 1)
     TABLET->>TRACKERS: MATCH_START broadcast
     TABLET->>TARGETS: MATCH_START broadcast
     TRACKERS-->>TRACKERS: LED rapid blink → solid
     TARGETS-->>TARGETS: Activate game logic
-    
+
     loop Every 2 seconds
         TRACKERS->>LORA_GW: Position update
         LORA_GW->>TABLET: Player positions
         TABLET->>TABLET: Update tactical map
         TABLET->>SPECTATOR: Position broadcast (WiFi)
     end
-    
+
     Note over PLAYERS: Player Alpha-5 hits Player Bravo-3
-    
+
     TRACKERS->>TRACKERS: Button press (kill claim)
     TRACKERS->>LORA_GW: KILL_EVENT (Alpha-5 → Bravo-3)
     LORA_GW->>TABLET: Kill event received
     TABLET->>TABLET: Log event, pending confirmation
-    
+
     TABLET->>REFEREE: Kill notification
     REFEREE->>REFEREE: Review event
     REFEREE->>TABLET: Confirm kill
-    
+
     TABLET->>TRACKERS: KILL_CONFIRMED to Bravo-3
     TRACKERS-->>TRACKERS: Bravo-3: Vibrate, LED = off
     TABLET->>TABLET: Update score: Alpha +1
     TABLET->>SPECTATOR: Score update
     TABLET->>SPEAKERS: "Player eliminated" audio
-    
+
     Note over TARGETS: Domination zone captured
-    
+
     PLAYERS->>TARGETS: Enter zone
     TARGETS->>TARGETS: Detect presence (sensor)
     TARGETS->>TARGETS: Capture progress...
@@ -1149,19 +1163,19 @@ sequenceDiagram
     participant CLOUD as TicOps Cloud
     participant FM as Field Manager
     participant PLAYERS as Players (Phones)
-    
+
     Note over TABLET,PLAYERS: POST-MATCH PHASE
-    
+
     TABLET->>TABLET: End match trigger (timer/manual)
     TABLET->>TRACKERS: MATCH_END broadcast
     TABLET->>TARGETS: MATCH_END broadcast
     TRACKERS-->>TRACKERS: Enter standby mode
     TARGETS-->>TARGETS: Reset to neutral
-    
+
     TABLET->>TABLET: Calculate final scores
     TABLET->>TABLET: Generate match summary
     TABLET->>FM: Display results
-    
+
     alt Online
         TABLET->>CLOUD: Sync match data (immediate)
         CLOUD-->>TABLET: Sync complete
@@ -1170,18 +1184,18 @@ sequenceDiagram
         TABLET->>TABLET: Queue for later sync
         TABLET-->>FM: "Offline - will sync later"
     end
-    
+
     Note over TABLET: Later, when online...
-    
+
     TABLET->>TABLET: Detect connectivity
     TABLET->>CLOUD: Bulk sync pending data
-    
+
     loop For each pending match
         TABLET->>CLOUD: Upload match + events
         CLOUD->>CLOUD: Process, update rankings
         CLOUD-->>TABLET: ACK
     end
-    
+
     CLOUD->>PLAYERS: Push notifications (delayed results)
     CLOUD->>CLOUD: Update leaderboards
     CLOUD->>CLOUD: Award achievements
@@ -1261,25 +1275,25 @@ sequenceDiagram
 gantt
     title IoT Development Roadmap
     dateFormat YYYY-MM-DD
-    
+
     section Phase 1 - Core
     Tablet App MVP                    :iot1, 2025-06-01, 60d
     LoRa Protocol Design              :iot2, 2025-06-01, 45d
     Player Tracker Prototype          :iot3, 2025-07-01, 60d
     Gateway Development               :iot4, 2025-07-15, 45d
-    
+
     section Phase 2 - Integration
     Tablet-Gateway Integration        :iot5, 2025-08-15, 30d
     Tracker Firmware                  :iot6, 2025-09-01, 45d
     Offline Sync Engine               :iot7, 2025-09-15, 45d
     Field Testing Alpha               :iot8, 2025-10-15, 30d
-    
+
     section Phase 3 - Objectives
     Smart Target Development          :iot9, 2025-11-01, 60d
     Game Mode Logic                   :iot10, 2025-11-15, 45d
     BLE Beacon Integration            :iot11, 2025-12-01, 30d
     Field Testing Beta                :iot12, 2026-01-01, 45d
-    
+
     section Phase 4 - Production
     Hardware Certification            :iot13, 2026-02-01, 60d
     Manufacturing Setup               :iot14, 2026-03-01, 60d
