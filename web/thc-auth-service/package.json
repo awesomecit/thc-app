@@ -1,0 +1,22 @@
+{
+  "name": "thc-auth-service",
+  "version": "0.1.0",
+  "description": "Keycloak authentication service for THC App",
+  "type": "module",
+  "scripts": {
+    "dev": "platformatic start",
+    "start": "platformatic start",
+    "test": "node --test 'test/**/*.test.ts'",
+    "test:integration": "node --test --test-timeout=120000 'test/integration/**/*.test.ts'"
+  },
+  "dependencies": {
+    "@platformatic/service": "^3.27.0",
+    "fastify": "^5.0.0",
+    "fastify-plugin": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "testcontainers": "^11.10.0",
+    "typescript": "^5.5.0"
+  }
+}

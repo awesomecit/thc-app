@@ -1,0 +1,17 @@
+{
+  "$schema": "https://schemas.platformatic.dev/@platformatic/service/3.27.0.json",
+  "watch": true,
+  "server": {
+    "hostname": "{PLT_SERVER_HOSTNAME}",
+    "port": "{PORT}",
+    "logger": {
+      "level": "{PLT_SERVER_LOGGER_LEVEL}"
+    }
+  },
+  "service": {
+    "openapi": true
+  },
+  "plugins": {
+    "paths": ["plugins"]
+  }
+}
