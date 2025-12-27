@@ -1,5 +1,15 @@
 # Sprint Planning & Project Roadmap
 
+> **IMPORTANTE**: Questo file è stato aggiornato dopo l'integrazione di PRISMA_ENTITY_SCHEMA.md,
+> VSCODE_INTEGRATION_GUIDE.md e XP_ROADMAP_FULLSTACK.md.  
+> Vedi `docs/INTEGRATION_ANALYSIS.md` per gap analysis completa.
+
+**Stato Progetto**: Backend Auth MVP (5%) + Frontend Mock (85%)  
+**Strategia**: Integration-First (Opzione B) - Minimal Backend + Swap Mock Progressivo  
+**Next Sprint**: Sprint 1 Revised - Database Foundation + Orchestration
+
+---
+
 ## 🎯 Sprint Management Rules (Extreme Programming)
 
 ### Core Principles

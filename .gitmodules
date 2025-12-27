@@ -1,0 +1,6 @@
+[submodule "web/ticops-field-mapper"]
+	path = web/ticops-field-mapper
+	url = ../field-mapper
+[submodule "web/ticops-frontend"]
+	path = web/ticops-frontend
+	url = ../ticops-tactical-hub

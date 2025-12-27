@@ -300,12 +300,14 @@ npm run test:cov               # Generate HTML coverage report
 ```
 
 **Test Distribution:**
+
 - ✅ 29 unit tests (web apps)
 - ✅ 62 unit tests (packages: auth module)
 - ✅ 24 integration tests (web: gateway, db, service, node)
 - ✅ 9 integration tests (packages: RedisSessionRepository with Testcontainers)
 
-**Note:** Some SessionManager integration tests are temporarily skipped due to container cleanup issues under investigation.
+**Note:** Some SessionManager integration tests are temporarily skipped due to container cleanup
+issues under investigation.
 
 ### Troubleshooting
 
