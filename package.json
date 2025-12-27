@@ -1,6 +1,6 @@
 {
   "name": "thc-app",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Enterprise application with Platformatic Watt and hexagonal architecture",
   "type": "module",
   "scripts": {
