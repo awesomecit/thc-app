@@ -1,27 +1,97 @@
 {
-  "version": "0.4.0",
-  "releaseDate": "2025-12-14T15:25:51.458Z",
-  "previousVersion": "0.3.0",
+  "version": "0.5.0",
+  "releaseDate": "2025-12-27T13:45:12.289Z",
+  "previousVersion": "0.4.0",
   "summary": {
-    "featuresCount": 1,
-    "fixesCount": 1,
+    "featuresCount": 6,
+    "fixesCount": 6,
     "breakingChangesCount": 0
   },
   "features": [
     {
-      "id": "testing-5bbb424",
-      "title": "add complete test scenarios documentation",
-      "scope": "testing",
-      "commit": "5bbb424",
+      "id": "gateway-b8810e0",
+      "title": "expose auth and db services via proxy",
+      "scope": "gateway",
+      "commit": "b8810e0",
+      "type": "feature"
+    },
+    {
+      "id": "auth-d2fdc25",
+      "title": "implement keycloak authentication service with TDD",
+      "scope": "auth",
+      "commit": "d2fdc25",
+      "type": "feature"
+    },
+    {
+      "id": "dashboard-03f2bb3",
+      "title": "add dev credentials and keycloak integration",
+      "scope": "dashboard",
+      "commit": "03f2bb3",
+      "type": "feature"
+    },
+    {
+      "id": "test-95efb0c",
+      "title": "add integration tests with testcontainers and fix test infrastructure",
+      "scope": "test",
+      "commit": "95efb0c",
+      "type": "feature"
+    },
+    {
+      "id": "gateway-465856c",
+      "title": "implement centralized error handler with sanitization",
+      "scope": "gateway",
+      "commit": "465856c",
+      "type": "feature"
+    },
+    {
+      "id": "observability-c661b2a",
+      "title": "implement health endpoints, Pino logger, correlation ID",
+      "scope": "observability",
+      "commit": "c661b2a",
       "type": "feature"
     }
   ],
   "fixes": [
     {
-      "id": "docs-afe9773",
-      "title": "correct release workflow typos",
-      "scope": "docs",
-      "commit": "afe9773",
+      "id": "gateway-d691843",
+      "title": "load real plugins in integration tests",
+      "scope": "gateway",
+      "commit": "d691843",
+      "type": "fix"
+    },
+    {
+      "id": "observability-f10e52e",
+      "title": "add observability stack and fix all lint errors",
+      "scope": "observability",
+      "commit": "f10e52e",
+      "type": "fix"
+    },
+    {
+      "id": "correlation-id-ad0b4ea",
+      "title": "wrap plugin with fastify-plugin for inject() compatibility",
+      "scope": "correlation-id",
+      "commit": "ad0b4ea",
+      "type": "fix"
+    },
+    {
+      "id": "secrets-c130b74",
+      "title": "scan all committed files, exclude only .env and docs",
+      "scope": "secrets",
+      "commit": "c130b74",
+      "type": "fix"
+    },
+    {
+      "id": "db-966ed1f",
+      "title": "use SERIAL for auto-increment id in movies table",
+      "scope": "db",
+      "commit": "966ed1f",
+      "type": "fix"
+    },
+    {
+      "id": "hooks-8b2274b",
+      "title": "ensure pre-push uses correct Node version from nvm",
+      "scope": "hooks",
+      "commit": "8b2274b",
       "type": "fix"
     }
   ],

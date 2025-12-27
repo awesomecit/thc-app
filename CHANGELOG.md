@@ -2,8 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project
-adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.5.0] - 2025-12-27
+
+### ✨ Features
+
+- **gateway**: expose auth and db services via proxy ([b8810e0])
+- **auth**: implement keycloak authentication service with TDD ([d2fdc25])
+- **dashboard**: add dev credentials and keycloak integration ([03f2bb3])
+- **test**: add integration tests with testcontainers and fix test infrastructure ([95efb0c])
+- **gateway**: implement centralized error handler with sanitization ([465856c])
+- **observability**: implement health endpoints, Pino logger, correlation ID ([c661b2a])
+
+### 🐛 Bug Fixes
+
+- **gateway**: load real plugins in integration tests ([d691843])
+- **observability**: add observability stack and fix all lint errors ([f10e52e])
+- **correlation-id**: wrap plugin with fastify-plugin for inject() compatibility ([ad0b4ea])
+- **secrets**: scan all committed files, exclude only .env and docs ([c130b74])
+- **db**: use SERIAL for auto-increment id in movies table ([966ed1f])
+- **hooks**: ensure pre-push uses correct Node version from nvm ([8b2274b])
 
 ## [0.4.0] - 2025-12-14
 
