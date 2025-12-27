@@ -3,7 +3,7 @@
   "watch": true,
   "autoload": {
     "path": "web",
-    "exclude": ["docs", "thc-rabbitmq-hooks", "thc-pg-hooks", "thc-ai-wrap"]
+    "exclude": ["docs", "ticops-field-mapper", "ticops-frontend"]
   },
   "logger": {
     "level": "{PLT_SERVER_LOGGER_LEVEL}"
