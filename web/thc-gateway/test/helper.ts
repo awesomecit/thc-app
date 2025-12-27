@@ -7,7 +7,7 @@ type testfn = Parameters<typeof test>[0];
 type TestContext = Parameters<Exclude<testfn, undefined>>[0];
 
 export async function getServer(t: TestContext) {
-  // Config minima per test standalone - NON leggere watt.json
+  // Config che carica i plugin reali per test di integrazione
   const config: PlatformaticGatewayConfig = {
     server: {
       hostname: '127.0.0.1',
@@ -15,9 +15,11 @@ export async function getServer(t: TestContext) {
       logger: { level: 'error' },
     },
     watch: false,
-    // NON caricare plugins per test unitari (auth-jwt richiederebbe Keycloak)
+    plugins: {
+      paths: [join(import.meta.dirname, '..', 'plugins')],
+    },
     gateway: {
-      applications: [], // Nessuna applicazione - test solo gateway base
+      applications: [], // Nessuna applicazione esterna - solo gateway
     },
   };
 

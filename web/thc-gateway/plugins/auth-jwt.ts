@@ -15,7 +15,8 @@ const authJwtPlugin: FastifyPluginAsync = async (app) => {
   const jwtPublicKey = process.env.PLT_KEYCLOAK_PUBLIC_KEY;
 
   if (!jwtPublicKey) {
-    app.log.warn('PLT_KEYCLOAK_PUBLIC_KEY not set - JWT validation may fail');
+    app.log.warn('PLT_KEYCLOAK_PUBLIC_KEY not set - skipping JWT validation plugin');
+    return; // Skip plugin se manca la chiave pubblica
   }
 
   await app.register(authPlugin, {

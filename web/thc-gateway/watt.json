@@ -3,20 +3,5 @@
   "watch": true,
   "plugins": {
     "paths": ["plugins"]
-  },
-  "gateway": {
-    "applications": [
-      {
-        "id": "thc-auth-service",
-        "origin": "http://thc-auth-service.plt.local",
-        "prefix": "/api/auth"
-      },
-      {
-        "id": "thc-db",
-        "origin": "http://thc-db.plt.local",
-        "prefix": "/api/db"
-      }
-    ],
-    "refreshTimeout": 1000
   }
 }
