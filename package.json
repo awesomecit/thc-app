@@ -18,7 +18,7 @@
     "------- 🧪 Testing -------": "",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "npm run test:unit:web && npm run test:unit:packages",
-    "test:unit:web": "NODE_OPTIONS='--import tsx' node --test 'web/**/test/**/*.test.ts' --test-name-pattern='!integration'",
+    "test:unit:web": "NODE_OPTIONS='--import tsx' node --test 'web/**/test/**/*.test.ts' '!web/**/test/integration/**/*.test.ts'",
     "test:unit:packages": "cd packages/auth && npm run test",
     "test:integration": "npm run test:integration:web && npm run test:integration:packages",
     "test:integration:web": "NODE_OPTIONS='--import tsx' node --test 'web/**/test/integration/**/*.test.ts'",
